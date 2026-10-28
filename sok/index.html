@@ -737,7 +737,7 @@ a.pill:not([href]) { display: none !important; }
     visFlere.querySelector('path').setAttribute('d', apent ? 'M5 15l7-7 7 7' : 'M5 9l7 7 7-7');
   }
 
-  function velg(id) {
+  function velg(id, rull) {
     if (id !== 'alle' && !document.querySelector('[data-gruppe="' + id + '"]')) id = 'alle';
     grupper.forEach(function (g) { g.hidden = !(id === 'alle' || g.getAttribute('data-gruppe') === id); });
     brikker.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-velg') === id)); });
@@ -747,12 +747,17 @@ a.pill:not([href]) { display: none !important; }
     // Sørg for at valgt chip synes i den vannrette raden (for eksempel etter Tilbake)
     var chip = document.querySelector('[data-velg="' + id + '"]');
     var rad = chip && chip.closest('.brikker');
-    if (rad) rad.scrollLeft = Math.max(0, chip.offsetLeft - rad.offsetLeft - 16);
+    if (rad && rull !== false) rad.scrollLeft = Math.max(0, chip.offsetLeft - rad.offsetLeft - 16);
     return id;
   }
 
   brikker.forEach(function (b) {
-    b.addEventListener('click', function () { lagre(velg(b.getAttribute('data-velg'))); });
+    // Trykk én gang for å velge et spørsmål, og én gang til for å slå det av (tilbake til «Alle»).
+    b.addEventListener('click', function () {
+      var id = b.getAttribute('data-velg');
+      var av = id !== 'alle' && b.getAttribute('aria-pressed') === 'true';
+      lagre(av ? velg('alle', false) : velg(id));
+    });
   });
   radioer.forEach(function (r) {
     r.addEventListener('change', function () { if (r.checked) lagre(velg(r.value)); });
