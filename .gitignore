@@ -1,0 +1,9 @@
+design/
+.DS_Store
+node_modules/
+.playwright-mcp/
+.superpowers/
+
+# Interne notater og rapporter, bare lokalt
+docs/
+CLAUDE.md
