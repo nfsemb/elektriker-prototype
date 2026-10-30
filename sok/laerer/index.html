@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>lærer – Søk | utdanning.no</title>
+<link rel="stylesheet" href="../felles.css">
+</head>
+<body data-yrke="laerer">
+
+<!--
+  LENKER
+  Alle adresser ligger her. Siden bygger href ut fra «side», «anker» og «tekst».
+  - side: adressen til målsiden (uten #anker), eller null hvis lenken mangler.
+  - anker: id på målsiden som det skal hoppes til, eller null.
+  - tekst: tekstfragment som utheves, { "start": "...", "slutt": "..." } (slutt er valgfri), eller null.
+  - status: "funnet" (funnet og sjekket av Claude), "manuell" (lagt inn av et menneske, skal aldri endres), "mangler".
+  Kjør `node scripts/sjekk-lenker.mjs` etter endringer.
+-->
+<script type="application/json" id="lenker">
+{
+  "artikkel-bli-laerer": {
+    "maal": "Artikkelen «Hvordan kan jeg bli lærer?», som viser veiene inn i yrket ut fra bakgrunnen din",
+    "side": "https://utdanning.no/tema/hvordan_kan_jeg_bli_laerer", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen («Vi har laget en artikkel …»)", "sjekket": "2026-10-30"
+  },
+  "barnehagelaererutdanning": {
+    "maal": "Utdanningsoversikten for barnehagelærerutdanning, der du kan velge fylke og se studiesteder",
+    "side": "https://utdanning.no/utdanningsoversikt/barnehagelaererutdanning", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Hvordan utdanner du deg til lærer?» på yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "grunnskolelaerer-1-7": {
+    "maal": "Utdanningsoversikten for grunnskolelærerutdanning for 1.–7. trinn, der du kan velge fylke og se studiesteder",
+    "side": "https://utdanning.no/utdanningsoversikt/grunnskolelaererutdanning_1.-7._trinn", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Hvordan utdanner du deg til lærer?» på yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "grunnskolelaerer-5-10": {
+    "maal": "Utdanningsoversikten for grunnskolelærerutdanning for 5.–10. trinn, der du kan velge fylke og se studiesteder",
+    "side": "https://utdanning.no/utdanningsoversikt/grunnskolelaererutdanning_5.-10._trinn", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Hvordan utdanner du deg til lærer?» på yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "lektorutdanning": {
+    "maal": "Utdanningsoversikten for lektorutdanning for 8.–13. trinn, der du kan velge fylke og se studiesteder",
+    "side": "https://utdanning.no/utdanningsoversikt/lektorutdanning_8.-13._trinn", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Hvordan utdanner du deg til lærer?» på yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "laererutdanning-pef": {
+    "maal": "Utdanningsoversikten for lærerutdanning i praktiske og estetiske fag for 1.–13. trinn",
+    "side": "https://utdanning.no/utdanningsoversikt/laererutdanning_i_praktiske_og_estetiske_fag_1.-13._trinn", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Hvordan utdanner du deg til lærer?» på yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "yrkesfaglaererutdanning": {
+    "maal": "Utdanningsoversikten for yrkesfaglærerutdanning for 8.–13. trinn",
+    "side": "https://utdanning.no/utdanningsoversikt/yrkesfaglaererutdanning_8.-13._trinn", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Hvordan utdanner du deg til lærer?» på yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "ppu-y": {
+    "maal": "Utdanningsoversikten for praktisk-pedagogisk utdanning for yrkesfag (PPU-Y)",
+    "side": "https://utdanning.no/utdanningsoversikt/praktisk-pedagogisk_utdanning_yrkesfag", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Se PPU-Y-utdanningene» i artikkelen «Hvordan kan jeg bli lærer?»", "sjekket": "2026-10-30"
+  },
+  "ppu": {
+    "maal": "Utdanningsoversikten for praktisk-pedagogisk utdanning (PPU)",
+    "side": "https://utdanning.no/utdanningsoversikt/praktisk-pedagogisk_utdanning_ppu", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Hvordan utdanner du deg til lærer?» på yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "laererutdanning": {
+    "maal": "Utdanningsoversikten for lærerutdanning, med alle lærerutdanningene samlet",
+    "side": "https://utdanning.no/utdanningsoversikt/laererutdanning", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Hvordan utdanner du deg til lærer?» på yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "intervju-henrik": {
+    "maal": "Yrkesintervjuet med Henrik Thømt Hjort, ned til sitatet i kortet",
+    "side": "https://utdanning.no/tema/yrkesintervju/yrkesfaglaerer_0", "anker": null,
+    "tekst": { "start": "Etter at jeg tok fagbrev som elektriker" },
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "laerer-lonn": {
+    "maal": "Yrkesbeskrivelsen for lærer, delen om lønn",
+    "side": "https://utdanning.no/yrker/beskrivelse/laerer", "anker": "lonn-div", "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, id på siden", "sjekket": "2026-10-30"
+  },
+  "sammenlign-lonn": {
+    "maal": "Verktøyet for å sammenligne yrker, med lærer forhåndsvalgt",
+    "side": "https://sammenlign.utdanning.no/sammenligne/yrke#y_larer", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "oppskriften (adressemønster fra lønnsdelen på yrkesbeskrivelsene) og uno_id fra yrkesbeskrivelsen; yrkesbeskrivelsen for lærer viser ikke knappen selv", "sjekket": "2026-10-30"
+  },
+  "yrke-laerer": {
+    "maal": "Yrkesbeskrivelsen for lærer",
+    "side": "https://utdanning.no/yrker/beskrivelse/laerer", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "oppgitt i oppdraget, kontrollert", "sjekket": "2026-10-30"
+  },
+  "video-laerer": {
+    "maal": "Yrkesvideoene om lærer, seksjonen «Bli med en lærer på jobb» på yrkesbeskrivelsen (første video er Camilla)",
+    "side": "https://utdanning.no/yrker/beskrivelse/laerer", "anker": "yrke-videoer", "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, id på siden", "sjekket": "2026-10-30"
+  },
+  "arbeidsmarked-tall": {
+    "maal": "Tallene bak arbeidsmarkedskortet (SSB, oktober 2025): lønnsdelen på yrkesbeskrivelsen, der filteret viser sektor, kjønn og antall personer",
+    "side": "https://utdanning.no/yrker/beskrivelse/laerer", "anker": "lonn-div", "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, «Vis filter» i lønnsdelen", "sjekket": "2026-10-30"
+  },
+  "jobbkartet": {
+    "maal": "Jobbkartet for lærer, antall personer i yrket etter fylke og kommune",
+    "side": "https://utdanning.no/jobbkartet/y_larer/antall_personer", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "oppskriften (adressemønster for Jobbkartet) og uno_id fra yrkesbeskrivelsen; siden har «Søk etter fylke eller kommune»", "sjekket": "2026-10-30"
+  },
+  "bedrifter-laerer": {
+    "maal": "Oversikten over bedrifter som har lærere, der du kan velge kommune",
+    "side": "https://utdanning.no/yrker/beskrivelse/laerer", "anker": "bedrifter", "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, id på siden (stedsvelger på kommunenivå)", "sjekket": "2026-10-30"
+  },
+  "intervju-ina-helene": {
+    "maal": "Yrkesintervjuet med Ina-Helene Angeland, ned til sitatet i kortet",
+    "side": "https://utdanning.no/tema/yrkesintervju/barnehagelaerer", "anker": null,
+    "tekst": { "start": "Selv planlegger jeg å ta videreutdanning" },
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "videreutdanning-laerere": {
+    "maal": "Utdanningsoversikten for videreutdanning for lærere i barnehage og skole",
+    "side": "https://utdanning.no/utdanningsoversikt/videreutdanning_laerere_i_barnehage_og_skole", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Hvordan utdanner du deg til lærer?» på yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "yrke-rektor": {
+    "maal": "Yrkesbeskrivelsen for rektor/skoleleder",
+    "side": "https://utdanning.no/yrker/beskrivelse/rektorskoleleder", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søk på utdanning.no («rektor»)", "sjekket": "2026-10-30"
+  },
+  "karakterkalkulatoren": {
+    "maal": "Karakterkalkulatoren på utdanning.no, der du regner ut poengene dine og ser hva du kan komme inn på",
+    "side": "https://utdanning.no/karakterkalkulator/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no", "sjekket": "2026-10-30"
+  },
+  "forslag-utdanninger-yrker": {
+    "maal": "KI-verktøyet «Få forslag til utdanninger og yrker» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/fa-forslag-til-utdanninger-yrker", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "kopiert fra elektrikersiden (verktøysiden på utdanning.no)", "sjekket": "2026-10-30"
+  },
+  "jobbkompasset": {
+    "maal": "Jobbkompasset på utdanning.no",
+    "side": "https://utdanning.no/jobbkompasset/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "kopiert fra elektrikersiden (verktøysiden på utdanning.no)", "sjekket": "2026-10-30"
+  },
+  "utdanningskompasset": {
+    "maal": "Utdanningskompasset på utdanning.no",
+    "side": "https://utdanning.no/utdanningskompasset/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "kopiert fra elektrikersiden (verktøysiden på utdanning.no)", "sjekket": "2026-10-30"
+  },
+  "sok-kulturskolelaerer": {
+    "maal": "Søkeresultatsiden på utdanning.no for «kulturskolelærer»",
+    "side": "https://utdanning.no/sok/#query_value=kulturskolel%C3%A6rer", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (første treff er yrket, kontrollert i søke-API-et)", "sjekket": "2026-10-30"
+  },
+  "sok-pp-radgiver": {
+    "maal": "Søkeresultatsiden på utdanning.no for «PP-rådgiver»",
+    "side": "https://utdanning.no/sok/#query_value=PP-r%C3%A5dgiver", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (første treff er yrket, kontrollert i søke-API-et)", "sjekket": "2026-10-30"
+  },
+  "sok-menighetspedagog": {
+    "maal": "Søkeresultatsiden på utdanning.no for «menighetspedagog»",
+    "side": "https://utdanning.no/sok/#query_value=menighetspedagog", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (første treff er yrket, kontrollert i søke-API-et)", "sjekket": "2026-10-30"
+  },
+  "sok-ridelaerer": {
+    "maal": "Søkeresultatsiden på utdanning.no for «ridelærer»",
+    "side": "https://utdanning.no/sok/#query_value=ridel%C3%A6rer", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (første treff er yrket, kontrollert i søke-API-et)", "sjekket": "2026-10-30"
+  },
+  "chat-veileder": {
+    "maal": "Forsiden til Karriereveiledning.no",
+    "side": "https://karriereveiledning.no/", "anker": null, "tekst": null,
+    "status": "manuell", "kilde": "bestemt av Niels", "sjekket": "2026-10-27"
+  }
+}
+</script>
+
+<header class="topp">
+  <div>
+    <a href="../../" class="logolenke"><svg class="logo" viewBox="0 0 812.9 99.2" role="img" aria-label="Utdanning.no"><g transform="translate(-12.9,-75.2)" fill="#EE7B1A"><path d="m 59.7,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,22.3 -14.2,30.6 -32.1,30.6 -18,0 -32.1,-8.3 -32.1,-30.6 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,10.4 5.5,15.4 14.7,15.4 9.2,0 14.7,-4.9 14.7,-15.4 z"/><path d="m 148.2,75.9 c 3.7,0 5.5,4 5.5,7.8 0,4.1 -2,7.9 -5.5,7.9 h -19.5 v 76.5 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 91.6 H 91.7 c -3.5,0 -5.5,-3.6 -5.5,-7.9 0,-3.7 1.7,-7.8 5.5,-7.8 z"/><path d="m 193.4,75.9 c 17.6,0 31.4,8.3 31.4,30.6 V 143 c 0,22.3 -13.8,30.6 -31.4,30.6 h -23.6 c -4.5,0 -7.6,-2.5 -7.6,-5.3 v -87 c 0,-2.8 3.1,-5.4 7.6,-5.4 z m -13.9,15.2 v 67.2 h 13.9 c 8.8,0 14,-4.9 14,-15.4 V 106.4 C 207.4,96 202.2,91 193.4,91 h -13.9 z"/><path d="m 230.9,166.4 c 0,-0.3 0.1,-0.8 0.3,-1.3 l 25.8,-84 c 1.2,-4 6.1,-5.9 11.1,-5.9 5.1,0 10,1.9 11.2,5.9 l 25.8,84 c 0.1,0.5 0.3,0.9 0.3,1.3 0,4.1 -6.3,7.2 -10.9,7.2 -2.9,0 -5.2,-0.9 -5.9,-3.5 l -5.1,-17.8 h -30.6 l -5.1,17.8 c -0.7,2.5 -2.9,3.5 -5.9,3.5 -4.8,0 -11,-3 -11,-7.2 z m 48.7,-27.7 -11.6,-41 -11.6,41 z"/><path d="m 359.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 L 361,134.9 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 440.4,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 475.1,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 z"/><path d="m 554.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 618.6,91.1 c -8.9,0 -14,5 -14,15.4 v 37.3 c 0,10.4 5.1,15.4 13.9,15.4 8.7,0 14,-4.9 14,-15.4 v -7.9 h -10.8 c -3.5,0 -5.3,-3.3 -5.3,-6.8 0,-3.3 1.9,-6.8 5.3,-6.8 h 22.7 c 3.5,0 5.5,2.7 5.5,5.6 v 15.9 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.3,-8.3 -31.3,-30.6 v -37.3 c 0,-22.3 13.8,-30.6 30.7,-30.6 18.4,0 31.9,9.6 31.9,25.7 0,6.7 -2.9,8.3 -8.7,8.3 -4.7,0 -8.5,-1.3 -8.7,-5.5 -0.3,-6.3 -2.4,-13.3 -13.8,-13.3 z"/><path d="m 675.4,165.3 c 0,4.8 -4.1,9.1 -9,9.1 -5.2,0 -9.1,-4.3 -9.1,-9.1 0,-4.9 3.9,-9.1 9.1,-9.1 4.9,0 9,4.1 9,9.1 z"/><path d="m 731.5,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 763.2,143.8 v -37.3 c 0,-22.3 13.6,-30.6 31.2,-30.6 17.6,0 31.4,8.3 31.4,30.6 v 37.3 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.2,-8.3 -31.2,-30.6 z m 45.2,-37.3 c 0,-10.6 -5.3,-15.4 -14,-15.4 -8.8,0 -13.9,4.8 -13.9,15.4 v 37.3 c 0,10.6 5.1,15.4 13.9,15.4 8.7,0 14,-4.8 14,-15.4 z"/></g></svg></a>
+    <p class="slagord">Offentlig og kvalitetssikret</p>
+  </div>
+  <div class="topp-knapper">
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Min side
+    </button>
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Meny
+    </button>
+    <button type="button" class="meny-rund bare-mobil" aria-label="Åpne meny">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <h1>Søk etter yrker, utdanning og innhold</h1>
+
+  <form class="sok" role="search" onsubmit="return false">
+    <label for="sok" class="skjult">Søk etter yrker, utdanning og innhold</label>
+    <input id="sok" type="search" value="lærer" readonly>
+    <button type="button" aria-label="Søk">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+    </button>
+  </form>
+
+  <div class="velger">
+    <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
+    <div class="brikker-ramme">
+      <ul class="brikker">
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(13)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="lonn" aria-pressed="false">Lønn <span data-antall="lonn">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="jobben" aria-pressed="false">Arbeidsoppgaver <span data-antall="jobben">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="hvem" aria-pressed="false">Arbeidsmarked <span data-antall="hvem">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="hvor" aria-pressed="false">Arbeidsplasser <span data-antall="hvor">(1)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="etterpa" aria-pressed="false">Videre muligheter <span data-antall="etterpa">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="utforsk" aria-pressed="false">Utforsk <span data-antall="utforsk">(4)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="lignende" aria-pressed="false">Lignende yrker <span data-antall="lignende">(4)</span></button></li>
+        <li class="vis-flere-plass bare-desktop" hidden>
+          <button type="button" class="vis-flere" aria-expanded="false">
+            <span>Vis flere</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="oppsett">
+
+    <aside class="sidekolonne bare-desktop">
+      <div>
+        <h2 class="etikett legende-tittel">
+          <span>Farger og ikoner</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </h2>
+        <ul class="legende">
+          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+        </ul>
+      </div>
+
+      <div>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+          Del søk
+        </button>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"/></svg>
+          Lagre søk
+        </button>
+      </div>
+    </aside>
+
+    <div class="resultater">
+
+      <div class="treff">
+        <h2 class="etikett">Søkeresultat</h2>
+        <p class="meta"><span data-antall-ingress>13</span> resultater om lærer.<span data-tolkning hidden></span></p>
+      </div>
+
+      <!-- 1. Hvordan blir du lærer? -->
+      <section class="gruppe" data-gruppe="bli" data-tema="hvordan du blir lærer" aria-labelledby="g-bli">
+        <h2 id="g-bli" class="seksjon">Hvordan blir du lærer?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--utdanning" data-kort="veier-inn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="artikkel-bli-laerer">Veier inn i yrket</a></h3>
+            <p class="brodtekst">Med generell studiekompetanse velger du lærerutdanning etter hvor du vil undervise.</p>
+            <div class="vei">
+              <h4 class="vei-tittel">Barnehagen</h4>
+              <ol class="steg">
+                <li><a data-lenke="barnehagelaererutdanning">Barnehagelærerutdanning</a>, 3 år</li>
+                <li>Bachelorgrad</li>
+              </ol>
+            </div>
+            <div class="vei">
+              <h4 class="vei-tittel">Barneskolen, 1.–7. trinn</h4>
+              <ol class="steg">
+                <li><a data-lenke="grunnskolelaerer-1-7">Grunnskolelærerutdanning</a>, 5 år</li>
+                <li>Mastergrad</li>
+              </ol>
+            </div>
+            <div class="vei">
+              <h4 class="vei-tittel">Mellomtrinnet og ungdomsskolen, 5.–10. trinn</h4>
+              <ol class="steg">
+                <li><a data-lenke="grunnskolelaerer-5-10">Grunnskolelærerutdanning</a>, 5 år</li>
+                <li>Mastergrad</li>
+              </ol>
+            </div>
+            <div class="vei">
+              <h4 class="vei-tittel">Ungdomsskolen og videregående, 8.–13. trinn</h4>
+              <ol class="steg">
+                <li><a data-lenke="lektorutdanning">Lektorutdanning</a>, 5 år</li>
+                <li>Mastergrad</li>
+              </ol>
+            </div>
+            <p class="meta">Trykk på en utdanning for å finne studiesteder i ditt fylke.</p>
+            <div class="vei" data-ekstra hidden>
+              <h4 class="vei-tittel">I praktiske og estetiske fag</h4>
+              <p class="brodtekst">Du kan også ta en femårig lærerutdanning i fag som musikk, dans eller kroppsøving, for 1.–13. trinn.</p>
+              <a class="vei-lenke" data-lenke="laererutdanning-pef">Les om lærerutdanning i praktiske og estetiske fag</a>
+            </div>
+            <div class="vei" data-ekstra hidden>
+              <h4 class="vei-tittel">Med fagbrev</h4>
+              <p class="brodtekst">Har du også minst to års arbeidserfaring, kan du ta yrkesfaglærerutdanning, en bachelor på tre år.</p>
+              <a class="vei-lenke" data-lenke="yrkesfaglaererutdanning">Les om yrkesfaglærerutdanning</a>
+            </div>
+            <div class="vei" data-ekstra hidden>
+              <h4 class="vei-tittel">Med fagbrev og fagskole</h4>
+              <p class="brodtekst">Har du også minst fire års relevant arbeidserfaring, kan du ta praktisk-pedagogisk utdanning for yrkesfag (PPU-Y).</p>
+              <a class="vei-lenke" data-lenke="ppu-y">Les om PPU-Y</a>
+            </div>
+            <div class="vei" data-ekstra hidden>
+              <h4 class="vei-tittel">Med bachelor- eller mastergrad</h4>
+              <p class="brodtekst">Du kan ta praktisk-pedagogisk utdanning (PPU), ettårig eller med integrert mastergrad, avhengig av hva du har fra før.</p>
+              <a class="vei-lenke" data-lenke="ppu">Les om PPU</a>
+            </div>
+            <button type="button" class="se-mer" aria-expanded="false">Se andre veier (4)</button>
+          </li>
+          <li class="kort kort--utdanning" data-kort="utdanning-laererutdanning">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="laererutdanning">Lærerutdanning</a></h3>
+            <div class="beskrivelse">
+              <p class="brodtekst">Du lærer å undervise eller lede pedagogisk utviklingsarbeid, avhengig av hvilken lærerutdanning du velger.</p>
+            </div>
+            <dl class="fakta">
+              <div><dt class="meta">Nivå</dt><dd class="faktaverdi">Universitet og høgskole</dd></div>
+              <div><dt class="meta">Varighet</dt><dd class="faktaverdi">3–5 år</dd></div>
+              <div><dt class="meta">Karakterkrav</dt><dd class="faktaverdi">Ofte i norsk og matematikk</dd></div>
+            </dl>
+          </li>
+          <li class="intervju" data-kort="intervju-henrik">
+            <a data-lenke="intervju-henrik">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/yrkesfagl%C3%A6rer_privat2.jpg?VersionId=5&amp;itok=9ixehHBW" alt="Henrik Thømt Hjort i svart genser, fotografert foran en brun bakgrunn" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Henrik Thømt Hjort (28)</span>
+                  <span class="intervju-stilling">Yrkesfaglærer, Elektro</span>
+                  <span class="intervju-arbeidsgiver">Askim videregående skole, Østfold fylkeskommune</span>
+                </span>
+              </span>
+              <blockquote>– Etter at jeg tok fagbrev som elektriker, gikk jeg videre på fagskolen og begynte som prosjektleder i Caverion, hvor jeg hadde lærlingtida.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 2. Hva tjener en lærer? -->
+      <section class="gruppe" data-gruppe="lonn" data-tema="lønn" aria-labelledby="g-lonn">
+        <h2 id="g-lonn" class="seksjon">Hva tjener en lærer?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke" data-kort="laerer-lonn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="laerer-lonn">Lønn</a></h3>
+            <p class="brodtekst">Vanlig årslønn varierer mellom barnehage, grunnskole og videregående.</p>
+            <dl class="fakta">
+              <div><dt class="meta">Førskole-/barnehagelærere</dt><dd class="faktaverdi">642 600 kr</dd></div>
+              <div><dt class="meta">Grunnskolelærere</dt><dd class="faktaverdi">705 000 kr</dd></div>
+              <div><dt class="meta">Lektorer mv. (videregående skole)</dt><dd class="faktaverdi">743 160 kr</dd></div>
+              <div data-ekstra hidden><dt class="meta">Yrkesfaglærere</dt><dd class="faktaverdi">675 600 kr</dd></div>
+              <div data-ekstra hidden><dt class="meta">Spesiallærere / spesialpedagoger</dt><dd class="faktaverdi">679 320 kr</dd></div>
+              <div data-ekstra hidden><dt class="meta">Universitets- og høyskolelektorer/-lærere</dt><dd class="faktaverdi">752 880 kr</dd></div>
+            </dl>
+            <button type="button" class="se-mer" aria-expanded="false">Se flere yrkesgrupper (3)</button>
+            <p class="meta kilde">Kilde: Statistisk sentralbyrå 2026. Tallene er samlet inn oktober 2025. Vanlig årslønn er medianlønnen for hver yrkesgruppe.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="sammenlign-lonn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="sammenlign-lonn">Sammenlign lønn</a></h3>
+            <p class="brodtekst">Sett lærer opp mot et annet yrke i samme tabell.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 3. Hva er arbeidsoppgavene? -->
+      <section class="gruppe" data-gruppe="jobben" data-tema="arbeidsoppgavene" aria-labelledby="g-jobben">
+        <h2 id="g-jobben" class="seksjon">Hva er arbeidsoppgavene?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke kort--bilde" data-kort="yrke-laerer">
+            <a data-lenke="yrke-laerer" aria-hidden="true" tabindex="-1"><img class="kortbilde" src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/l%C3%A6rer%20shutterstock.jpg?VersionId=1&amp;h=4462e40b&amp;itok=sZRY8vlQ" alt="Lærer som peker på et nettbrett og forklarer for en gruppe barneskoleelever rundt et bord med små vindturbiner" width="738" height="484" loading="lazy" referrerpolicy="no-referrer"></a>
+            <div>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="yrke-laerer">Lærer</a></h3>
+            <p class="brodtekst smal">En lærer underviser barn og voksne i ulike fag.</p></div>
+          </li>
+          <li class="kort kort--yrke kort--video" data-kort="video-laerer">
+            <a class="videobilde" data-lenke="video-laerer" aria-hidden="true" tabindex="-1">
+              <img src="https://i.vimeocdn.com/video/2072816483-d09a867e13b54e7e34f477b5b0dc997b0ce59db5dbebcfca5ee3134c26ff0b0b-d_1280?region=us" alt="Camilla i dongeriskjorte står i et klasserom med elever" width="1280" height="720" referrerpolicy="no-referrer">
+              <span class="spill"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="#333333" aria-hidden="true"><path d="M9 6l10 6-10 6z"/></svg></span></span>
+              <span class="lengde">1:41</span>
+            </a>
+            <div>
+              <p class="typelinje">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h13v12H3zM16 10l5-3v10l-5-3"/></svg>
+                <span>Video</span>
+              </p>
+              <h3 class="korttittel"><a data-lenke="video-laerer">Bli med en lærer på jobb</a></h3>
+              <p class="brodtekst">Se grunnskolelæreren Camilla i arbeid.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 4. Hvem jobber som lærer? -->
+      <section class="gruppe" data-gruppe="hvem" data-tema="hvem som jobber som lærer" aria-labelledby="g-hvem">
+        <h2 id="g-hvem" class="seksjon">Hvem jobber som lærer?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="arbeidsmarked">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="arbeidsmarked-tall">Arbeidsmarkedet</a></h3>
+            <ul class="fordelinger">
+              <li>
+                <p class="etikett">Førskole-/barnehagelærere</p>
+                <p class="fordeling-tekst">34 858 ansatte: 11 % menn, 89 % kvinner</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:10.9%"></span><span style="width:89.1%"></span></span>
+              </li>
+              <li>
+                <p class="etikett">Grunnskolelærere</p>
+                <p class="fordeling-tekst">86 589 ansatte: 27 % menn, 73 % kvinner</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:27.5%"></span><span style="width:72.5%"></span></span>
+              </li>
+              <li>
+                <p class="etikett">Lektorer mv. (videregående skole)</p>
+                <p class="fordeling-tekst">29 654 ansatte: 44 % menn, 56 % kvinner</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:43.7%"></span><span style="width:56.3%"></span></span>
+              </li>
+              <li data-ekstra hidden>
+                <p class="etikett">Yrkesfaglærere</p>
+                <p class="fordeling-tekst">1 077 ansatte: 55 % menn, 45 % kvinner</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:55%"></span><span style="width:45%"></span></span>
+              </li>
+              <li data-ekstra hidden>
+                <p class="etikett">Spesiallærere / spesialpedagoger</p>
+                <p class="fordeling-tekst">3 041 ansatte: 8 % menn, 92 % kvinner</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:8.2%"></span><span style="width:91.8%"></span></span>
+              </li>
+              <li data-ekstra hidden>
+                <p class="etikett">Universitets- og høyskolelektorer/-lærere</p>
+                <p class="fordeling-tekst">38 880 ansatte: 48 % menn, 52 % kvinner</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:48%"></span><span style="width:52%"></span></span>
+              </li>
+            </ul>
+            <button type="button" class="se-mer" aria-expanded="false">Se flere yrkesgrupper (3)</button>
+            <p class="meta kilde">Kilde: Statistisk sentralbyrå, ansatte i yrkesgruppene, oktober 2025, via utdanning.no.</p>
+            <div class="handlinger">
+              <a class="pill" data-lenke="arbeidsmarked-tall">Se tallene fordelt på kjønn og sektor</a>
+            </div>
+          </li>
+          <li class="kort kort--verktoy" data-kort="jobbkartet">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="jobbkartet">Jobbkartet</a></h3>
+            <p class="brodtekst">Se hvor mange lærere som jobber i ditt fylke eller din kommune.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 5. Hvor kan du jobbe? (ingen lærebedrifter, lærer er ikke et fagbrevsyrke) -->
+      <section class="gruppe" data-gruppe="hvor" data-tema="hvor du kan jobbe" aria-labelledby="g-hvor">
+        <h2 id="g-hvor" class="seksjon">Hvor kan du jobbe?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke" data-kort="bedrifter">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="bedrifter-laerer">Bedrifter</a></h3>
+            <p class="brodtekst">Lærere jobber i barnehage, grunnskole, videregående, folkehøgskole og voksenopplæring.</p>
+            <dl class="fakta">
+              <div><dt class="meta">Antall</dt><dd class="faktaverdi">6 384</dd></div>
+              <div><dt class="meta">Årsverk</dt><dd class="faktaverdi">109 136</dd></div>
+            </dl>
+            <div class="handlinger">
+              <a class="pill" data-lenke="bedrifter-laerer">Se bedrifter i din kommune</a>
+            </div>
+            <p class="meta kilde">Kilde: Nav (Aa-registeret), via utdanning.no. Tallene gjelder hele landet.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 6. Hva kan du gjøre etterpå? -->
+      <section class="gruppe" data-gruppe="etterpa" data-tema="videre muligheter" aria-labelledby="g-etterpa">
+        <h2 id="g-etterpa" class="seksjon">Hva kan du gjøre etterpå?</h2>
+        <ul class="kortliste">
+          <li class="intervju" data-kort="intervju-ina-helene">
+            <a data-lenke="intervju-ina-helene">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/barnehagel%C3%A6rer3_ingrid_nostdal.jpg?VersionId=1&amp;itok=E5OxF0d3" alt="Ina-Helene Angeland i svart cardigan, sittende ved et bord" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Ina-Helene Angeland (40)</span>
+                  <span class="intervju-stilling">Barnehagelærer</span>
+                  <span class="intervju-arbeidsgiver">Do Re Mi, Begby</span>
+                </span>
+              </span>
+              <blockquote>– Selv planlegger jeg å ta videreutdanning i veiledning slik at jeg kan følge opp studenter i praksis.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+          <li class="kort kort--utdanning" data-kort="videreutdanning-laerere">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="videreutdanning-laerere">Videreutdanning for lærere</a></h3>
+            <p class="brodtekst">Se studietilbud for barnehagelærere, lærere og yrkesfaglærere.</p>
+          </li>
+          <li class="kort kort--yrke" data-kort="yrke-rektor">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="yrke-rektor">Rektor/skoleleder</a></h3>
+            <p class="brodtekst">Det er vanlig at skolelederen har lærerutdanning, og mange har også videreutdanning innen ledelse.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 7. Vil du utforske andre muligheter? (telles ikke med i «Alle», verktøyene handler ikke om lærer) -->
+      <section class="gruppe" data-gruppe="utforsk" data-tema="andre muligheter" aria-labelledby="g-utforsk">
+        <h2 id="g-utforsk" class="seksjon">Vil du utforske andre muligheter?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="karakterkalkulatoren">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="karakterkalkulatoren">Karakterkalkulatoren</a></h3>
+            <p class="brodtekst">Regn ut hvor mange poeng du har, og se hva du kan komme inn på.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="forslag-utdanninger-yrker">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="forslag-utdanninger-yrker">Få forslag til utdanninger og yrker</a></h3>
+            <p class="brodtekst">Svar på spørsmål om interessene dine, og få forslag.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="jobbkompasset" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="jobbkompasset">Jobbkompasset</a></h3>
+            <p class="brodtekst">Få inspirasjon til hvilke jobber som kan passe for deg.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="utdanningskompasset" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="utdanningskompasset">Utdanningskompasset</a></h3>
+            <p class="brodtekst">Få inspirasjon til hvilke utdanninger du kan velge mellom.</p>
+          </li>
+        </ul>
+        <button type="button" class="pill se-mer" aria-expanded="false">Se mer</button>
+      </section>
+
+      <!-- 8. Hvilke yrker ligner? (telles ikke med i «Alle») -->
+      <section class="gruppe" id="lignende" data-gruppe="lignende" data-tema="lignende yrker" aria-labelledby="g-lignende">
+        <h2 id="g-lignende" class="seksjon">Hvilke yrker ligner?</h2>
+        <ul class="lignende-liste">
+          <li data-yrke="kulturskolelaerer"><a data-lenke="sok-kulturskolelaerer">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/COLOURBOX15159229_0.jpg?VersionId=1&amp;h=fb257465&amp;itok=RwtVW0a7" alt="Lærer som leder en gruppe barn som synger med noteark i hendene" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Kulturskolelærer</span></span>
+            <span class="lignende-linje">Underviser barn og unge i kunst- og kulturfag, oftest etter skoletid.</span>
+          </a></li>
+          <li data-yrke="pp-radgiver"><a data-lenke="sok-pp-radgiver">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/PP-r%C3%A5dgiver.jpg?VersionId=1&amp;h=41f55a5b&amp;itok=edDgHV8f" alt="Smilende kvinne i samtale med en annen person ved et bord med ark og tusjer" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>PP-rådgiver</span></span>
+            <span class="lignende-linje">Gir skoler og barnehager råd om barn og unge som trenger tilrettelegging.</span>
+          </a></li>
+          <li data-yrke="menighetspedagog"><a data-lenke="sok-menighetspedagog">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/menighetspedagog_2.png?VersionId=1&amp;h=ab502919&amp;itok=gySLWW8B" alt="Kvinne i rød hettejakke som holder opp en krans av store perler foran en tavle" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Menighetspedagog</span></span>
+            <span class="lignende-linje">Underviser i kirken, ofte med aktiviteter for barn og unge.</span>
+          </a></li>
+          <li data-yrke="ridelaerer"><a data-lenke="sok-ridelaerer">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/83163407_ridelaerer.jpg?VersionId=1&amp;h=39343d5b&amp;itok=ioen2NcI" alt="Kvinne i svart jakke som justerer hodelaget på en lys brun hest" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Ridelærer</span></span>
+            <span class="lignende-linje">Underviser i ridning og stell av hester, på ridesentre og rideskoler.</span>
+          </a></li>
+        </ul>
+      </section>
+
+      <!-- Veilederbanner: hele banneret er lenken -->
+      <section class="veileder" aria-labelledby="g-veileder" data-kort="veileder">
+        <a data-lenke="chat-veileder">
+          <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+          <span class="veileder-tekst" style="display:block">
+            <h2 id="g-veileder">Snakk med en veileder</h2>
+            <p class="brodtekst">Gratis og anonymt, på nett eller på et karrieresenter.</p>
+          </span>
+          <span class="pill">Gå til Karriereveiledning.no</span>
+        </a>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="bunn-innhold">
+    <div class="avsender"><strong>HK-dir</strong><br>Direktoratet for høyere utdanning og kompetanse</div>
+    <ul class="bunnlenker">
+      <li class="bare-desktop"><button type="button">For presse</button></li>
+      <li><button type="button">Om karriereveiledning.no</button></li>
+      <li><button type="button">Karrieresenter i ditt fylke</button></li>
+      <li><button type="button">Personvernerklæring</button></li>
+    </ul>
+    <div class="bunn-kontakt bare-desktop">
+      <div><strong>Webredaktør:</strong><br>[NAVN]</div>
+      <div><strong>Kontakt redaksjonen:</strong><br><button type="button">[E-POSTADRESSE]</button></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../felles.js"></script>
+</body>
+</html>

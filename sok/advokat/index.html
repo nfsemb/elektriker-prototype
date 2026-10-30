@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>advokat – Søk | utdanning.no</title>
+<link rel="stylesheet" href="../felles.css">
+</head>
+<body data-yrke="advokat">
+
+<!--
+  LENKER
+  Alle adresser ligger her. Siden bygger href ut fra «side», «anker» og «tekst».
+  - side: adressen til målsiden (uten #anker), eller null hvis lenken mangler.
+  - anker: id på målsiden som det skal hoppes til, eller null.
+  - tekst: tekstfragment som utheves, { "start": "...", "slutt": "..." } (slutt er valgfri), eller null.
+  - status: "funnet" (funnet og sjekket av Claude), "manuell" (lagt inn av et menneske, skal aldri endres), "mangler".
+  Kjør `node scripts/sjekk-lenker.mjs` etter endringer.
+-->
+<script type="application/json" id="lenker">
+{
+  "juss-rettsvitenskap": {
+    "maal": "Utdanningsoversikten for juss – rettsvitenskap, der du kan velge fylke og se studiesteder",
+    "side": "https://utdanning.no/utdanningsoversikt/juss_-_rettsvitenskap", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen («Se utdanninger og steder»)", "sjekket": "2026-10-30"
+  },
+  "juss-bachelor": {
+    "maal": "Bachelorstudiene i juss, filtrert på utdanningsoversikten for juss – rettsvitenskap",
+    "side": "https://utdanning.no/utdanningsoversikt/juss_-_rettsvitenskap?f%5B0%5D=studieniva_gs%3ABachelor", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "filteret «Bachelor» på utdanningsoversikten", "sjekket": "2026-10-30"
+  },
+  "intervju-marit": {
+    "maal": "Yrkesintervjuet med Marit Opsahl Juvkam, ned til sitatet om studieveien",
+    "side": "https://utdanning.no/tema/yrkesintervju/advokat_0", "anker": null,
+    "tekst": { "start": "Jeg startet med bachelor i juss på Lillehammer" },
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "advokat-lonn": {
+    "maal": "Yrkesbeskrivelsen for advokat, delen om lønn",
+    "side": "https://utdanning.no/yrker/beskrivelse/advokat", "anker": "lonn-div",
+    "tekst": { "start": "969 960" },
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, id på siden", "sjekket": "2026-10-30"
+  },
+  "sammenlign-lonn": {
+    "maal": "Verktøyet for å sammenligne yrker, med advokat forhåndsvalgt",
+    "side": "https://sammenlign.utdanning.no/sammenligne/yrke#y_advokat", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen («Sammenlign»)", "sjekket": "2026-10-30"
+  },
+  "yrke-advokat": {
+    "maal": "Yrkesbeskrivelsen for advokat",
+    "side": "https://utdanning.no/yrker/beskrivelse/advokat", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "oppgitt i oppdraget, kontrollert", "sjekket": "2026-10-30"
+  },
+  "video-advokat": {
+    "maal": "Yrkesvideoen om advokat, seksjonen «Bli med en advokat på jobb» på yrkesbeskrivelsen",
+    "side": "https://utdanning.no/yrker/beskrivelse/advokat", "anker": "yrke-videoer", "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, id på siden", "sjekket": "2026-10-30"
+  },
+  "arbeidsmarked-tall": {
+    "maal": "Tallene bak arbeidsmarkedskortet (SSB, oktober 2025): lønnsdelen på yrkesbeskrivelsen, der filteret viser sektor, kjønn og antall personer",
+    "side": "https://utdanning.no/yrker/beskrivelse/advokat", "anker": "lonn-div", "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, «Vis filter» i lønnsdelen", "sjekket": "2026-10-30"
+  },
+  "jobbkartet": {
+    "maal": "Jobbkartet for advokat, antall personer i yrket etter fylke og kommune",
+    "side": "https://utdanning.no/jobbkartet/y_advokat/antall_personer", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "adressen i oppskriften, endelig adresse etter omdirigering. Siden har yrket Advokat og tall per fylke og kommune.", "sjekket": "2026-10-30"
+  },
+  "bedrifter-advokat": {
+    "maal": "Oversikten over bedrifter som har advokater",
+    "side": "https://utdanning.no/yrker/beskrivelse/advokat", "anker": "bedrifter", "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, id på siden", "sjekket": "2026-10-30"
+  },
+  "hvor-jobber-advokater": {
+    "maal": "Avsnittet «Hvor jobber advokater?» på yrkesbeskrivelsen",
+    "side": "https://utdanning.no/yrker/beskrivelse/advokat", "anker": "hvor-jobber", "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, id på siden", "sjekket": "2026-10-30"
+  },
+  "intervju-brynjar": {
+    "maal": "Yrkesintervjuet med Brynjar M. Aas Strømsvik, ned til sitatet om spesialisering",
+    "side": "https://utdanning.no/tema/yrkesintervju/advokat", "anker": null,
+    "tekst": { "start": "Den vanligste formen for spesialisering som advokat" },
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "yrke-dommer": {
+    "maal": "Yrkesbeskrivelsen for dommer, ned til kravet om praksis",
+    "side": "https://utdanning.no/yrker/beskrivelse/dommer", "anker": null,
+    "tekst": { "start": "Normalt kreves også praksis fra andre juridiske stillinger" },
+    "status": "funnet", "kilde": "«Liknende yrker» på utdanningsoversikten for juss – rettsvitenskap", "sjekket": "2026-10-30"
+  },
+  "yrke-politijurist": {
+    "maal": "Yrkesbeskrivelsen for politijurist, ned til setningen om politiadvokat med advokatbevilling",
+    "side": "https://utdanning.no/yrker/beskrivelse/politijurist", "anker": null,
+    "tekst": { "start": "I noen tilfeller kan du søke stilling som politiadvokat" },
+    "status": "funnet", "kilde": "«Liknende yrker» på utdanningsoversikten for juss – rettsvitenskap", "sjekket": "2026-10-30"
+  },
+  "karakterkalkulatoren": {
+    "maal": "Karakterkalkulatoren på utdanning.no, der du regner ut snittet ditt og ser hvilke studier du kan komme inn på",
+    "side": "https://utdanning.no/karakterkalkulator/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søk på utdanning.no (Verktøy)", "sjekket": "2026-10-30"
+  },
+  "forslag-utdanninger-yrker": {
+    "maal": "KI-verktøyet «Få forslag til utdanninger og yrker» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/fa-forslag-til-utdanninger-yrker", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (lenken der er avkuttet, så parameteren er fjernet)", "sjekket": "2026-10-30"
+  },
+  "jobbkompasset": {
+    "maal": "Jobbkompasset på utdanning.no",
+    "side": "https://utdanning.no/jobbkompasset/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no", "sjekket": "2026-10-30"
+  },
+  "utdanningskompasset": {
+    "maal": "Utdanningskompasset på utdanning.no",
+    "side": "https://utdanning.no/utdanningskompasset/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no", "sjekket": "2026-10-30"
+  },
+  "sok-jurist": {
+    "maal": "Søkeresultatsiden på utdanning.no for «jurist»",
+    "side": "https://utdanning.no/sok/#query_value=jurist", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (search_autocomplete.js: /sok/#query_value=)", "sjekket": "2026-10-30"
+  },
+  "sok-advokatassistent": {
+    "maal": "Søkeresultatsiden på utdanning.no for «advokatassistent»",
+    "side": "https://utdanning.no/sok/#query_value=advokatassistent", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (search_autocomplete.js: /sok/#query_value=)", "sjekket": "2026-10-30"
+  },
+  "side-politi": {
+    "maal": "Resultatsiden for politi i prototypen",
+    "side": "../politi/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen", "sjekket": "2026-10-30"
+  },
+  "sok-kriminolog": {
+    "maal": "Søkeresultatsiden på utdanning.no for «kriminolog»",
+    "side": "https://utdanning.no/sok/#query_value=kriminolog", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (search_autocomplete.js: /sok/#query_value=)", "sjekket": "2026-10-30"
+  },
+  "chat-veileder": {
+    "maal": "Forsiden til Karriereveiledning.no",
+    "side": "https://karriereveiledning.no/", "anker": null, "tekst": null,
+    "status": "manuell", "kilde": "bestemt av Niels", "sjekket": "2026-10-27"
+  }
+}
+</script>
+
+<header class="topp">
+  <div>
+    <a href="../../" class="logolenke"><svg class="logo" viewBox="0 0 812.9 99.2" role="img" aria-label="Utdanning.no"><g transform="translate(-12.9,-75.2)" fill="#EE7B1A"><path d="m 59.7,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,22.3 -14.2,30.6 -32.1,30.6 -18,0 -32.1,-8.3 -32.1,-30.6 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,10.4 5.5,15.4 14.7,15.4 9.2,0 14.7,-4.9 14.7,-15.4 z"/><path d="m 148.2,75.9 c 3.7,0 5.5,4 5.5,7.8 0,4.1 -2,7.9 -5.5,7.9 h -19.5 v 76.5 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 91.6 H 91.7 c -3.5,0 -5.5,-3.6 -5.5,-7.9 0,-3.7 1.7,-7.8 5.5,-7.8 z"/><path d="m 193.4,75.9 c 17.6,0 31.4,8.3 31.4,30.6 V 143 c 0,22.3 -13.8,30.6 -31.4,30.6 h -23.6 c -4.5,0 -7.6,-2.5 -7.6,-5.3 v -87 c 0,-2.8 3.1,-5.4 7.6,-5.4 z m -13.9,15.2 v 67.2 h 13.9 c 8.8,0 14,-4.9 14,-15.4 V 106.4 C 207.4,96 202.2,91 193.4,91 h -13.9 z"/><path d="m 230.9,166.4 c 0,-0.3 0.1,-0.8 0.3,-1.3 l 25.8,-84 c 1.2,-4 6.1,-5.9 11.1,-5.9 5.1,0 10,1.9 11.2,5.9 l 25.8,84 c 0.1,0.5 0.3,0.9 0.3,1.3 0,4.1 -6.3,7.2 -10.9,7.2 -2.9,0 -5.2,-0.9 -5.9,-3.5 l -5.1,-17.8 h -30.6 l -5.1,17.8 c -0.7,2.5 -2.9,3.5 -5.9,3.5 -4.8,0 -11,-3 -11,-7.2 z m 48.7,-27.7 -11.6,-41 -11.6,41 z"/><path d="m 359.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 L 361,134.9 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 440.4,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 475.1,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 z"/><path d="m 554.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 618.6,91.1 c -8.9,0 -14,5 -14,15.4 v 37.3 c 0,10.4 5.1,15.4 13.9,15.4 8.7,0 14,-4.9 14,-15.4 v -7.9 h -10.8 c -3.5,0 -5.3,-3.3 -5.3,-6.8 0,-3.3 1.9,-6.8 5.3,-6.8 h 22.7 c 3.5,0 5.5,2.7 5.5,5.6 v 15.9 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.3,-8.3 -31.3,-30.6 v -37.3 c 0,-22.3 13.8,-30.6 30.7,-30.6 18.4,0 31.9,9.6 31.9,25.7 0,6.7 -2.9,8.3 -8.7,8.3 -4.7,0 -8.5,-1.3 -8.7,-5.5 -0.3,-6.3 -2.4,-13.3 -13.8,-13.3 z"/><path d="m 675.4,165.3 c 0,4.8 -4.1,9.1 -9,9.1 -5.2,0 -9.1,-4.3 -9.1,-9.1 0,-4.9 3.9,-9.1 9.1,-9.1 4.9,0 9,4.1 9,9.1 z"/><path d="m 731.5,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 763.2,143.8 v -37.3 c 0,-22.3 13.6,-30.6 31.2,-30.6 17.6,0 31.4,8.3 31.4,30.6 v 37.3 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.2,-8.3 -31.2,-30.6 z m 45.2,-37.3 c 0,-10.6 -5.3,-15.4 -14,-15.4 -8.8,0 -13.9,4.8 -13.9,15.4 v 37.3 c 0,10.6 5.1,15.4 13.9,15.4 8.7,0 14,-4.8 14,-15.4 z"/></g></svg></a>
+    <p class="slagord">Offentlig og kvalitetssikret</p>
+  </div>
+  <div class="topp-knapper">
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Min side
+    </button>
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Meny
+    </button>
+    <button type="button" class="meny-rund bare-mobil" aria-label="Åpne meny">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <h1>Søk etter yrker, utdanning og innhold</h1>
+
+  <form class="sok" role="search" onsubmit="return false">
+    <label for="sok" class="skjult">Søk etter yrker, utdanning og innhold</label>
+    <input id="sok" type="search" value="advokat" readonly>
+    <button type="button" aria-label="Søk">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+    </button>
+  </form>
+
+  <div class="velger">
+    <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
+    <div class="brikker-ramme">
+      <ul class="brikker">
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(14)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="lonn" aria-pressed="false">Lønn <span data-antall="lonn">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="jobben" aria-pressed="false">Arbeidsoppgaver <span data-antall="jobben">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="hvem" aria-pressed="false">Arbeidsmarked <span data-antall="hvem">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="hvor" aria-pressed="false">Arbeidsplasser <span data-antall="hvor">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="etterpa" aria-pressed="false">Videre muligheter <span data-antall="etterpa">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="utforsk" aria-pressed="false">Utforsk <span data-antall="utforsk">(4)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="lignende" aria-pressed="false">Lignende yrker <span data-antall="lignende">(4)</span></button></li>
+        <li class="vis-flere-plass bare-desktop" hidden>
+          <button type="button" class="vis-flere" aria-expanded="false">
+            <span>Vis flere</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="oppsett">
+
+    <aside class="sidekolonne bare-desktop">
+      <div>
+        <h2 class="etikett legende-tittel">
+          <span>Farger og ikoner</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </h2>
+        <ul class="legende">
+          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+        </ul>
+      </div>
+
+      <div>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+          Del søk
+        </button>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"/></svg>
+          Lagre søk
+        </button>
+      </div>
+    </aside>
+
+    <div class="resultater">
+
+      <div class="treff">
+        <h2 class="etikett">Søkeresultat</h2>
+        <p class="meta"><span data-antall-ingress>14</span> resultater om advokat.<span data-tolkning hidden></span></p>
+      </div>
+
+      <!-- 1. Hvordan blir du advokat? -->
+      <section class="gruppe" data-gruppe="bli" data-tema="hvordan du blir advokat" aria-labelledby="g-bli">
+        <h2 id="g-bli" class="seksjon">Hvordan blir du advokat?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--utdanning" data-kort="veier-inn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel">Veier inn i yrket</h3>
+            <div class="vei">
+              <h4 class="vei-tittel">Fra videregående</h4>
+              <ol class="steg">
+                <li>Generell studiekompetanse</li>
+                <li>Master i rettsvitenskap, 5 år</li>
+                <li>Minst 2 år som advokatfullmektig</li>
+                <li>Advokatbevilling</li>
+              </ol>
+              <a class="pill" data-lenke="juss-rettsvitenskap">Finn studiesteder etter fylke</a>
+            </div>
+            <div class="vei" data-ekstra hidden>
+              <h4 class="vei-tittel">Med bachelor i juss først</h4>
+              <p class="brodtekst">Du kan ta en bachelor i juss på 3 år, og så en master i rettsvitenskap på 2 år.</p>
+              <a class="vei-lenke" data-lenke="juss-bachelor">Se bachelorstudier i juss</a>
+            </div>
+            <button type="button" class="se-mer" aria-expanded="false">Se andre veier (1)</button>
+          </li>
+          <li class="kort kort--utdanning" data-kort="utdanning-juss">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="juss-rettsvitenskap">Juss - rettsvitenskap</a></h3>
+            <div class="beskrivelse">
+              <p class="brodtekst">Du lærer om hvordan lover skal tolkes, forstås og brukes på riktig måte i ulike saker.</p>
+            </div>
+            <dl class="fakta">
+              <div><dt class="meta">Nivå</dt><dd class="faktaverdi">Master, 5 år</dd></div>
+              <div><dt class="meta">Fører til</dt><dd class="faktaverdi">Jurist</dd></div>
+            </dl>
+          </li>
+          <li class="intervju" data-kort="intervju-marit">
+            <a data-lenke="intervju-marit">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/Advokat_Marit_Opsahl_Jukvam_0.jpg?VersionId=5&amp;h=a6c4a55d&amp;itok=bMBKnh2i" alt="Marit Opsahl Juvkam med langt blondt hår og rutete blazer, fotografert ute foran et bygg med gule vinduskarmer" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Marit Opsahl Juvkam (29)</span>
+                  <span class="intervju-stilling">Advokat</span>
+                  <span class="intervju-arbeidsgiver">Advokatfirmaet Dahle AS/Advokatene i Valdres</span>
+                </span>
+              </span>
+              <blockquote>– Jeg startet med bachelor i juss på Lillehammer og tok deretter mastergrad i Bergen, før jeg avsluttet med fag i Oslo.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 2. Hva tjener en advokat? Lønnstallene gjelder yrkesgruppen «Jurister og advokater» (STYRK 2611), slik yrkesbeskrivelsen viser dem. -->
+      <section class="gruppe" data-gruppe="lonn" data-tema="lønn" aria-labelledby="g-lonn">
+        <h2 id="g-lonn" class="seksjon">Hva tjener en advokat?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke" data-kort="advokat-lonn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="advokat-lonn">Lønn</a></h3>
+            <p class="meta merknad">Gjelder jurister og advokater samlet.</p>
+            <dl class="fakta">
+              <div><dt class="meta">Vanlig årslønn</dt><dd class="faktaverdi">969 960 kr</dd></div>
+            </dl>
+            <p class="meta kilde">Kilde: Statistisk sentralbyrå 2026. Tallene er samlet inn oktober 2025. Vanlig årslønn er medianlønnen for hele yrkesgruppen, som også omfatter jurister som ikke er advokater.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="sammenlign-lonn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="sammenlign-lonn">Sammenlign lønn</a></h3>
+            <p class="brodtekst">Sett advokat opp mot et annet yrke i samme tabell.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 3. Hva er arbeidsoppgavene? -->
+      <section class="gruppe" data-gruppe="jobben" data-tema="arbeidsoppgavene" aria-labelledby="g-jobben">
+        <h2 id="g-jobben" class="seksjon">Hva er arbeidsoppgavene?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke kort--bilde" data-kort="yrke-advokat">
+            <a data-lenke="yrke-advokat" aria-hidden="true" tabindex="-1"><img class="kortbilde" src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/advokat_1.jpg?VersionId=1&amp;h=8dd1c6aa&amp;itok=OhVp1moj" alt="Advokat i mørk dress og briller med en dokumentmappe, i resepsjonen på et advokatkontor" width="738" height="484" loading="lazy" referrerpolicy="no-referrer"></a>
+            <div>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="yrke-advokat">Advokat</a></h3>
+            <p class="brodtekst smal">Gir juridiske råd, forhandler på vegne av klienter og fører saker for retten.</p></div>
+          </li>
+          <li class="kort kort--yrke kort--video" data-kort="video-advokat">
+            <a class="videobilde" data-lenke="video-advokat" aria-hidden="true" tabindex="-1">
+              <img src="https://i.vimeocdn.com/video/2051438144-174067c4c539ce3ccc1231fc8f1f93aa464d75ec1f8cf06b43b3953696b36a90-d_1280?region=us" alt="Kristian i dress og slips står i en rettssal og peker mot dommerbordet" width="1280" height="720" referrerpolicy="no-referrer">
+              <span class="spill"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="#333333" aria-hidden="true"><path d="M9 6l10 6-10 6z"/></svg></span></span>
+              <span class="lengde">3:47</span>
+            </a>
+            <div>
+              <p class="typelinje">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h13v12H3zM16 10l5-3v10l-5-3"/></svg>
+                <span>Video</span>
+              </p>
+              <h3 class="korttittel"><a data-lenke="video-advokat">Bli med en advokat på jobb</a></h3>
+              <p class="brodtekst">Se Kristian i arbeid.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 4. Hvem jobber som advokat? Tallene gjelder yrkesgruppen «Jurister og advokater» (STYRK 2611). -->
+      <section class="gruppe" data-gruppe="hvem" data-tema="hvem som jobber som advokat" aria-labelledby="g-hvem">
+        <h2 id="g-hvem" class="seksjon">Hvem jobber som advokat?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="arbeidsmarked">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="arbeidsmarked-tall">Arbeidsmarkedet</a></h3>
+            <p class="meta merknad">Gjelder jurister og advokater samlet.</p>
+            <dl class="fakta">
+              <div><dt class="meta">Ansatte</dt><dd class="faktaverdi">11 649</dd></div>
+            </dl>
+            <ul class="fordelinger">
+              <li>
+                <p class="etikett">Sektor</p>
+                <p class="fordeling-tekst">74 % privat sektor, 26 % offentlig sektor</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:74.3%"></span><span style="width:25.7%"></span></span>
+              </li>
+              <li>
+                <p class="etikett">Arbeidstid</p>
+                <p class="fordeling-tekst">94 % heltid, 6 % deltid</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:94.2%"></span><span style="width:5.8%"></span></span>
+              </li>
+              <li>
+                <p class="etikett">Kjønn</p>
+                <p class="fordeling-tekst">57 % kvinner, 43 % menn</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:56.5%"></span><span style="width:43.5%"></span></span>
+              </li>
+            </ul>
+            <p class="meta kilde">Kilde: Statistisk sentralbyrå, ansatte i yrkesgruppen jurister og advokater, oktober 2025, via utdanning.no.</p>
+            <div class="handlinger">
+              <a class="pill" data-lenke="arbeidsmarked-tall">Se tallene fordelt på kjønn og sektor</a>
+            </div>
+          </li>
+          <li class="kort kort--verktoy" data-kort="jobbkartet">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="jobbkartet">Jobbkartet</a></h3>
+            <p class="brodtekst">Se hvor mange advokater som jobber i ditt fylke eller din kommune.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 5. Hvor kan du jobbe? Advokat er ikke et lærefag, så kortet om lærebedrifter er byttet med «Arbeidssteder» fra yrkesbeskrivelsen. -->
+      <section class="gruppe" data-gruppe="hvor" data-tema="hvor du kan jobbe" aria-labelledby="g-hvor">
+        <h2 id="g-hvor" class="seksjon">Hvor kan du jobbe?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke" data-kort="bedrifter">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="bedrifter-advokat">Bedrifter</a></h3>
+            <dl class="fakta">
+              <div><dt class="meta">Antall</dt><dd class="faktaverdi">1 672</dd></div>
+              <div><dt class="meta">Årsverk</dt><dd class="faktaverdi">8 780</dd></div>
+            </dl>
+            <div class="handlinger">
+              <a class="pill" data-lenke="bedrifter-advokat">Se bedrifter i din kommune</a>
+            </div>
+            <p class="meta kilde">Kilde: Nav (Aa-registeret), via utdanning.no. Tallene gjelder hele landet.</p>
+          </li>
+          <li class="kort kort--yrke" data-kort="arbeidssteder">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="hvor-jobber-advokater">Arbeidssteder</a></h3>
+            <p class="brodtekst">I advokatfirmaer, bedrifter og organisasjoner, i egen virksomhet eller i det offentlige.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 6. Hva kan du gjøre etterpå? -->
+      <section class="gruppe" data-gruppe="etterpa" data-tema="videre muligheter" aria-labelledby="g-etterpa">
+        <h2 id="g-etterpa" class="seksjon">Hva kan du gjøre etterpå?</h2>
+        <ul class="kortliste">
+          <li class="intervju" data-kort="intervju-brynjar">
+            <a data-lenke="intervju-brynjar">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/Advokat_Str%C3%B8msvik_Brynjar.jpg?VersionId=1&amp;itok=aXHrtz9W" alt="Brynjar M. Aas Strømsvik i mørk dress, hvit skjorte og slips foran en lys bakgrunn" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Brynjar M. Aas Strømsvik (32)</span>
+                  <span class="intervju-stilling">Advokat og partner</span>
+                  <span class="intervju-arbeidsgiver">Advokatfirmaet AGA, Bodø</span>
+                </span>
+              </span>
+              <blockquote>– Den vanligste formen for spesialisering som advokat er egentlig bare å velge seg et fagområde og fordype seg i det over tid.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+          <li class="kort kort--yrke" data-kort="yrke-dommer">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="yrke-dommer">Dommer</a></h3>
+            <p class="brodtekst">Krever normalt minst 10–15 års praksis, for eksempel som advokat.</p>
+          </li>
+          <li class="kort kort--yrke" data-kort="yrke-politijurist">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="yrke-politijurist">Politijurist</a></h3>
+            <p class="brodtekst">Med advokatbevilling kan du i noen tilfeller søke jobb som politiadvokat.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 7. Vil du utforske andre muligheter? (telles ikke med i «Alle», verktøyene handler ikke om advokat)
+           «Muligheter med yrkesfag» er byttet med Karakterkalkulatoren, fordi advokat ikke er et yrkesfag og jusstudiet har høye karakterkrav. -->
+      <section class="gruppe" data-gruppe="utforsk" data-tema="andre muligheter" aria-labelledby="g-utforsk">
+        <h2 id="g-utforsk" class="seksjon">Vil du utforske andre muligheter?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="karakterkalkulatoren">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="karakterkalkulatoren">Karakterkalkulatoren</a></h3>
+            <p class="brodtekst">Regn ut snittet ditt, og se hvilke studier du kan komme inn på.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="forslag-utdanninger-yrker">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="forslag-utdanninger-yrker">Få forslag til utdanninger og yrker</a></h3>
+            <p class="brodtekst">Svar på spørsmål om interessene dine, og få forslag.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="jobbkompasset" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="jobbkompasset">Jobbkompasset</a></h3>
+            <p class="brodtekst">Få inspirasjon til hvilke jobber som kan passe for deg.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="utdanningskompasset" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="utdanningskompasset">Utdanningskompasset</a></h3>
+            <p class="brodtekst">Få inspirasjon til hvilke utdanninger du kan velge mellom.</p>
+          </li>
+        </ul>
+        <button type="button" class="pill se-mer" aria-expanded="false">Se mer</button>
+      </section>
+
+      <!-- 8. Hvilke yrker ligner? (telles ikke med i «Alle») -->
+      <section class="gruppe" id="lignende" data-gruppe="lignende" data-tema="lignende yrker" aria-labelledby="g-lignende">
+        <h2 id="g-lignende" class="seksjon">Hvilke yrker ligner?</h2>
+        <ul class="lignende-liste">
+          <li data-yrke="jurist"><a data-lenke="sok-jurist">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/jurist_2.jpg?VersionId=1&amp;h=5797a656&amp;itok=RQVkZDrN" alt="Jurist i lyseblå skjorte og briller som holder et oppslått hefte og snakker med en kollega" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Jurist</span></span>
+            <span class="lignende-linje">Samme utdanning, men uten krav om advokatbevilling.</span>
+          </a></li>
+          <li data-yrke="advokatassistent"><a data-lenke="sok-advokatassistent">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/2026-03/advokatassistent.jpg?VersionId=1&amp;itok=thl-YBYP" alt="Smilende ung kvinne med lyst hår som sitter med papirer og en bærbar PC, med en lovbok på bordet" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Advokatassistent</span></span>
+            <span class="lignende-linje">Kortere juridisk utdanning, og du hjelper advokater med papirer og frister.</span>
+          </a></li>
+          <li data-yrke="politi"><a data-lenke="side-politi">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/politi_3.png?VersionId=1&amp;h=ab502919&amp;itok=IkYtCynx" alt="Politibetjent i uniform med politihund foran en politibil" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Politibetjent</span></span>
+            <span class="lignende-linje">Treårig utdanning på Politihøgskolen, med patruljering og etterforskning.</span>
+          </a></li>
+          <li data-yrke="kriminolog"><a data-lenke="sok-kriminolog">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/kriminolog.jpg?VersionId=1&amp;h=fcfbfced&amp;itok=Enx71RPb" alt="Mann sett bakfra foran skiltet «Kriminalomsorgen – Oslo fengsel»" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Kriminolog</span></span>
+            <span class="lignende-linje">Studerer kriminalitet og samfunn, ofte som rådgiver eller saksbehandler.</span>
+          </a></li>
+        </ul>
+      </section>
+
+      <!-- Veilederbanner: hele banneret er lenken -->
+      <section class="veileder" aria-labelledby="g-veileder" data-kort="veileder">
+        <a data-lenke="chat-veileder">
+          <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+          <span class="veileder-tekst" style="display:block">
+            <h2 id="g-veileder">Snakk med en veileder</h2>
+            <p class="brodtekst">Gratis og anonymt, på nett eller på et karrieresenter.</p>
+          </span>
+          <span class="pill">Gå til Karriereveiledning.no</span>
+        </a>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="bunn-innhold">
+    <div class="avsender"><strong>HK-dir</strong><br>Direktoratet for høyere utdanning og kompetanse</div>
+    <ul class="bunnlenker">
+      <li class="bare-desktop"><button type="button">For presse</button></li>
+      <li><button type="button">Om karriereveiledning.no</button></li>
+      <li><button type="button">Karrieresenter i ditt fylke</button></li>
+      <li><button type="button">Personvernerklæring</button></li>
+    </ul>
+    <div class="bunn-kontakt bare-desktop">
+      <div><strong>Webredaktør:</strong><br>[NAVN]</div>
+      <div><strong>Kontakt redaksjonen:</strong><br><button type="button">[E-POSTADRESSE]</button></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../felles.js"></script>
+</body>
+</html>

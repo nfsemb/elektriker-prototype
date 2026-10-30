@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>sykepleier – Søk | utdanning.no</title>
+<link rel="stylesheet" href="../felles.css">
+</head>
+<body data-yrke="sykepleier">
+
+<!--
+  LENKER
+  Alle adresser ligger her. Siden bygger href ut fra «side», «anker» og «tekst».
+  - side: adressen til målsiden (uten #anker), eller null hvis lenken mangler.
+  - anker: id på målsiden som det skal hoppes til, eller null.
+  - tekst: tekstfragment som utheves, { "start": "...", "slutt": "..." } (slutt er valgfri), eller null.
+  - status: "funnet" (funnet og sjekket av Claude), "manuell" (lagt inn av et menneske, skal aldri endres), "mangler".
+  Kjør `node scripts/sjekk-lenker.mjs` etter endringer.
+-->
+<script type="application/json" id="lenker">
+{
+  "veier-studiesteder": {
+    "maal": "Utdanningsoversikten for sykepleie, ned til listen over utdanninger, der du kan velge fylke",
+    "side": "https://utdanning.no/utdanningsoversikt/sykepleie", "anker": "nus", "tekst": null,
+    "status": "funnet", "kilde": "«Se utdanninger og steder» på yrkesbeskrivelsen (/node/398485), id på siden", "sjekket": "2026-10-30"
+  },
+  "realkompetanse": {
+    "maal": "Artikkelen om inntak til høyere utdanning på bakgrunn av realkompetanse",
+    "side": "https://utdanning.no/tema/inntak_til_hoyere_utdanning_pa_bakgrunn_av_realkompetanse", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap (yrkesbeskrivelsen nevner realkompetanse, men lenker ikke)", "sjekket": "2026-10-30"
+  },
+  "sykepleie-deltid": {
+    "maal": "Utdanningsoversikten for sykepleie, filtrert på deltid",
+    "side": "https://utdanning.no/utdanningsoversikt/sykepleie?f%5B0%5D=studieform_gs%3Adeltid", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "filteret «deltid» på utdanningsoversikten for sykepleie", "sjekket": "2026-10-30"
+  },
+  "sykepleie": {
+    "maal": "Utdanningsoversikten for sykepleie, universitet og høgskole",
+    "side": "https://utdanning.no/utdanningsoversikt/sykepleie", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Se utdanninger og steder» på yrkesbeskrivelsen (/node/398485)", "sjekket": "2026-10-30"
+  },
+  "intervju-juni": {
+    "maal": "Yrkesintervjuet med Juni Engeberg, ned til sitatet i kortet",
+    "side": "https://utdanning.no/tema/yrkesintervju/sykepleier", "anker": null,
+    "tekst": { "start": "Det kreves en treårig bachelorutdanning" },
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "sykepleier-lonn": {
+    "maal": "Yrkesbeskrivelsen for sykepleier, delen om lønn",
+    "side": "https://utdanning.no/yrker/beskrivelse/sykepleier", "anker": "lonn-div",
+    "tekst": { "start": "693 960" },
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, id på siden", "sjekket": "2026-10-30"
+  },
+  "sammenlign-lonn": {
+    "maal": "Verktøyet for å sammenligne yrker, med sykepleier forhåndsvalgt",
+    "side": "https://sammenlign.utdanning.no/sammenligne/yrke#y_sykepleier", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke («Sammenlign») fra yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "yrke-sykepleier": {
+    "maal": "Yrkesbeskrivelsen for sykepleier",
+    "side": "https://utdanning.no/yrker/beskrivelse/sykepleier", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Les mer om yrket» på yrkesintervjuene, og url i API-et sammenligning/main", "sjekket": "2026-10-30"
+  },
+  "video-sykepleier": {
+    "maal": "Yrkesvideoene om sykepleier, seksjonen «Bli med en sykepleier på jobb» på yrkesbeskrivelsen (første video: Glenn Frode)",
+    "side": "https://utdanning.no/yrker/beskrivelse/sykepleier", "anker": "yrke-videoer", "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, id på siden", "sjekket": "2026-10-30"
+  },
+  "arbeidsmarked-tall": {
+    "maal": "Tallene bak arbeidsmarkedskortet (SSB, oktober 2025): lønnsdelen på yrkesbeskrivelsen, der filteret viser sektor, kjønn og antall personer",
+    "side": "https://utdanning.no/yrker/beskrivelse/sykepleier", "anker": "lonn-div", "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, «Vis filter» i lønnsdelen", "sjekket": "2026-10-30"
+  },
+  "jobbkartet": {
+    "maal": "Jobbkartet for sykepleier, antall personer i yrket etter fylke og kommune",
+    "side": "https://utdanning.no/jobbkartet/y_sykepleier/antall_personer", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap for Jobbkartet (adressen med skråstrek til slutt omdirigeres hit)", "sjekket": "2026-10-30"
+  },
+  "bedrifter-sykepleier": {
+    "maal": "Oversikten over bedrifter som har sykepleiere, der du kan velge kommune",
+    "side": "https://utdanning.no/yrker/beskrivelse/sykepleier", "anker": "bedrifter", "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, id på siden", "sjekket": "2026-10-30"
+  },
+  "arbeidssteder": {
+    "maal": "Avsnittet «Hvor jobber sykepleiere?» på yrkesbeskrivelsen",
+    "side": "https://utdanning.no/yrker/beskrivelse/sykepleier", "anker": "hvor-jobber", "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, id på siden", "sjekket": "2026-10-30"
+  },
+  "intervju-mats": {
+    "maal": "Yrkesintervjuet med intensivsykepleier Mats Kinn-Mikalsen, ned til sitatet i kortet",
+    "side": "https://utdanning.no/tema/yrkesintervju/intensivsykepleier", "anker": null,
+    "tekst": { "start": "Etter bacheloren jobbet jeg to år" },
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen", "sjekket": "2026-10-30"
+  },
+  "videreutdanning-sykepleiere": {
+    "maal": "Utdanningsoversikten for videreutdanning for sykepleiere",
+    "side": "https://utdanning.no/utdanningsoversikt/videreutdanning_sykepleiere", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Se utdanninger og steder» på yrkesbeskrivelsen (/node/413996)", "sjekket": "2026-10-30"
+  },
+  "studievelgeren": {
+    "maal": "Studievelgeren i Karakterkalkulatoren, der du sjekker hvilke studier du kan komme inn på",
+    "side": "https://utdanning.no/karakterkalkulator/studievelger", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no", "sjekket": "2026-10-30"
+  },
+  "forslag-utdanninger-yrker": {
+    "maal": "KI-verktøyet «Få forslag til utdanninger og yrker» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/fa-forslag-til-utdanninger-yrker", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (lenken der er avkuttet, så parameteren er fjernet)", "sjekket": "2026-10-30"
+  },
+  "jobbkompasset": {
+    "maal": "Jobbkompasset på utdanning.no",
+    "side": "https://utdanning.no/jobbkompasset/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no", "sjekket": "2026-10-30"
+  },
+  "utdanningskompasset": {
+    "maal": "Utdanningskompasset på utdanning.no",
+    "side": "https://utdanning.no/utdanningskompasset/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no", "sjekket": "2026-10-30"
+  },
+  "sok-radiograf": {
+    "maal": "Søkeresultatsiden på utdanning.no for «radiograf»",
+    "side": "https://utdanning.no/sok/#query_value=radiograf", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søket leser query_value fra adressen)", "sjekket": "2026-10-30"
+  },
+  "sok-bioingenior": {
+    "maal": "Søkeresultatsiden på utdanning.no for «bioingeniør»",
+    "side": "https://utdanning.no/sok/#query_value=bioingeni%C3%B8r", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søket leser query_value fra adressen)", "sjekket": "2026-10-30"
+  },
+  "sok-jordmor": {
+    "maal": "Søkeresultatsiden på utdanning.no for «jordmor»",
+    "side": "https://utdanning.no/sok/#query_value=jordmor", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søket leser query_value fra adressen)", "sjekket": "2026-10-30"
+  },
+  "sok-tannhelsesekretaer": {
+    "maal": "Søkeresultatsiden på utdanning.no for «tannhelsesekretær»",
+    "side": "https://utdanning.no/sok/#query_value=tannhelsesekret%C3%A6r", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søket leser query_value fra adressen)", "sjekket": "2026-10-30"
+  },
+  "chat-veileder": {
+    "maal": "Forsiden til Karriereveiledning.no",
+    "side": "https://karriereveiledning.no/", "anker": null, "tekst": null,
+    "status": "manuell", "kilde": "bestemt av Niels", "sjekket": "2026-10-27"
+  }
+}
+</script>
+
+<header class="topp">
+  <div>
+    <a href="../../" class="logolenke"><svg class="logo" viewBox="0 0 812.9 99.2" role="img" aria-label="Utdanning.no"><g transform="translate(-12.9,-75.2)" fill="#EE7B1A"><path d="m 59.7,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,22.3 -14.2,30.6 -32.1,30.6 -18,0 -32.1,-8.3 -32.1,-30.6 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,10.4 5.5,15.4 14.7,15.4 9.2,0 14.7,-4.9 14.7,-15.4 z"/><path d="m 148.2,75.9 c 3.7,0 5.5,4 5.5,7.8 0,4.1 -2,7.9 -5.5,7.9 h -19.5 v 76.5 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 91.6 H 91.7 c -3.5,0 -5.5,-3.6 -5.5,-7.9 0,-3.7 1.7,-7.8 5.5,-7.8 z"/><path d="m 193.4,75.9 c 17.6,0 31.4,8.3 31.4,30.6 V 143 c 0,22.3 -13.8,30.6 -31.4,30.6 h -23.6 c -4.5,0 -7.6,-2.5 -7.6,-5.3 v -87 c 0,-2.8 3.1,-5.4 7.6,-5.4 z m -13.9,15.2 v 67.2 h 13.9 c 8.8,0 14,-4.9 14,-15.4 V 106.4 C 207.4,96 202.2,91 193.4,91 h -13.9 z"/><path d="m 230.9,166.4 c 0,-0.3 0.1,-0.8 0.3,-1.3 l 25.8,-84 c 1.2,-4 6.1,-5.9 11.1,-5.9 5.1,0 10,1.9 11.2,5.9 l 25.8,84 c 0.1,0.5 0.3,0.9 0.3,1.3 0,4.1 -6.3,7.2 -10.9,7.2 -2.9,0 -5.2,-0.9 -5.9,-3.5 l -5.1,-17.8 h -30.6 l -5.1,17.8 c -0.7,2.5 -2.9,3.5 -5.9,3.5 -4.8,0 -11,-3 -11,-7.2 z m 48.7,-27.7 -11.6,-41 -11.6,41 z"/><path d="m 359.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 L 361,134.9 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 440.4,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 475.1,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 z"/><path d="m 554.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 618.6,91.1 c -8.9,0 -14,5 -14,15.4 v 37.3 c 0,10.4 5.1,15.4 13.9,15.4 8.7,0 14,-4.9 14,-15.4 v -7.9 h -10.8 c -3.5,0 -5.3,-3.3 -5.3,-6.8 0,-3.3 1.9,-6.8 5.3,-6.8 h 22.7 c 3.5,0 5.5,2.7 5.5,5.6 v 15.9 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.3,-8.3 -31.3,-30.6 v -37.3 c 0,-22.3 13.8,-30.6 30.7,-30.6 18.4,0 31.9,9.6 31.9,25.7 0,6.7 -2.9,8.3 -8.7,8.3 -4.7,0 -8.5,-1.3 -8.7,-5.5 -0.3,-6.3 -2.4,-13.3 -13.8,-13.3 z"/><path d="m 675.4,165.3 c 0,4.8 -4.1,9.1 -9,9.1 -5.2,0 -9.1,-4.3 -9.1,-9.1 0,-4.9 3.9,-9.1 9.1,-9.1 4.9,0 9,4.1 9,9.1 z"/><path d="m 731.5,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 763.2,143.8 v -37.3 c 0,-22.3 13.6,-30.6 31.2,-30.6 17.6,0 31.4,8.3 31.4,30.6 v 37.3 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.2,-8.3 -31.2,-30.6 z m 45.2,-37.3 c 0,-10.6 -5.3,-15.4 -14,-15.4 -8.8,0 -13.9,4.8 -13.9,15.4 v 37.3 c 0,10.6 5.1,15.4 13.9,15.4 8.7,0 14,-4.8 14,-15.4 z"/></g></svg></a>
+    <p class="slagord">Offentlig og kvalitetssikret</p>
+  </div>
+  <div class="topp-knapper">
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Min side
+    </button>
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Meny
+    </button>
+    <button type="button" class="meny-rund bare-mobil" aria-label="Åpne meny">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <h1>Søk etter yrker, utdanning og innhold</h1>
+
+  <form class="sok" role="search" onsubmit="return false">
+    <label for="sok" class="skjult">Søk etter yrker, utdanning og innhold</label>
+    <input id="sok" type="search" value="sykepleier" readonly>
+    <button type="button" aria-label="Søk">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+    </button>
+  </form>
+
+  <div class="velger">
+    <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
+    <div class="brikker-ramme">
+      <ul class="brikker">
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(13)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="lonn" aria-pressed="false">Lønn <span data-antall="lonn">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="jobben" aria-pressed="false">Arbeidsoppgaver <span data-antall="jobben">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="hvem" aria-pressed="false">Arbeidsmarked <span data-antall="hvem">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="hvor" aria-pressed="false">Arbeidsplasser <span data-antall="hvor">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="etterpa" aria-pressed="false">Videre muligheter <span data-antall="etterpa">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="utforsk" aria-pressed="false">Utforsk <span data-antall="utforsk">(4)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="lignende" aria-pressed="false">Lignende yrker <span data-antall="lignende">(4)</span></button></li>
+        <li class="vis-flere-plass bare-desktop" hidden>
+          <button type="button" class="vis-flere" aria-expanded="false">
+            <span>Vis flere</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="oppsett">
+
+    <aside class="sidekolonne bare-desktop">
+      <div>
+        <h2 class="etikett legende-tittel">
+          <span>Farger og ikoner</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </h2>
+        <ul class="legende">
+          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+        </ul>
+      </div>
+
+      <div>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+          Del søk
+        </button>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"/></svg>
+          Lagre søk
+        </button>
+      </div>
+    </aside>
+
+    <div class="resultater">
+
+      <div class="treff">
+        <h2 class="etikett">Søkeresultat</h2>
+        <p class="meta"><span data-antall-ingress>13</span> resultater om sykepleier.<span data-tolkning hidden></span></p>
+      </div>
+
+      <!-- 1. Hvordan blir du sykepleier? -->
+      <section class="gruppe" data-gruppe="bli" data-tema="hvordan du blir sykepleier" aria-labelledby="g-bli">
+        <h2 id="g-bli" class="seksjon">Hvordan blir du sykepleier?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--utdanning" data-kort="veier-inn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel">Veier inn i yrket</h3>
+            <div class="vei">
+              <h4 class="vei-tittel">Fra videregående</h4>
+              <ol class="steg">
+                <li>Generell studiekompetanse</li>
+                <li>3 år bachelor i sykepleie</li>
+                <li>Autorisasjon</li>
+              </ol>
+              <a class="pill" data-lenke="veier-studiesteder">Finn studiesteder i ditt fylke</a>
+            </div>
+            <div class="vei" data-ekstra hidden>
+              <h4 class="vei-tittel">Uten studiekompetanse</h4>
+              <p class="brodtekst">Er du 25 år eller eldre, kan du på noen høgskoler og universiteter søke med realkompetanse.</p>
+              <a class="vei-lenke" data-lenke="realkompetanse">Les om opptak med realkompetanse</a>
+            </div>
+            <div class="vei" data-ekstra hidden>
+              <h4 class="vei-tittel">På deltid</h4>
+              <p class="brodtekst">Noen steder kan du ta bachelorgraden på deltid over fire år.</p>
+              <a class="vei-lenke" data-lenke="sykepleie-deltid">Se studiene på deltid</a>
+            </div>
+            <button type="button" class="se-mer" aria-expanded="false">Se andre veier (2)</button>
+          </li>
+          <li class="kort kort--utdanning" data-kort="utdanning-sykepleie">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="sykepleie">Sykepleie</a></h3>
+            <div class="beskrivelse">
+              <p class="brodtekst">Du lærer å pleie, støtte og veilede mennesker som er syke og skadde.</p>
+            </div>
+            <dl class="fakta">
+              <div><dt class="meta">Nivå</dt><dd class="faktaverdi">Universitet og høgskole</dd></div>
+              <div><dt class="meta">Fører til</dt><dd class="faktaverdi">Bachelorgrad</dd></div>
+            </dl>
+          </li>
+          <li class="intervju" data-kort="intervju-juni">
+            <a data-lenke="intervju-juni">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/Sykepleier_Anna_Caroline_Fladby.jpg?VersionId=1&amp;itok=c2aENiYc" alt="Juni Engeberg i mørkeblå sykepleieruniform, foran et vindu med utsikt til skog og fjell" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Juni Engeberg (28)</span>
+                  <span class="intervju-stilling">Sykepleier</span>
+                  <span class="intervju-arbeidsgiver">Trainee hos Haukeland universitetssjukehus</span>
+                </span>
+              </span>
+              <blockquote>– Det kreves en treårig bachelorutdanning i sykepleie, og for å komme inn på det trenger du studiekompetanse fra videregående.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 2. Hva tjener en sykepleier? -->
+      <section class="gruppe" data-gruppe="lonn" data-tema="lønn" aria-labelledby="g-lonn">
+        <h2 id="g-lonn" class="seksjon">Hva tjener en sykepleier?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke" data-kort="sykepleier-lonn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="sykepleier-lonn">Lønn</a></h3>
+            <dl class="fakta">
+              <div><dt class="meta">Vanlig årslønn</dt><dd class="faktaverdi">693 960 kr</dd></div>
+              <div><dt class="meta">Som spesialsykepleier</dt><dd class="faktaverdi">765 720 kr</dd></div>
+            </dl>
+            <p class="meta kilde">Kilde: Statistisk sentralbyrå 2026. Tallene er samlet inn oktober 2025. Vanlig årslønn er medianlønnen for yrkesgruppene sykepleiere og spesialsykepleiere.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="sammenlign-lonn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="sammenlign-lonn">Sammenlign lønn</a></h3>
+            <p class="brodtekst">Sett sykepleier opp mot et annet yrke i samme tabell.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 3. Hva er arbeidsoppgavene? -->
+      <section class="gruppe" data-gruppe="jobben" data-tema="arbeidsoppgavene" aria-labelledby="g-jobben">
+        <h2 id="g-jobben" class="seksjon">Hva er arbeidsoppgavene?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke kort--bilde" data-kort="yrke-sykepleier">
+            <a data-lenke="yrke-sykepleier" aria-hidden="true" tabindex="-1"><img class="kortbilde" src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/2025-12/Sykepleier_Anna_Caroline_Fladby-5.jpg?VersionId=1&amp;itok=NDabP9z8" alt="Sykepleier i mørkeblå uniform som trekker medisin opp i en sprøyte" width="738" height="484" loading="lazy" referrerpolicy="no-referrer"></a>
+            <div>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="yrke-sykepleier">Sykepleier</a></h3>
+            <p class="brodtekst smal">Forebygger og behandler sykdom hos mennesker i alle livsfaser.</p></div>
+          </li>
+          <li class="kort kort--yrke kort--video" data-kort="video-sykepleier">
+            <a class="videobilde" data-lenke="video-sykepleier" aria-hidden="true" tabindex="-1">
+              <img src="https://i.vimeocdn.com/video/2157802786-3561adfe9bf13b4561785b16b8d1c5ff281f755f3962f24e8becc25a1d8f7821-d_1280?region=us" alt="Glenn Frode i hvit sykepleieruniform sitter i et rom med kosedyr og leker" width="1280" height="720" referrerpolicy="no-referrer">
+              <span class="spill"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="#333333" aria-hidden="true"><path d="M9 6l10 6-10 6z"/></svg></span></span>
+              <span class="lengde">2:00</span>
+            </a>
+            <div>
+              <p class="typelinje">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h13v12H3zM16 10l5-3v10l-5-3"/></svg>
+                <span>Video</span>
+              </p>
+              <h3 class="korttittel"><a data-lenke="video-sykepleier">Bli med en sykepleier på jobb</a></h3>
+              <p class="brodtekst">Se Glenn Frode på jobb.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 4. Hvem jobber som sykepleier? -->
+      <section class="gruppe" data-gruppe="hvem" data-tema="hvem som jobber som sykepleier" aria-labelledby="g-hvem">
+        <h2 id="g-hvem" class="seksjon">Hvem jobber som sykepleier?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="arbeidsmarked">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="arbeidsmarked-tall">Arbeidsmarkedet</a></h3>
+            <dl class="fakta">
+              <div><dt class="meta">Sykepleiere</dt><dd class="faktaverdi">69 015</dd></div>
+              <div><dt class="meta">Spesialsykepleiere</dt><dd class="faktaverdi">32 743</dd></div>
+            </dl>
+            <ul class="fordelinger">
+              <li>
+                <p class="etikett">Sektor</p>
+                <p class="fordeling-tekst">90 % offentlig sektor, 10 % privat sektor</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:89.5%"></span><span style="width:10.5%"></span></span>
+              </li>
+              <li>
+                <p class="etikett">Arbeidstid</p>
+                <p class="fordeling-tekst">52 % heltid, 48 % deltid</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:51.9%"></span><span style="width:48.1%"></span></span>
+              </li>
+              <li>
+                <p class="etikett">Kjønn</p>
+                <p class="fordeling-tekst">89 % kvinner, 11 % menn</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:88.6%"></span><span style="width:11.4%"></span></span>
+              </li>
+            </ul>
+            <p class="meta kilde">Kilde: Statistisk sentralbyrå, ansatte i yrkesgruppene sykepleiere og spesialsykepleiere, oktober 2025, via utdanning.no. Fordelingene gjelder sykepleiere.</p>
+            <div class="handlinger">
+              <a class="pill" data-lenke="arbeidsmarked-tall">Se tallene fordelt på kjønn og sektor</a>
+            </div>
+          </li>
+          <li class="kort kort--verktoy" data-kort="jobbkartet">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="jobbkartet">Jobbkartet</a></h3>
+            <p class="brodtekst">Se hvor mange sykepleiere som jobber i ditt fylke eller din kommune.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 5. Hvor kan du jobbe? (ingen lærebedrifter: sykepleie er ikke et fagbrevsyrke) -->
+      <section class="gruppe" data-gruppe="hvor" data-tema="hvor du kan jobbe" aria-labelledby="g-hvor">
+        <h2 id="g-hvor" class="seksjon">Hvor kan du jobbe?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke" data-kort="bedrifter">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="bedrifter-sykepleier">Bedrifter</a></h3>
+            <dl class="fakta">
+              <div><dt class="meta">Antall</dt><dd class="faktaverdi">7 378</dd></div>
+              <div><dt class="meta">Årsverk</dt><dd class="faktaverdi">83 925</dd></div>
+            </dl>
+            <div class="handlinger">
+              <a class="pill" data-lenke="bedrifter-sykepleier">Se bedrifter i din kommune</a>
+            </div>
+            <p class="meta kilde">Kilde: Nav (Aa-registeret), via utdanning.no. Tallene gjelder hele landet.</p>
+          </li>
+          <li class="kort kort--yrke" data-kort="arbeidssteder">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="arbeidssteder">Arbeidssteder</a></h3>
+            <p class="brodtekst">Sykehus, sykehjem, hjemmesykepleien, helsestasjoner og Forsvaret er noen av dem.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 6. Hva kan du gjøre etterpå? -->
+      <section class="gruppe" data-gruppe="etterpa" data-tema="videre muligheter" aria-labelledby="g-etterpa">
+        <h2 id="g-etterpa" class="seksjon">Hva kan du gjøre etterpå?</h2>
+        <ul class="kortliste">
+          <li class="intervju" data-kort="intervju-mats">
+            <a data-lenke="intervju-mats">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/intensivsykepleier1_ingrid-nostdal.jpg?VersionId=5&amp;h=1754553d&amp;itok=BxojXW0d" alt="Mats Kinn-Mikalsen i hvit uniform, fotografert i et lyst rom med store vinduer" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Mats Kinn-Mikalsen (35)</span>
+                  <span class="intervju-stilling">Intensivsykepleier</span>
+                  <span class="intervju-arbeidsgiver">Sykehuset Østfold</span>
+                </span>
+              </span>
+              <blockquote>– Etter bacheloren jobbet jeg to år som sykepleier før jeg startet videreutdanningen som jeg tok som mastergrad.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+          <li class="kort kort--utdanning" data-kort="videreutdanning-sykepleiere">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="videreutdanning-sykepleiere">Videreutdanning</a></h3>
+            <div class="beskrivelse">
+              <p class="brodtekst">Spesialiser deg, for eksempel i anestesi-, intensiv- eller kreftsykepleie.</p>
+            </div>
+            <dl class="fakta">
+              <div><dt class="meta">Krav</dt><dd class="faktaverdi">Autorisasjon og praksis</dd></div>
+              <div><dt class="meta">Varighet</dt><dd class="faktaverdi">Minst ett år</dd></div>
+            </dl>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 7. Vil du utforske andre muligheter? (telles ikke med i «Alle», verktøyene handler ikke om sykepleier) -->
+      <section class="gruppe" data-gruppe="utforsk" data-tema="andre muligheter" aria-labelledby="g-utforsk">
+        <h2 id="g-utforsk" class="seksjon">Vil du utforske andre muligheter?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="studievelgeren">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="studievelgeren">Studievelgeren</a></h3>
+            <p class="brodtekst">Sjekk hvilke studier du kan komme inn på.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="forslag-utdanninger-yrker">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="forslag-utdanninger-yrker">Få forslag til utdanninger og yrker</a></h3>
+            <p class="brodtekst">Svar på spørsmål om interessene dine, og få forslag.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="jobbkompasset" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="jobbkompasset">Jobbkompasset</a></h3>
+            <p class="brodtekst">Få inspirasjon til hvilke jobber som kan passe for deg.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="utdanningskompasset" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="utdanningskompasset">Utdanningskompasset</a></h3>
+            <p class="brodtekst">Få inspirasjon til hvilke utdanninger du kan velge mellom.</p>
+          </li>
+        </ul>
+        <button type="button" class="pill se-mer" aria-expanded="false">Se mer</button>
+      </section>
+
+      <!-- 8. Hvilke yrker ligner? (telles ikke med i «Alle») -->
+      <section class="gruppe" id="lignende" data-gruppe="lignende" data-tema="lignende yrker" aria-labelledby="g-lignende">
+        <h2 id="g-lignende" class="seksjon">Hvilke yrker ligner?</h2>
+        <ul class="lignende-liste">
+          <li data-yrke="radiograf"><a data-lenke="sok-radiograf">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/radiograf_0.jpg?VersionId=1&amp;h=02ce9656&amp;itok=C1DV1j42" alt="Radiograf i blå uniform ved en CT-maskin der en pasient ligger på benken" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Radiograf</span></span>
+            <span class="lignende-linje">Tar medisinske bilder med røntgen, MR og CT, som brukes til å stille diagnoser.</span>
+          </a></li>
+          <li data-yrke="bioingenior"><a data-lenke="sok-bioingenior">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/bioingenior_1.jpg?VersionId=1&amp;h=197483aa&amp;itok=va-4K4b5" alt="Hender som holder blodprøverør med strekkoder over et skjema på et laboratorium" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Bioingeniør</span></span>
+            <span class="lignende-linje">Jobber på laboratoriet og analyserer prøver av blod, vev og kroppsvæsker.</span>
+          </a></li>
+          <li data-yrke="jordmor"><a data-lenke="sok-jordmor">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/sza73e28.jpg?VersionId=1&amp;h=9eb0d413&amp;itok=JV9Q4nr3" alt="Jordmor i hvit uniform smiler til en mor som holder sin nyfødte baby" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Jordmor</span></span>
+            <span class="lignende-linje">Toårig spesialisering etter sykepleie, der du følger gravide gjennom fødsel og barseltid.</span>
+          </a></li>
+          <li data-yrke="tannhelsesekretaer"><a data-lenke="sok-tannhelsesekretaer">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/tannhelsesekretaer1.jpg?VersionId=1&amp;h=6a57c949&amp;itok=Z9zyod_b" alt="Tannlege og tannhelsesekretær med munnbind som behandler en pasient i tannlegestolen" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Tannhelsesekretær</span></span>
+            <span class="lignende-linje">Treårig yrkesfaglig løp på videregående, og du assisterer tannlegen.</span>
+          </a></li>
+        </ul>
+      </section>
+
+      <!-- Veilederbanner: hele banneret er lenken -->
+      <section class="veileder" aria-labelledby="g-veileder" data-kort="veileder">
+        <a data-lenke="chat-veileder">
+          <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+          <span class="veileder-tekst" style="display:block">
+            <h2 id="g-veileder">Snakk med en veileder</h2>
+            <p class="brodtekst">Gratis og anonymt, på nett eller på et karrieresenter.</p>
+          </span>
+          <span class="pill">Gå til Karriereveiledning.no</span>
+        </a>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="bunn-innhold">
+    <div class="avsender"><strong>HK-dir</strong><br>Direktoratet for høyere utdanning og kompetanse</div>
+    <ul class="bunnlenker">
+      <li class="bare-desktop"><button type="button">For presse</button></li>
+      <li><button type="button">Om karriereveiledning.no</button></li>
+      <li><button type="button">Karrieresenter i ditt fylke</button></li>
+      <li><button type="button">Personvernerklæring</button></li>
+    </ul>
+    <div class="bunn-kontakt bare-desktop">
+      <div><strong>Webredaktør:</strong><br>[NAVN]</div>
+      <div><strong>Kontakt redaksjonen:</strong><br><button type="button">[E-POSTADRESSE]</button></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../felles.js"></script>
+</body>
+</html>
