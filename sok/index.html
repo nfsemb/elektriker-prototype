@@ -132,7 +132,8 @@ h1 { font-size: 30px; line-height: 38px; letter-spacing: -0.01em; }
 .intervju-stilling, .intervju-arbeidsgiver { font-size: 15px; line-height: 22px; }
 .intervju-arbeidsgiver { color: var(--tekst-dempet); }
 .intervju blockquote { font-size: 18px; line-height: 27px; }
-.les-mer { display: inline-block; margin-top: 12px; font-size: 16px; line-height: 24px; text-decoration: underline; }
+.intervju .pill { margin-top: 12px; }
+.intervju > a:hover .pill { background: var(--oransje-lys); }
 
 /* Hvilke yrker ligner? */
 .lignende-liste { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
@@ -301,9 +302,9 @@ a.pill:not([href]) { display: none !important; }
   },
   "bedrifter-elektriker": {
     "maal": "Oversikten over bedrifter som har elektrikere",
-    "side": "https://utdanning.no/yrker/beskrivelse/elektriker", "anker": "bedrifter-div",
+    "side": "https://utdanning.no/yrker/beskrivelse/elektriker", "anker": "bedrifter",
     "tekst": null,
-    "status": "manuell", "kilde": "oppgitt av Niels (div-id)", "sjekket": "2026-10-28"
+    "status": "manuell", "kilde": "oppgitt av Niels (id)", "sjekket": "2026-10-30"
   },
   "finn-laerebedrift": {
     "maal": "Oversikten over godkjente lærebedrifter i elektrikerfaget",
@@ -454,7 +455,7 @@ a.pill:not([href]) { display: none !important; }
                 </span>
               </span>
               <blockquote>– Jeg tok fagprøven på et faktisk husprosjekt, hvor jeg gjorde hele jobben fra A til Å.</blockquote>
-              <span class="les-mer">Les intervjuet</span>
+              <span class="pill">Les intervjuet</span>
             </a>
           </li>
         </ul>
@@ -519,7 +520,7 @@ a.pill:not([href]) { display: none !important; }
                 </span>
               </span>
               <blockquote>– Det jeg liker best er at jeg får styre dagene mine så mye selv.</blockquote>
-              <span class="les-mer">Les intervjuet</span>
+              <span class="pill">Les intervjuet</span>
             </a>
           </li>
         </ul>
@@ -537,11 +538,6 @@ a.pill:not([href]) { display: none !important; }
             </dl>
             <ul class="fordelinger">
               <li>
-                <p class="etikett">Kjønn</p>
-                <p class="fordeling-tekst">96 % menn, 4 % kvinner</p>
-                <span class="stolpe" aria-hidden="true"><span style="width:96.2%"></span><span style="width:3.8%"></span></span>
-              </li>
-              <li>
                 <p class="etikett">Sektor</p>
                 <p class="fordeling-tekst">97 % privat sektor, 3 % offentlig sektor</p>
                 <span class="stolpe" aria-hidden="true"><span style="width:97.2%"></span><span style="width:2.8%"></span></span>
@@ -551,10 +547,15 @@ a.pill:not([href]) { display: none !important; }
                 <p class="fordeling-tekst">90 % heltid, 10 % deltid</p>
                 <span class="stolpe" aria-hidden="true"><span style="width:90.4%"></span><span style="width:9.6%"></span></span>
               </li>
+              <li>
+                <p class="etikett">Kjønn</p>
+                <p class="fordeling-tekst">96 % menn, 4 % kvinner</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:96.2%"></span><span style="width:3.8%"></span></span>
+              </li>
             </ul>
             <p class="meta kilde">Kilde: Statistisk sentralbyrå, ansatte i yrket elektriker, oktober 2025, via utdanning.no.</p>
             <div class="handlinger">
-              <a class="pill" data-lenke="arbeidsmarked-elektriker">Se jobbkartet</a>
+              <a class="pill" data-lenke="arbeidsmarked-elektriker">Prøv jobbkartet i ditt fylke eller din kommune</a>
             </div>
           </li>
         </ul>
@@ -572,7 +573,7 @@ a.pill:not([href]) { display: none !important; }
               <div><dt class="meta">Årsverk</dt><dd class="faktaverdi">26 280</dd></div>
             </dl>
             <div class="handlinger">
-              <a class="pill" data-lenke="bedrifter-elektriker">Se bedriftene</a>
+              <a class="pill" data-lenke="bedrifter-elektriker">Se bedrifter i din kommune</a>
             </div>
             <p class="meta kilde">Kilde: Nav (Aa-registeret), via utdanning.no.</p>
           </li>
@@ -584,7 +585,7 @@ a.pill:not([href]) { display: none !important; }
               <div><dt class="meta">Med ledig læreplass</dt><dd class="faktaverdi">558</dd></div>
             </dl>
             <div class="handlinger">
-              <a class="pill" data-lenke="finn-laerebedrift">Finn lærebedrift</a>
+              <a class="pill" data-lenke="finn-laerebedrift">Finn lærebedrifter i din kommune</a>
             </div>
             <p class="meta kilde">Kilde: Vigo, via Finn lærebedrift på utdanning.no. Tallene oppdateres hver natt og ble hentet 27. oktober 2026.</p>
           </li>
