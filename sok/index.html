@@ -295,10 +295,15 @@ a.pill:not([href]) { display: none !important; }
     "side": "https://sammenlign.utdanning.no/sammenligne/yrke#y_elektriker", "anker": null, "tekst": null,
     "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen", "sjekket": "2026-10-27"
   },
-  "arbeidsmarked-elektriker": {
-    "maal": "Arbeidsmarkedsinformasjon for elektriker",
+  "arbeidsmarked-tall": {
+    "maal": "Tallene bak arbeidsmarkedskortet (SSB, oktober 2025): lønnsdelen på yrkesbeskrivelsen, der filteret viser sektor, kjønn og antall personer",
+    "side": "https://utdanning.no/yrker/beskrivelse/elektriker", "anker": "lonn-div", "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, «Vis filter» i lønnsdelen", "sjekket": "2026-10-30"
+  },
+  "jobbkartet": {
+    "maal": "Jobbkartet for elektriker, antall personer i yrket etter fylke og kommune",
     "side": "https://utdanning.no/jobbkartet/y_elektriker/antall_personer/", "anker": null, "tekst": null,
-    "status": "funnet", "kilde": "sitemap for Jobbkartet", "sjekket": "2026-10-27"
+    "status": "funnet", "kilde": "sitemap for Jobbkartet", "sjekket": "2026-10-30"
   },
   "bedrifter-elektriker": {
     "maal": "Oversikten over bedrifter som har elektrikere",
@@ -374,11 +379,11 @@ a.pill:not([href]) { display: none !important; }
     <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
     <div class="brikker-ramme">
       <ul class="brikker">
-        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(10)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(11)</span></button></li>
         <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="lonn" aria-pressed="false">Lønn <span data-antall="lonn">(2)</span></button></li>
-        <li><button type="button" class="brikke" data-velg="jobben" aria-pressed="false">Jobben <span data-antall="jobben">(3)</span></button></li>
-        <li><button type="button" class="brikke" data-velg="hvem" aria-pressed="false">Arbeidsmarked <span data-antall="hvem">(1)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="jobben" aria-pressed="false">Arbeidsoppgaver <span data-antall="jobben">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="hvem" aria-pressed="false">Arbeidsmarked <span data-antall="hvem">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="hvor" aria-pressed="false">Arbeidsplasser <span data-antall="hvor">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="lignende" aria-pressed="false">Lignende yrker <span data-antall="lignende">(4)</span></button></li>
         <li class="vis-flere-plass bare-desktop" hidden>
@@ -424,7 +429,7 @@ a.pill:not([href]) { display: none !important; }
 
       <div class="treff">
         <h2 class="etikett">Søkeresultat</h2>
-        <p class="meta"><span data-antall-ingress>10</span> resultater om elektriker.</p>
+        <p class="meta"><span data-antall-ingress>11</span> resultater om elektriker.</p>
       </div>
 
       <!-- 1. Hvordan blir du elektriker? -->
@@ -482,10 +487,17 @@ a.pill:not([href]) { display: none !important; }
         </ul>
       </section>
 
-      <!-- 3. Hvordan er jobben? -->
+      <!-- 3. Hva er arbeidsoppgavene? -->
       <section class="gruppe" data-gruppe="jobben" aria-labelledby="g-jobben">
-        <h2 id="g-jobben" class="seksjon">Hvordan er jobben?</h2>
+        <h2 id="g-jobben" class="seksjon">Hva er arbeidsoppgavene?</h2>
         <ul class="kortliste">
+          <li class="kort kort--yrke kort--bilde" data-kort="yrke-elektriker">
+            <a data-lenke="yrke-elektriker" aria-hidden="true" tabindex="-1"><img class="kortbilde" src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/elektriker.png?VersionId=1&amp;h=ab502919&amp;itok=w2O36mns" alt="Elektriker med gul hjelm og arbeidshansker som trekker oransje kabler i taket" width="738" height="484" loading="lazy" referrerpolicy="no-referrer"></a>
+            <div>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="yrke-elektriker">Elektriker</a></h3>
+            <p class="brodtekst smal">Monterer, holder ved like og reparerer elektriske anlegg og utstyr.</p></div>
+          </li>
           <li class="kort kort--yrke kort--video" data-kort="video-elektriker">
             <a class="videobilde" data-lenke="video-elektriker" aria-hidden="true" tabindex="-1">
               <img src="https://i.vimeocdn.com/video/2135340232-8cabf67a1b4429139e7fd82d3497c1c59d7b7a3b417b3885a9f8064f7b2bcedb-d_1280?region=us" alt="Kristian fester en kabel i taket med en hammer" width="1280" height="720" referrerpolicy="no-referrer">
@@ -500,13 +512,6 @@ a.pill:not([href]) { display: none !important; }
               <h3 class="korttittel"><a data-lenke="video-elektriker">Bli med en elektriker på jobb</a></h3>
               <p class="brodtekst">Se Kristian i arbeid.</p>
             </div>
-          </li>
-          <li class="kort kort--yrke kort--bilde" data-kort="yrke-elektriker">
-            <a data-lenke="yrke-elektriker" aria-hidden="true" tabindex="-1"><img class="kortbilde" src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/elektriker.png?VersionId=1&amp;h=ab502919&amp;itok=w2O36mns" alt="Elektriker med gul hjelm og arbeidshansker som trekker oransje kabler i taket" width="738" height="484" loading="lazy" referrerpolicy="no-referrer"></a>
-            <div>
-            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
-            <h3 class="korttittel"><a data-lenke="yrke-elektriker">Elektriker</a></h3>
-            <p class="brodtekst smal">Monterer, holder ved like og reparerer elektriske anlegg og utstyr.</p></div>
           </li>
           <li class="intervju" data-kort="intervju-lars">
             <a data-lenke="intervju-lars">
@@ -532,7 +537,7 @@ a.pill:not([href]) { display: none !important; }
         <ul class="kortliste">
           <li class="kort kort--verktoy" data-kort="arbeidsmarked">
             <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
-            <h3 class="korttittel"><a data-lenke="arbeidsmarked-elektriker">Arbeidsmarkedet</a></h3>
+            <h3 class="korttittel"><a data-lenke="arbeidsmarked-tall">Arbeidsmarkedet</a></h3>
             <dl class="fakta">
               <div><dt class="meta">Ansatte</dt><dd class="faktaverdi">34 779</dd></div>
             </dl>
@@ -555,8 +560,13 @@ a.pill:not([href]) { display: none !important; }
             </ul>
             <p class="meta kilde">Kilde: Statistisk sentralbyrå, ansatte i yrket elektriker, oktober 2025, via utdanning.no.</p>
             <div class="handlinger">
-              <a class="pill" data-lenke="arbeidsmarked-elektriker">Prøv jobbkartet i ditt fylke eller din kommune</a>
+              <a class="pill" data-lenke="arbeidsmarked-tall">Se tallene fordelt på kjønn og sektor</a>
             </div>
+          </li>
+          <li class="kort kort--verktoy" data-kort="jobbkartet">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="jobbkartet">Jobbkartet</a></h3>
+            <p class="brodtekst">Se hvor mange elektrikere som jobber i ditt fylke eller din kommune.</p>
           </li>
         </ul>
       </section>
