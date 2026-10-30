@@ -374,9 +374,9 @@ a.pill:not([href]) { display: none !important; }
     <div class="brikker-ramme">
       <ul class="brikker">
         <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(10)</span></button></li>
-        <li><button type="button" class="brikke" data-velg="jobben" aria-pressed="false">Jobben <span data-antall="jobben">(3)</span></button></li>
         <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="lonn" aria-pressed="false">Lønn <span data-antall="lonn">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="jobben" aria-pressed="false">Jobben <span data-antall="jobben">(3)</span></button></li>
         <li><button type="button" class="brikke" data-velg="hvem" aria-pressed="false">Arbeidsmarked <span data-antall="hvem">(1)</span></button></li>
         <li><button type="button" class="brikke" data-velg="hvor" aria-pressed="false">Arbeidsplasser <span data-antall="hvor">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="lignende" aria-pressed="false">Lignende yrker <span data-antall="lignende">(4)</span></button></li>
@@ -426,7 +426,62 @@ a.pill:not([href]) { display: none !important; }
         <p class="meta"><span data-antall-ingress>10</span> resultater om elektriker.</p>
       </div>
 
-      <!-- 1. Hvordan er jobben? -->
+      <!-- 1. Hvordan blir du elektriker? -->
+      <section class="gruppe" data-gruppe="bli" aria-labelledby="g-bli">
+        <h2 id="g-bli" class="seksjon">Hvordan blir du elektriker?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--utdanning" data-kort="utdanning-elektrikerfaget">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="elektrikerfaget">Elektrikerfaget</a></h3>
+            <div class="beskrivelse">
+              <p class="brodtekst">Du lærer å installere, kontrollere, vedlikeholde og reparere elektriske systemer.</p>
+            </div>
+            <dl class="fakta">
+              <div><dt class="meta">Nivå</dt><dd class="faktaverdi">Videregående</dd></div>
+              <div><dt class="meta">Løp</dt><dd class="faktaverdi">2 år på skole og 2,5 år i bedrift</dd></div>
+              <div><dt class="meta">Fører til</dt><dd class="faktaverdi">Fagbrev</dd></div>
+            </dl>
+          </li>
+          <li class="intervju" data-kort="intervju-kristian-utdanning">
+            <a data-lenke="intervju-kristian-utdanning">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/artikkelbilde_medium/public/Elektriker_Christina_S%C3%A6tre_Lea_1.jpg?VersionId=3&amp;h=7fe98ef3&amp;itok=25jhjetD" alt="Kristian Grønnestad i arbeidsjakke, fotografert foran en murvegg" width="600" height="387" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Kristian Grønnestad (26)</span>
+                  <span class="intervju-stilling">Elektriker</span>
+                  <span class="intervju-arbeidsgiver">Svithun Elektro AS, Stavanger</span>
+                </span>
+              </span>
+              <blockquote>– Jeg tok fagprøven på et faktisk husprosjekt, hvor jeg gjorde hele jobben fra A til Å.</blockquote>
+              <span class="les-mer">Les intervjuet</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 2. Hva tjener en elektriker? -->
+      <section class="gruppe" data-gruppe="lonn" aria-labelledby="g-lonn">
+        <h2 id="g-lonn" class="seksjon">Hva tjener en elektriker?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke" data-kort="elektriker-lonn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="elektriker-lonn">Lønn</a></h3>
+            <dl class="fakta">
+              <div><dt class="meta">Vanlig årslønn</dt><dd class="faktaverdi">659 160 kr</dd></div>
+              <div><dt class="meta">Som lærling</dt><dd class="faktaverdi">282 480 kr</dd></div>
+            </dl>
+            <p class="meta kilde">Kilde: Statistisk sentralbyrå 2026. Tallene er samlet inn oktober 2025. Vanlig årslønn er medianlønnen for hele yrkesgruppen.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="sammenlign-lonn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="sammenlign-lonn">Sammenlign lønn</a></h3>
+            <p class="brodtekst">Sett elektriker opp mot et annet yrke i samme tabell.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 3. Hvordan er jobben? -->
       <section class="gruppe" data-gruppe="jobben" aria-labelledby="g-jobben">
         <h2 id="g-jobben" class="seksjon">Hvordan er jobben?</h2>
         <ul class="kortliste">
@@ -466,61 +521,6 @@ a.pill:not([href]) { display: none !important; }
               <blockquote>– Det jeg liker best er at jeg får styre dagene mine så mye selv.</blockquote>
               <span class="les-mer">Les intervjuet</span>
             </a>
-          </li>
-        </ul>
-      </section>
-
-      <!-- 2. Hvordan blir du elektriker? -->
-      <section class="gruppe" data-gruppe="bli" aria-labelledby="g-bli">
-        <h2 id="g-bli" class="seksjon">Hvordan blir du elektriker?</h2>
-        <ul class="kortliste">
-          <li class="kort kort--utdanning" data-kort="utdanning-elektrikerfaget">
-            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
-            <h3 class="korttittel"><a data-lenke="elektrikerfaget">Elektrikerfaget</a></h3>
-            <div class="beskrivelse">
-              <p class="brodtekst">Du lærer å installere, kontrollere, vedlikeholde og reparere elektriske systemer.</p>
-            </div>
-            <dl class="fakta">
-              <div><dt class="meta">Nivå</dt><dd class="faktaverdi">Videregående</dd></div>
-              <div><dt class="meta">Løp</dt><dd class="faktaverdi">2 år på skole og 2,5 år i bedrift</dd></div>
-              <div><dt class="meta">Fører til</dt><dd class="faktaverdi">Fagbrev</dd></div>
-            </dl>
-          </li>
-          <li class="intervju" data-kort="intervju-kristian-utdanning">
-            <a data-lenke="intervju-kristian-utdanning">
-              <span class="intervju-topp">
-                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/artikkelbilde_medium/public/Elektriker_Christina_S%C3%A6tre_Lea_1.jpg?VersionId=3&amp;h=7fe98ef3&amp;itok=25jhjetD" alt="Kristian Grønnestad i arbeidsjakke, fotografert foran en murvegg" width="600" height="387" loading="lazy" referrerpolicy="no-referrer">
-                <span>
-                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
-                  <span class="intervju-navn">Kristian Grønnestad (26)</span>
-                  <span class="intervju-stilling">Elektriker</span>
-                  <span class="intervju-arbeidsgiver">Svithun Elektro AS, Stavanger</span>
-                </span>
-              </span>
-              <blockquote>– Jeg tok fagprøven på et faktisk husprosjekt, hvor jeg gjorde hele jobben fra A til Å.</blockquote>
-              <span class="les-mer">Les intervjuet</span>
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <!-- 3. Hva tjener en elektriker? -->
-      <section class="gruppe" data-gruppe="lonn" aria-labelledby="g-lonn">
-        <h2 id="g-lonn" class="seksjon">Hva tjener en elektriker?</h2>
-        <ul class="kortliste">
-          <li class="kort kort--yrke" data-kort="elektriker-lonn">
-            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
-            <h3 class="korttittel"><a data-lenke="elektriker-lonn">Lønn</a></h3>
-            <dl class="fakta">
-              <div><dt class="meta">Vanlig årslønn</dt><dd class="faktaverdi">659 160 kr</dd></div>
-              <div><dt class="meta">Som lærling</dt><dd class="faktaverdi">282 480 kr</dd></div>
-            </dl>
-            <p class="meta kilde">Kilde: Statistisk sentralbyrå 2026. Tallene er samlet inn oktober 2025. Vanlig årslønn er medianlønnen for hele yrkesgruppen.</p>
-          </li>
-          <li class="kort kort--verktoy" data-kort="sammenlign-lonn">
-            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
-            <h3 class="korttittel"><a data-lenke="sammenlign-lonn">Sammenlign lønn</a></h3>
-            <p class="brodtekst">Sett elektriker opp mot et annet yrke i samme tabell.</p>
           </li>
         </ul>
       </section>
