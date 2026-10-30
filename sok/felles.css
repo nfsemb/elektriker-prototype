@@ -155,7 +155,7 @@ h1 { font-size: 30px; line-height: 38px; letter-spacing: -0.01em; }
 .lignende-liste img { width: 100%; aspect-ratio: 48 / 31; object-fit: cover; border-radius: 8px; background: var(--grå-10); color: var(--tekst-dempet); font-size: 13px; }
 .lignende-navn { display: flex; align-items: flex-start; gap: 8px; font-family: var(--font-slab); font-weight: 700; font-size: 18px; line-height: 24px; }
 .lignende-navn svg { flex: none; margin-top: 3px; }
-.lignende-navn span { text-decoration: underline; }
+.lignende-navn span { min-width: 0; text-decoration: underline; overflow-wrap: anywhere; hyphens: manual; }
 .lignende-linje { font-size: 15px; line-height: 22px; }
 #lignende > h2 { margin-bottom: 8px; }
 
