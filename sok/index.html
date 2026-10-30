@@ -493,7 +493,7 @@ a.pill:not([href]) { display: none !important; }
 
       <div class="treff">
         <h2 class="etikett">Søkeresultat</h2>
-        <p class="meta"><span data-antall-ingress>14</span> resultater om elektriker.</p>
+        <p class="meta"><span data-antall-ingress>14</span> resultater om elektriker.<span data-tolkning hidden></span></p>
       </div>
 
       <!-- 1. Hvordan blir du elektriker? -->
@@ -828,6 +828,53 @@ a.pill:not([href]) { display: none !important; }
     }
   });
   if (/[?&]vis-mangler\b/.test(location.search)) document.documentElement.classList.add('vis-mangler');
+
+  // ---------- Søket ----------
+  // Søket fra forsiden ligger bare i nettleseren (sessionStorage). Uten søk vises «elektriker» med standard sortering.
+  // Er søket et spørsmål som passer med en av gruppene, flyttes den gruppen øverst, og resten følger i standard rekkefølge.
+  // Prototypen har ingen KI, så nøkkelord står i stedet for semantisk matching. Uttrykk med flere ord teller dobbelt,
+  // fordi de er mer presise. Ved likt antall poeng vinner gruppen som står først her.
+  var MATCH = [
+    { gruppe: 'lonn', tema: 'lønn', ord: ['tjen', 'lønn', 'betal', 'penger', 'inntekt', 'kroner'] },
+    { gruppe: 'hvor', tema: 'hvor du kan jobbe', ord: ['bedrift', 'arbeidsgiver', 'læreplass', 'hvor kan jeg jobbe', 'hvor kan man jobbe', 'hvor kan du jobbe', 'hvor jobber'] },
+    { gruppe: 'etterpa', tema: 'videre muligheter', ord: ['etterpå', 'videre', 'fagskole', 'ingeniør', 'y-vei', 'senere', 'karriere'] },
+    { gruppe: 'bli', tema: 'hvordan du blir elektriker', ord: ['bli ', 'blir ', 'utdann', 'skole', 'vgs', 'videregående', 'vg1', 'vg2', 'fagbrev', 'studere', 'krav', 'kvalifik', 'praksiskandidat'] },
+    { gruppe: 'jobben', tema: 'arbeidsoppgavene', ord: ['arbeidsoppgave', 'oppgave', 'gjør', 'hverdag', 'arbeidsdag', 'i praksis', 'hvordan er det å'] },
+    { gruppe: 'hvem', tema: 'hvem som jobber som elektriker', ord: ['kvinne', 'jente', 'menn', 'gutt', 'kjønn', 'ansatte', 'hvor mange', 'sektor', 'deltid', 'heltid', 'hvem jobber'] },
+    { gruppe: 'lignende', tema: 'lignende yrker', ord: ['ligner', 'lignende', 'alternativ', 'andre yrker', 'i stedet'] },
+    { gruppe: 'utforsk', tema: 'andre muligheter', ord: ['passer for meg', 'passer meg', 'interesse', 'hva kan jeg bli', 'vet ikke', 'usikker', 'andre muligheter'] }
+  ];
+
+  function finnGruppe(tekst) {
+    var t = ' ' + tekst.toLowerCase().replace(/[?!.,;:«»"]/g, ' ').replace(/\s+/g, ' ') + ' ';
+    var best = null, bestPoeng = 0;
+    MATCH.forEach(function (m) {
+      var poeng = m.ord.reduce(function (sum, o) {
+        return t.indexOf(o) === -1 ? sum : sum + (o.trim().indexOf(' ') !== -1 ? 2 : 1);
+      }, 0);
+      if (poeng > bestPoeng) { best = m; bestPoeng = poeng; }
+    });
+    return best;
+  }
+
+  var sok = null;
+  try { sok = sessionStorage.getItem('elektriker:sok'); } catch (e) {}
+  if (sok) {
+    document.getElementById('sok').value = sok;
+    var treff = finnGruppe(sok);
+    var forste = treff && document.querySelector('[data-gruppe="' + treff.gruppe + '"]');
+    if (forste) {
+      var forsteGruppe = document.querySelector('[data-gruppe]');
+      if (forste !== forsteGruppe) forsteGruppe.parentNode.insertBefore(forste, forsteGruppe);
+      // Chipen for gruppen flyttes rett etter «Alle», så rekkefølgen er den samme som på siden.
+      var chip = document.querySelector('[data-velg="' + treff.gruppe + '"]').parentNode;
+      var alleChip = document.querySelector('[data-velg="alle"]').parentNode;
+      alleChip.parentNode.insertBefore(chip, alleChip.nextSibling);
+      var tolkning = document.querySelector('[data-tolkning]');
+      tolkning.textContent = ' Vi starter med ' + treff.tema + ', som du spurte om.';
+      tolkning.hidden = false;
+    }
+  }
 
   // ---------- Antall ----------
   var grupper = Array.prototype.slice.call(document.querySelectorAll('[data-gruppe]'));
