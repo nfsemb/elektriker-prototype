@@ -50,7 +50,6 @@ button { font-family: inherit; color: inherit; }
   font-size: 16px; line-height: 24px; cursor: pointer; text-decoration: none; }
 .pill:hover { background: var(--oransje-lys); color: var(--tekst); }
 .typelinje { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 15px; line-height: 22px; color: var(--tekst-etikett); }
-.merke { display: inline-block; border-radius: 8px; padding: 2px 10px; font-size: 15px; line-height: 22px; background: #ffffff; border: 1px solid var(--grå-40); color: var(--tekst); }
 .meta { font-size: 15px; line-height: 22px; color: var(--tekst-dempet); }
 .etikett { font-family: var(--font); font-weight: 500; font-size: 15px; line-height: 22px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tekst-etikett); }
 .seksjon { font-size: 26px; line-height: 32px; }
@@ -77,11 +76,13 @@ h1 { font-size: 30px; line-height: 38px; letter-spacing: -0.01em; }
 .sok button { position: absolute; right: 5px; top: 5px; width: 44px; height: 44px; border-radius: 50%; border: none; background: var(--oransje-lys); cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .oppsett { display: flex; flex-direction: column; gap: 24px; }
 .resultater { display: flex; flex-direction: column; gap: 24px; }
+.treff { margin-bottom: -16px; } /* første gruppe nærmere antall treff */
 
-/* Velg spørsmål: chips på mobil */
+/* Velg tema: rad med chips */
 .brikker-ramme { position: relative; }
 .brikker { display: flex; gap: 8px; flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 0 48px 0 16px; scrollbar-width: none; }
 .brikker::-webkit-scrollbar { display: none; }
+.brikker > li { flex: none; }
 .brikker-ramme::after { content: ""; position: absolute; top: 0; bottom: 0; right: -16px; width: 56px; pointer-events: none; background: linear-gradient(to right, rgba(255,255,255,0), #ffffff); }
 .brikke { flex: none; white-space: nowrap; font-size: 1rem; line-height: 1.25; min-height: 44px; padding: 8px 16px; border-radius: 1.625em; cursor: pointer;
   border: 1px solid var(--oransje-lys); background: var(--oransje-lys); color: var(--tekst); }
@@ -118,14 +119,18 @@ h1 { font-size: 30px; line-height: 38px; letter-spacing: -0.01em; }
 .spill { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
 .spill span { width: 56px; height: 56px; border-radius: 50%; background: #ffffff; border: 2px solid var(--tekst); display: flex; align-items: center; justify-content: center; }
 .lengde { position: absolute; left: 8px; bottom: 8px; background: var(--tekst); color: #ffffff; border-radius: 8px; padding: 2px 10px; font-size: 15px; line-height: 22px; }
-.kort--video .typelinje { margin-bottom: 4px; }
+.typelinje { margin-bottom: 4px; }
 
 /* Intervju */
 .intervju { background: #ffffff; border: 1px solid var(--grå-10); border-radius: 8px; }
 .intervju > a { display: block; padding: 12px; color: var(--tekst); text-decoration: none; }
 .intervju-topp { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center; margin-bottom: 12px; }
 .intervju-topp img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 8px; background: var(--grå-10); color: var(--tekst-dempet); font-size: 13px; }
-.merker { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+/* Stillingstittel og arbeidsgiver som vanlig tekst, ikke som merker, så de ikke ser ut som knapper */
+.intervju-navn, .intervju-stilling, .intervju-arbeidsgiver { display: block; }
+.intervju-navn { font-weight: 700; font-size: 16px; line-height: 24px; }
+.intervju-stilling, .intervju-arbeidsgiver { font-size: 15px; line-height: 22px; }
+.intervju-arbeidsgiver { color: var(--tekst-dempet); }
 .intervju blockquote { font-size: 18px; line-height: 27px; }
 .les-mer { display: inline-block; margin-top: 12px; font-size: 16px; line-height: 24px; text-decoration: underline; }
 
@@ -138,7 +143,6 @@ h1 { font-size: 30px; line-height: 38px; letter-spacing: -0.01em; }
 .lignende-navn span { text-decoration: underline; }
 .lignende-linje { font-size: 15px; line-height: 22px; }
 #lignende > h2 { margin-bottom: 8px; }
-#lignende > p { margin-bottom: 12px; }
 
 /* Veilederbanner */
 .veileder { margin-top: 16px; background: var(--veileder); color: #ffffff; border-radius: 8px; }
@@ -199,7 +203,6 @@ a.pill:not([href]) { display: none !important; }
   .lignende-liste a { gap: 8px; }
   .lignende-navn { font-size: 20px; line-height: 26px; }
   .lignende-linje { font-size: 16px; line-height: 24px; }
-  #lignende > p { margin-bottom: 16px; }
   .veileder { margin-top: 0; }
   .veileder > a { padding: 24px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
   .veileder img { flex: none; width: 88px; height: 88px; margin-bottom: 0; }
@@ -212,10 +215,15 @@ a.pill:not([href]) { display: none !important; }
   .bunnlenker { display: flex; flex-direction: column; gap: 4px; }
   .bunnlenker button { padding: 0; min-height: 0; }
 
+  /* Velg tema: én linje, chipsene som ikke får plass vises med «Vis flere» */
+  .velger { margin-bottom: 40px; }
+  .brikker { overflow-x: visible; margin: 0; padding: 0; }
+  .brikker.apen { flex-wrap: wrap; }
+  .brikker-ramme::after { display: none; }
+  .vis-flere { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 8px; border: none; background: none; font-size: 16px; line-height: 24px; white-space: nowrap; text-decoration: underline; cursor: pointer; }
+  .treff { margin-bottom: -40px; }
+
   /* Venstre kolonne */
-  .radioliste label { display: flex; align-items: flex-start; gap: 12px; min-height: 44px; padding: 6px 0; cursor: pointer; font-size: 16px; line-height: 24px; }
-  .radioliste input { width: 20px; height: 20px; flex-shrink: 0; margin: 3px 0 0; accent-color: var(--tekst); }
-  .vis-flere { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0; border: none; background: none; font-size: 16px; line-height: 24px; text-decoration: underline; cursor: pointer; }
   .legende-tittel { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
   .legende { display: flex; flex-direction: column; gap: 8px; }
   .legende li { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-radius: 8px; padding: 8px 12px; font-size: 15px; line-height: 22px; border: 1px solid; }
@@ -270,15 +278,9 @@ a.pill:not([href]) { display: none !important; }
     "status": "funnet", "kilde": "lenke fra yrkesintervjuet", "sjekket": "2026-10-27"
   },
   "intervju-kristian-utdanning": {
-    "maal": "Yrkesintervjuet med Kristian Grønnestad, ned til sitatet om hvordan det var å lære faget",
+    "maal": "Yrkesintervjuet med Kristian Grønnestad, ned til sitatet om fagprøven",
     "side": "https://utdanning.no/tema/yrkesintervju/elektriker", "anker": null,
-    "tekst": { "start": "Jeg husker spesielt at jeg syntes det var gøy" },
-    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen", "sjekket": "2026-10-27"
-  },
-  "intervju-kristian-lonn": {
-    "maal": "Yrkesintervjuet med Kristian Grønnestad, ned til sitatet om lønn i læretiden",
-    "side": "https://utdanning.no/tema/yrkesintervju/elektriker", "anker": null,
-    "tekst": { "start": "Man tjener også penger i læretiden", "slutt": "av full fagarbeiderlønn" },
+    "tekst": { "start": "Jeg tok fagprøven på et faktisk husprosjekt" },
     "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen", "sjekket": "2026-10-27"
   },
   "elektriker-lonn": {
@@ -367,26 +369,30 @@ a.pill:not([href]) { display: none !important; }
     </button>
   </form>
 
+  <div class="velger">
+    <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
+    <div class="brikker-ramme">
+      <ul class="brikker">
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(10)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="jobben" aria-pressed="false">Jobben <span data-antall="jobben">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="lonn" aria-pressed="false">Lønn <span data-antall="lonn">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="hvem" aria-pressed="false">Arbeidsmarked <span data-antall="hvem">(1)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="hvor" aria-pressed="false">Arbeidsplasser <span data-antall="hvor">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="lignende" aria-pressed="false">Lignende yrker <span data-antall="lignende">(4)</span></button></li>
+        <li class="vis-flere-plass bare-desktop" hidden>
+          <button type="button" class="vis-flere" aria-expanded="false">
+            <span>Vis flere</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
   <div class="oppsett">
 
     <aside class="sidekolonne bare-desktop">
-      <div>
-        <h2 class="etikett" style="margin-bottom:12px">Velg spørsmål</h2>
-        <ul class="radioliste">
-          <li><label><input type="radio" name="sporsmal" value="alle" checked> <span>Alle spørsmål <span class="meta" data-antall="alle">(11)</span></span></label></li>
-          <li><label><input type="radio" name="sporsmal" value="jobben"> <span>Hvordan er jobben? <span class="meta" data-antall="jobben">(3)</span></span></label></li>
-          <li><label><input type="radio" name="sporsmal" value="bli"> <span>Hvordan blir man elektriker? <span class="meta" data-antall="bli">(2)</span></span></label></li>
-          <li><label><input type="radio" name="sporsmal" value="lonn"> <span>Hva tjener elektrikere? <span class="meta" data-antall="lonn">(3)</span></span></label></li>
-          <li data-ekstra><label><input type="radio" name="sporsmal" value="hvem"> <span>Hvem jobber som elektriker? <span class="meta" data-antall="hvem">(1)</span></span></label></li>
-          <li data-ekstra><label><input type="radio" name="sporsmal" value="hvor"> <span>Hvor kan man jobbe? <span class="meta" data-antall="hvor">(2)</span></span></label></li>
-          <li data-ekstra><label><input type="radio" name="sporsmal" value="lignende"> <span>Hvilke yrker ligner? <span class="meta" data-antall="lignende">(4)</span></span></label></li>
-        </ul>
-        <button type="button" class="vis-flere" aria-expanded="false" hidden>
-          <span>Vis 3 spørsmål til</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
-        </button>
-      </div>
-
       <div>
         <h2 class="etikett legende-tittel">
           <span>Farger og ikoner</span>
@@ -415,24 +421,9 @@ a.pill:not([href]) { display: none !important; }
 
     <div class="resultater">
 
-      <div class="bare-mobil">
-        <h2 class="etikett" style="margin-bottom:8px">Velg spørsmål</h2>
-        <div class="brikker-ramme">
-          <ul class="brikker">
-            <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(11)</span></button></li>
-            <li><button type="button" class="brikke" data-velg="jobben" aria-pressed="false">Hvordan er jobben? <span data-antall="jobben">(3)</span></button></li>
-            <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Hvordan blir man elektriker? <span data-antall="bli">(2)</span></button></li>
-            <li><button type="button" class="brikke" data-velg="lonn" aria-pressed="false">Hva tjener elektrikere? <span data-antall="lonn">(3)</span></button></li>
-            <li><button type="button" class="brikke" data-velg="hvem" aria-pressed="false">Hvem jobber som elektriker? <span data-antall="hvem">(1)</span></button></li>
-            <li><button type="button" class="brikke" data-velg="hvor" aria-pressed="false">Hvor kan man jobbe? <span data-antall="hvor">(2)</span></button></li>
-            <li><button type="button" class="brikke" data-velg="lignende" aria-pressed="false">Hvilke yrker ligner? <span data-antall="lignende">(4)</span></button></li>
-          </ul>
-        </div>
-      </div>
-
-      <div>
+      <div class="treff">
         <h2 class="etikett">Søkeresultat</h2>
-        <p class="meta"><span data-antall-ingress>11</span> resultater om elektriker. Du søkte på et yrke, så vi starter med hvordan jobben er.</p>
+        <p class="meta"><span data-antall-ingress>10</span> resultater om elektriker.</p>
       </div>
 
       <!-- 1. Hvordan er jobben? -->
@@ -449,47 +440,50 @@ a.pill:not([href]) { display: none !important; }
               <p class="typelinje">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h13v12H3zM16 10l5-3v10l-5-3"/></svg>
                 <span>Video</span>
-                <span class="merke">Bli med på jobb</span>
               </p>
               <h3 class="korttittel"><a data-lenke="video-elektriker">Bli med en elektriker på jobb</a></h3>
-              <p class="brodtekst">Bli med elektrikeren Kristian på jobb og se noe av det han gjør!</p>
+              <p class="brodtekst">Se Kristian i arbeid.</p>
             </div>
           </li>
           <li class="kort kort--yrke kort--bilde" data-kort="yrke-elektriker">
             <a data-lenke="yrke-elektriker" aria-hidden="true" tabindex="-1"><img class="kortbilde" src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/elektriker.png?VersionId=1&amp;h=ab502919&amp;itok=w2O36mns" alt="Elektriker med gul hjelm og arbeidshansker som trekker oransje kabler i taket" width="738" height="484" loading="lazy" referrerpolicy="no-referrer"></a>
-            <div><h3 class="korttittel"><a data-lenke="yrke-elektriker">Elektriker</a></h3>
-            <p class="brodtekst smal">Elektrikere monterer, holder ved like og reparerer elektriske anlegg og elektrisk utstyr.</p></div>
+            <div>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="yrke-elektriker">Elektriker</a></h3>
+            <p class="brodtekst smal">Monterer, holder ved like og reparerer elektriske anlegg og utstyr.</p></div>
           </li>
           <li class="intervju" data-kort="intervju-lars">
             <a data-lenke="intervju-lars">
               <span class="intervju-topp">
                 <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/DSC01323.jpg?VersionId=3&amp;itok=kfURY355" alt="Lars Bjerknes i svart t-skjorte fra Alfred Nesset" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
                 <span>
-                  <span class="meta" style="display:block">Lars Bjerknes (27)</span>
-                  <span class="merker"><span class="merke">Elektriker</span><span class="merke">Alfred Nesset, Ålesund</span></span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Lars Bjerknes (27)</span>
+                  <span class="intervju-stilling">Elektriker</span>
+                  <span class="intervju-arbeidsgiver">Alfred Nesset, Ålesund</span>
                 </span>
               </span>
-              <blockquote>– Det jeg liker best er at jeg får styre dagene mine så mye selv. Jeg trives med det varierte arbeidet.</blockquote>
-              <span class="les-mer">Les hele intervjuet med Lars</span>
+              <blockquote>– Det jeg liker best er at jeg får styre dagene mine så mye selv.</blockquote>
+              <span class="les-mer">Les intervjuet</span>
             </a>
           </li>
         </ul>
       </section>
 
-      <!-- 2. Hvordan blir man elektriker? -->
+      <!-- 2. Hvordan blir du elektriker? -->
       <section class="gruppe" data-gruppe="bli" aria-labelledby="g-bli">
-        <h2 id="g-bli" class="seksjon">Hvordan blir man elektriker?</h2>
+        <h2 id="g-bli" class="seksjon">Hvordan blir du elektriker?</h2>
         <ul class="kortliste">
           <li class="kort kort--utdanning" data-kort="utdanning-elektrikerfaget">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
             <h3 class="korttittel"><a data-lenke="elektrikerfaget">Elektrikerfaget</a></h3>
             <div class="beskrivelse">
               <p class="brodtekst">Du lærer å installere, kontrollere, vedlikeholde og reparere elektriske systemer.</p>
-              <p class="brodtekst">Du må ha fullført grunnskole for å begynne på vg1.</p>
-              <p class="brodtekst">Fullført og bestått opplæring fører fram til fagbrev. Yrkestittel er elektriker.</p>
             </div>
             <dl class="fakta">
               <div><dt class="meta">Nivå</dt><dd class="faktaverdi">Videregående</dd></div>
               <div><dt class="meta">Løp</dt><dd class="faktaverdi">2 år på skole og 2,5 år i bedrift</dd></div>
+              <div><dt class="meta">Fører til</dt><dd class="faktaverdi">Fagbrev</dd></div>
             </dl>
           </li>
           <li class="intervju" data-kort="intervju-kristian-utdanning">
@@ -497,45 +491,36 @@ a.pill:not([href]) { display: none !important; }
               <span class="intervju-topp">
                 <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/artikkelbilde_medium/public/Elektriker_Christina_S%C3%A6tre_Lea_1.jpg?VersionId=3&amp;h=7fe98ef3&amp;itok=25jhjetD" alt="Kristian Grønnestad i arbeidsjakke, fotografert foran en murvegg" width="600" height="387" loading="lazy" referrerpolicy="no-referrer">
                 <span>
-                  <span class="meta" style="display:block">Kristian Grønnestad (26)</span>
-                  <span class="merker"><span class="merke">Elektriker</span><span class="merke">Svithun Elektro AS, Stavanger</span></span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Kristian Grønnestad (26)</span>
+                  <span class="intervju-stilling">Elektriker</span>
+                  <span class="intervju-arbeidsgiver">Svithun Elektro AS, Stavanger</span>
                 </span>
               </span>
-              <blockquote>– Jeg husker spesielt at jeg syntes det var gøy å se hvordan et hus gikk fra å være mørkt til å bli lyst. Man ser en konkret endring, og det man gjør har en tydelig effekt.</blockquote>
-              <span class="les-mer">Les hele intervjuet med Kristian</span>
+              <blockquote>– Jeg tok fagprøven på et faktisk husprosjekt, hvor jeg gjorde hele jobben fra A til Å.</blockquote>
+              <span class="les-mer">Les intervjuet</span>
             </a>
           </li>
         </ul>
       </section>
 
-      <!-- 3. Hva tjener elektrikere? -->
+      <!-- 3. Hva tjener en elektriker? -->
       <section class="gruppe" data-gruppe="lonn" aria-labelledby="g-lonn">
-        <h2 id="g-lonn" class="seksjon">Hva tjener elektrikere?</h2>
+        <h2 id="g-lonn" class="seksjon">Hva tjener en elektriker?</h2>
         <ul class="kortliste">
           <li class="kort kort--yrke" data-kort="elektriker-lonn">
-            <h3 class="korttittel"><a data-lenke="elektriker-lonn">Elektriker – lønn</a></h3>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="elektriker-lonn">Lønn</a></h3>
             <dl class="fakta">
               <div><dt class="meta">Vanlig årslønn</dt><dd class="faktaverdi">659 160 kr</dd></div>
-              <div><dt class="meta">Vanlig årslønn som lærling</dt><dd class="faktaverdi">282 480 kr</dd></div>
+              <div><dt class="meta">Som lærling</dt><dd class="faktaverdi">282 480 kr</dd></div>
             </dl>
             <p class="meta kilde">Kilde: Statistisk sentralbyrå 2026. Tallene er samlet inn oktober 2025. Vanlig årslønn er medianlønnen for hele yrkesgruppen.</p>
           </li>
           <li class="kort kort--verktoy" data-kort="sammenlign-lonn">
-            <h3 class="korttittel"><a data-lenke="sammenlign-lonn">Sammenlign lønn med andre yrker</a></h3>
-            <p class="brodtekst">Sett elektriker ved siden av et annet yrke og se lønn i samme tabell.</p>
-          </li>
-          <li class="intervju" data-kort="intervju-kristian-lonn">
-            <a data-lenke="intervju-kristian-lonn">
-              <span class="intervju-topp">
-                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/artikkelbilde_medium/public/Elektriker_Christina_S%C3%A6tre_Lea_1.jpg?VersionId=3&amp;h=7fe98ef3&amp;itok=25jhjetD" alt="Kristian Grønnestad i arbeidsjakke, fotografert foran en murvegg" width="600" height="387" loading="lazy" referrerpolicy="no-referrer">
-                <span>
-                  <span class="meta" style="display:block">Kristian Grønnestad (26)</span>
-                  <span class="merker"><span class="merke">Elektriker</span><span class="merke">Svithun Elektro AS, Stavanger</span></span>
-                </span>
-              </span>
-              <blockquote>– Man tjener også penger i læretiden. Det siste året som lærling ligger lønnen på rundt 80 prosent av full fagarbeiderlønn.</blockquote>
-              <span class="les-mer">Les hele intervjuet med Kristian</span>
-            </a>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="sammenlign-lonn">Sammenlign lønn</a></h3>
+            <p class="brodtekst">Sett elektriker opp mot et annet yrke i samme tabell.</p>
           </li>
         </ul>
       </section>
@@ -545,7 +530,8 @@ a.pill:not([href]) { display: none !important; }
         <h2 id="g-hvem" class="seksjon">Hvem jobber som elektriker?</h2>
         <ul class="kortliste">
           <li class="kort kort--verktoy" data-kort="arbeidsmarked">
-            <h3 class="korttittel"><a data-lenke="arbeidsmarked-elektriker">Elektriker i arbeidsmarkedet</a></h3>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="arbeidsmarked-elektriker">Arbeidsmarkedet</a></h3>
             <dl class="fakta">
               <div><dt class="meta">Ansatte</dt><dd class="faktaverdi">34 779</dd></div>
             </dl>
@@ -568,35 +554,37 @@ a.pill:not([href]) { display: none !important; }
             </ul>
             <p class="meta kilde">Kilde: Statistisk sentralbyrå, ansatte i yrket elektriker, oktober 2025, via utdanning.no.</p>
             <div class="handlinger">
-              <a class="pill" data-lenke="arbeidsmarked-elektriker">Sjekk ut jobbkartet</a>
+              <a class="pill" data-lenke="arbeidsmarked-elektriker">Se jobbkartet</a>
             </div>
           </li>
         </ul>
       </section>
 
-      <!-- 5. Hvor kan man jobbe? -->
+      <!-- 5. Hvor kan du jobbe? -->
       <section class="gruppe" data-gruppe="hvor" aria-labelledby="g-hvor">
-        <h2 id="g-hvor" class="seksjon">Hvor kan man jobbe?</h2>
+        <h2 id="g-hvor" class="seksjon">Hvor kan du jobbe?</h2>
         <ul class="kortliste">
           <li class="kort kort--yrke" data-kort="bedrifter">
-            <h3 class="korttittel"><a data-lenke="bedrifter-elektriker">Bedrifter med elektrikere</a></h3>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="bedrifter-elektriker">Bedrifter</a></h3>
             <dl class="fakta">
-              <div><dt class="meta">Bedrifter</dt><dd class="faktaverdi">3 269</dd></div>
+              <div><dt class="meta">Antall</dt><dd class="faktaverdi">3 269</dd></div>
               <div><dt class="meta">Årsverk</dt><dd class="faktaverdi">26 280</dd></div>
             </dl>
             <div class="handlinger">
-              <a class="pill" data-lenke="bedrifter-elektriker">Se bedrifter med elektrikere</a>
+              <a class="pill" data-lenke="bedrifter-elektriker">Se bedriftene</a>
             </div>
             <p class="meta kilde">Kilde: Nav (Aa-registeret), via utdanning.no.</p>
           </li>
           <li class="kort kort--verktoy" data-kort="finn-laerebedrift">
-            <h3 class="korttittel"><a data-lenke="finn-laerebedrift">Finn lærebedrift</a></h3>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="finn-laerebedrift">Lærebedrifter</a></h3>
             <dl class="fakta">
-              <div><dt class="meta">Godkjente lærebedrifter</dt><dd class="faktaverdi">1 506</dd></div>
+              <div><dt class="meta">Godkjente</dt><dd class="faktaverdi">1 506</dd></div>
               <div><dt class="meta">Med ledig læreplass</dt><dd class="faktaverdi">558</dd></div>
             </dl>
             <div class="handlinger">
-              <a class="pill" data-lenke="finn-laerebedrift">Finn lærebedrift i elektrikerfaget</a>
+              <a class="pill" data-lenke="finn-laerebedrift">Finn lærebedrift</a>
             </div>
             <p class="meta kilde">Kilde: Vigo, via Finn lærebedrift på utdanning.no. Tallene oppdateres hver natt og ble hentet 27. oktober 2026.</p>
           </li>
@@ -606,7 +594,6 @@ a.pill:not([href]) { display: none !important; }
       <!-- 6. Hvilke yrker ligner? (telles ikke med i «Alle») -->
       <section class="gruppe" id="lignende" data-gruppe="lignende" aria-labelledby="g-lignende">
         <h2 id="g-lignende" class="seksjon">Hvilke yrker ligner?</h2>
-        <p class="meta">Trykk på et yrke for å se hva vi har om det.</p>
         <ul class="lignende-liste">
           <li data-yrke="automatiker"><a data-lenke="sok-automatiker">
             <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/automatiker_0.jpg?VersionId=1&amp;h=1389ae57&amp;itok=P_u-ZmE6" alt="Automatiker i oransje kjeledress og hjelm som arbeider med kabler i et industrianlegg" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
@@ -626,7 +613,7 @@ a.pill:not([href]) { display: none !important; }
           <li data-yrke="elektroingenior"><a data-lenke="sok-elektroingenior-y-veien">
             <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/magasin/public/yrker/thinkstockphotos-453304897.jpg?VersionId=1&amp;h=0d92b08a&amp;itok=t-A3h8wo" alt="Person i arbeidsklær med refleks og hansker som kobler ledninger i taket" width="280" height="180" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Elektroingeniør via y-veien</span></span>
-            <span class="lignende-linje">Planlegger anleggene andre bygger. Y-veien tar deg dit med fagbrev i bunn.</span>
+            <span class="lignende-linje">Planlegger anleggene andre bygger. Du kommer inn med fagbrev.</span>
           </a></li>
         </ul>
       </section>
@@ -637,7 +624,7 @@ a.pill:not([href]) { display: none !important; }
           <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
           <span class="veileder-tekst" style="display:block">
             <h2 id="g-veileder">Snakk med en veileder</h2>
-            <p class="brodtekst">Du kan snakke med en karriereveileder gratis og anonymt på Karriereveiledning.no, eller sette opp et møte på et karrieresenter.</p>
+            <p class="brodtekst">Gratis og anonymt, på nett eller på et karrieresenter.</p>
           </span>
           <span class="pill">Gå til Karriereveiledning.no</span>
         </a>
@@ -713,36 +700,60 @@ a.pill:not([href]) { display: none !important; }
   var ingress = document.querySelector('[data-antall-ingress]');
   if (ingress && ingress.textContent !== String(antall.alle)) { console.warn('Antall i ingressen stemmer ikke'); ingress.textContent = antall.alle; }
 
-  // ---------- Velg spørsmål ----------
+  // ---------- Velg tema ----------
   var NOKKEL = 'elektriker:gruppe';
   var brikker = document.querySelectorAll('[data-velg]');
-  var radioer = document.querySelectorAll('input[name="sporsmal"]');
-  var visFlere = document.querySelector('.vis-flere');
-  var ekstra = document.querySelectorAll('[data-ekstra]');
-  var apent = false;
 
   function lagre(id) { try { sessionStorage.setItem(NOKKEL, id); } catch (e) {} }
   function hent() { try { return sessionStorage.getItem(NOKKEL); } catch (e) { return null; } }
 
-  function settApent(verdi) {
-    apent = verdi;
-    ekstra.forEach(function (li) { li.hidden = !apent; });
-    visFlere.setAttribute('aria-expanded', String(apent));
-    visFlere.querySelector('span').textContent = apent ? 'Vis færre spørsmål' : 'Vis ' + ekstra.length + ' spørsmål til';
-    visFlere.querySelector('path').setAttribute('d', apent ? 'M5 15l7-7 7 7' : 'M5 9l7 7 7-7');
+  // På desktop vises chipsene på én linje. De som ikke får plass, skjules bak «Vis flere».
+  var desktop = window.matchMedia('(min-width: 768px)');
+  var rad = document.querySelector('.brikker');
+  var flereLi = rad.querySelector('.vis-flere-plass');
+  var flere = flereLi.querySelector('button');
+  var chipLi = Array.prototype.filter.call(rad.children, function (li) { return li !== flereLi; });
+  var apen = false;
+
+  function settTekst(tekst, opp) {
+    flere.querySelector('span').textContent = tekst;
+    flere.querySelector('path').setAttribute('d', opp ? 'M5 15l7-7 7 7' : 'M5 9l7 7 7-7');
   }
+
+  function tilpass() {
+    chipLi.forEach(function (li) { li.hidden = false; });
+    rad.classList.toggle('apen', apen);
+    flere.setAttribute('aria-expanded', String(apen));
+    flereLi.hidden = !desktop.matches;
+    if (!desktop.matches) return;
+    if (apen) { settTekst('Vis færre', true); return; }
+    var gap = parseFloat(getComputedStyle(rad).columnGap) || 0;
+    var bredder = chipLi.map(function (li) { return li.offsetWidth; });
+    var sum = bredder.reduce(function (a, b) { return a + b; }, 0) + gap * (chipLi.length - 1);
+    if (sum <= rad.clientWidth) { flereLi.hidden = true; return; }
+    settTekst('Vis ' + chipLi.length + ' spørsmål til', false);
+    var plass = rad.clientWidth - flereLi.offsetWidth - gap;
+    var brukt = 0, skjult = 0;
+    chipLi.forEach(function (li, i) {
+      var b = bredder[i] + (i ? gap : 0);
+      if (skjult || brukt + b > plass) { li.hidden = true; skjult++; } else { brukt += b; }
+    });
+    settTekst('Vis ' + skjult + ' spørsmål til', false);
+  }
+
+  flere.addEventListener('click', function () { apen = !apen; tilpass(); });
+  window.addEventListener('resize', tilpass);
+  if (document.fonts) document.fonts.ready.then(tilpass);
+  tilpass();
 
   function velg(id, rull) {
     if (id !== 'alle' && !document.querySelector('[data-gruppe="' + id + '"]')) id = 'alle';
     grupper.forEach(function (g) { g.hidden = !(id === 'alle' || g.getAttribute('data-gruppe') === id); });
     brikker.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-velg') === id)); });
-    radioer.forEach(function (r) { r.checked = r.value === id; });
-    var valgtEkstra = Array.prototype.some.call(ekstra, function (li) { return li.querySelector('input').value === id; });
-    if (valgtEkstra && !apent) settApent(true);
     // Sørg for at valgt chip synes i den vannrette raden (for eksempel etter Tilbake)
     var chip = document.querySelector('[data-velg="' + id + '"]');
-    var rad = chip && chip.closest('.brikker');
-    if (rad && rull !== false) rad.scrollLeft = Math.max(0, chip.offsetLeft - rad.offsetLeft - 16);
+    if (chip.parentNode.hidden) { apen = true; tilpass(); }
+    if (rull !== false) rad.scrollLeft = Math.max(0, chip.offsetLeft - rad.offsetLeft - 16);
     return id;
   }
 
@@ -754,13 +765,6 @@ a.pill:not([href]) { display: none !important; }
       lagre(av ? velg('alle', false) : velg(id));
     });
   });
-  radioer.forEach(function (r) {
-    r.addEventListener('change', function () { if (r.checked) lagre(velg(r.value)); });
-  });
-  visFlere.hidden = false;
-  visFlere.addEventListener('click', function () { settApent(!apent); });
-
-  settApent(false);
   velg(hent() || 'alle');
   window.addEventListener('pageshow', function (e) { if (e.persisted) velg(hent() || 'alle'); });
 })();
