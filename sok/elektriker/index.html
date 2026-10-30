@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>elektriker – Søk | utdanning.no</title>
+<link rel="stylesheet" href="../felles.css">
+</head>
+<body data-yrke="elektriker">
+
+<!--
+  LENKER
+  Alle adresser ligger her. Siden bygger href ut fra «side», «anker» og «tekst».
+  - side: adressen til målsiden (uten #anker), eller null hvis lenken mangler.
+  - anker: id på målsiden som det skal hoppes til, eller null.
+  - tekst: tekstfragment som utheves, { "start": "...", "slutt": "..." } (slutt er valgfri), eller null.
+  - status: "funnet" (funnet og sjekket av Claude), "manuell" (lagt inn av et menneske, skal aldri endres), "mangler".
+  Kjør `node scripts/sjekk-lenker.mjs` etter endringer.
+-->
+<script type="application/json" id="lenker">
+{
+  "video-elektriker": {
+    "maal": "Yrkesvideoen om elektriker, seksjonen «Bli med en elektriker på jobb» på yrkesbeskrivelsen",
+    "side": "https://utdanning.no/yrker/beskrivelse/elektriker", "anker": "yrke-videoer",
+    "tekst": null,
+    "status": "manuell", "kilde": "oppgitt av Niels (div-id)", "sjekket": "2026-10-28"
+  },
+  "yrke-elektriker": {
+    "maal": "Yrkesbeskrivelsen for elektriker",
+    "side": "https://utdanning.no/yrker/beskrivelse/elektriker", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søk på utdanning.no", "sjekket": "2026-10-27"
+  },
+  "intervju-lars": {
+    "maal": "Yrkesintervjuet med Lars Bjerknes, ned til sitatet i kortet",
+    "side": "https://utdanning.no/tema/yrkesintervju/elektriker_0", "anker": null,
+    "tekst": { "start": "Elektrikere kan jobbe med bolig" },
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen", "sjekket": "2026-10-27"
+  },
+  "elektrikerfaget": {
+    "maal": "Utdanningsbeskrivelsen for elektrikerfaget, videregående",
+    "side": "https://utdanning.no/utdanning/vgs/elele3----", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra yrkesintervjuet", "sjekket": "2026-10-27"
+  },
+  "vg1-elektro": {
+    "maal": "Utdanningsbeskrivelsen for Vg1 Elektro og datateknologi, der du kan velge fylke og finne skoler",
+    "side": "https://utdanning.no/utdanning/vgs/elele1----", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen («Finn lærested») og utdanningsløpet", "sjekket": "2026-10-30"
+  },
+  "elektrikerfaget-taf": {
+    "maal": "Utdanningsbeskrivelsen for Elektrikerfaget, yrkes- og studiekompetanse, 4-årig (TAF)",
+    "side": "https://utdanning.no/utdanning/vgs/elele3p---", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Andre varianter» på utdanningsbeskrivelsen for elektrikerfaget", "sjekket": "2026-10-30"
+  },
+  "praksiskandidat": {
+    "maal": "Temasiden om praksiskandidat (fagbrev for voksne med arbeidserfaring)",
+    "side": "https://utdanning.no/tema/videregaende_voksne/praksiskandidat", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Ta fagbrev som voksen» på utdanningsbeskrivelsen for elektrikerfaget", "sjekket": "2026-10-30"
+  },
+  "artikkel-fagskole": {
+    "maal": "Temasiden om fagskole på utdanning.no",
+    "side": "https://utdanning.no/tema/utdanning/fagskole", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "hovedmenyen på utdanning.no", "sjekket": "2026-10-30"
+  },
+  "artikkel-y-veien": {
+    "maal": "Temasiden om y-veien på utdanning.no",
+    "side": "https://utdanning.no/tema/yrkesfag_universitet_og_hogskole/y-veien", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra Vg1 Elektro og datateknologi", "sjekket": "2026-10-30"
+  },
+  "muligheter-med-yrkesfag": {
+    "maal": "Verktøyet «Hva kan du bli med yrkesfag?», der du velger utdanningsprogram og sted",
+    "side": "https://utdanning.no/muligheter-med-yrkesfag", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no", "sjekket": "2026-10-30"
+  },
+  "forslag-utdanninger-yrker": {
+    "maal": "KI-verktøyet «Få forslag til utdanninger og yrker» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/fa-forslag-til-utdanninger-yrker", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (lenken der er avkuttet, så parameteren er fjernet)", "sjekket": "2026-10-30"
+  },
+  "jobbkompasset": {
+    "maal": "Jobbkompasset på utdanning.no",
+    "side": "https://utdanning.no/jobbkompasset/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no", "sjekket": "2026-10-30"
+  },
+  "utdanningskompasset": {
+    "maal": "Utdanningskompasset på utdanning.no",
+    "side": "https://utdanning.no/utdanningskompasset/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no", "sjekket": "2026-10-30"
+  },
+  "intervju-kristian-utdanning": {
+    "maal": "Yrkesintervjuet med Kristian Grønnestad, ned til sitatet om fagprøven",
+    "side": "https://utdanning.no/tema/yrkesintervju/elektriker", "anker": null,
+    "tekst": { "start": "Jeg tok fagprøven på et faktisk husprosjekt" },
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen", "sjekket": "2026-10-27"
+  },
+  "elektriker-lonn": {
+    "maal": "Yrkesbeskrivelsen for elektriker, delen om lønn",
+    "side": "https://utdanning.no/yrker/beskrivelse/elektriker", "anker": "lonn-div",
+    "tekst": { "start": "659 160" },
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, id på siden", "sjekket": "2026-10-27"
+  },
+  "sammenlign-lonn": {
+    "maal": "Verktøyet for å sammenligne yrker, med elektriker forhåndsvalgt",
+    "side": "https://sammenlign.utdanning.no/sammenligne/yrke#y_elektriker", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen", "sjekket": "2026-10-27"
+  },
+  "arbeidsmarked-tall": {
+    "maal": "Tallene bak arbeidsmarkedskortet (SSB, oktober 2025): lønnsdelen på yrkesbeskrivelsen, der filteret viser sektor, kjønn og antall personer",
+    "side": "https://utdanning.no/yrker/beskrivelse/elektriker", "anker": "lonn-div", "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen, «Vis filter» i lønnsdelen", "sjekket": "2026-10-30"
+  },
+  "jobbkartet": {
+    "maal": "Jobbkartet for elektriker, antall personer i yrket etter fylke og kommune",
+    "side": "https://utdanning.no/jobbkartet/y_elektriker/antall_personer/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap for Jobbkartet", "sjekket": "2026-10-30"
+  },
+  "bedrifter-elektriker": {
+    "maal": "Oversikten over bedrifter som har elektrikere",
+    "side": "https://utdanning.no/yrker/beskrivelse/elektriker", "anker": "bedrifter",
+    "tekst": null,
+    "status": "manuell", "kilde": "oppgitt av Niels (id)", "sjekket": "2026-10-30"
+  },
+  "finn-laerebedrift": {
+    "maal": "Oversikten over godkjente lærebedrifter i elektrikerfaget",
+    "side": "https://utdanning.no/finnlarebedrift/resultat/fag:elektrikerfaget-elele3", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen", "sjekket": "2026-10-27"
+  },
+  "sok-automatiker": {
+    "maal": "Søkeresultatsiden på utdanning.no for «automatiker»",
+    "side": "https://utdanning.no/sok/#query_value=automatiker", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no", "sjekket": "2026-10-27"
+  },
+  "sok-energimontor": {
+    "maal": "Søkeresultatsiden på utdanning.no for «energimontør»",
+    "side": "https://utdanning.no/sok/#query_value=energimont%C3%B8r", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no", "sjekket": "2026-10-27"
+  },
+  "sok-heismontor": {
+    "maal": "Søkeresultatsiden på utdanning.no for «heismontør»",
+    "side": "https://utdanning.no/sok/#query_value=heismont%C3%B8r", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no", "sjekket": "2026-10-27"
+  },
+  "sok-elektroingenior-y-veien": {
+    "maal": "Søkeresultatsiden på utdanning.no for «elektroingeniør y-veien»",
+    "side": "https://utdanning.no/sok/#query_value=elektroingeni%C3%B8r%20y-veien", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no", "sjekket": "2026-10-27"
+  },
+  "chat-veileder": {
+    "maal": "Forsiden til Karriereveiledning.no",
+    "side": "https://karriereveiledning.no/", "anker": null, "tekst": null,
+    "status": "manuell", "kilde": "bestemt av Niels", "sjekket": "2026-10-27"
+  }
+}
+</script>
+
+<header class="topp">
+  <div>
+    <a href="../../" class="logolenke"><svg class="logo" viewBox="0 0 812.9 99.2" role="img" aria-label="Utdanning.no"><g transform="translate(-12.9,-75.2)" fill="#EE7B1A"><path d="m 59.7,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,22.3 -14.2,30.6 -32.1,30.6 -18,0 -32.1,-8.3 -32.1,-30.6 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,10.4 5.5,15.4 14.7,15.4 9.2,0 14.7,-4.9 14.7,-15.4 z"/><path d="m 148.2,75.9 c 3.7,0 5.5,4 5.5,7.8 0,4.1 -2,7.9 -5.5,7.9 h -19.5 v 76.5 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 91.6 H 91.7 c -3.5,0 -5.5,-3.6 -5.5,-7.9 0,-3.7 1.7,-7.8 5.5,-7.8 z"/><path d="m 193.4,75.9 c 17.6,0 31.4,8.3 31.4,30.6 V 143 c 0,22.3 -13.8,30.6 -31.4,30.6 h -23.6 c -4.5,0 -7.6,-2.5 -7.6,-5.3 v -87 c 0,-2.8 3.1,-5.4 7.6,-5.4 z m -13.9,15.2 v 67.2 h 13.9 c 8.8,0 14,-4.9 14,-15.4 V 106.4 C 207.4,96 202.2,91 193.4,91 h -13.9 z"/><path d="m 230.9,166.4 c 0,-0.3 0.1,-0.8 0.3,-1.3 l 25.8,-84 c 1.2,-4 6.1,-5.9 11.1,-5.9 5.1,0 10,1.9 11.2,5.9 l 25.8,84 c 0.1,0.5 0.3,0.9 0.3,1.3 0,4.1 -6.3,7.2 -10.9,7.2 -2.9,0 -5.2,-0.9 -5.9,-3.5 l -5.1,-17.8 h -30.6 l -5.1,17.8 c -0.7,2.5 -2.9,3.5 -5.9,3.5 -4.8,0 -11,-3 -11,-7.2 z m 48.7,-27.7 -11.6,-41 -11.6,41 z"/><path d="m 359.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 L 361,134.9 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 440.4,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 475.1,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 z"/><path d="m 554.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 618.6,91.1 c -8.9,0 -14,5 -14,15.4 v 37.3 c 0,10.4 5.1,15.4 13.9,15.4 8.7,0 14,-4.9 14,-15.4 v -7.9 h -10.8 c -3.5,0 -5.3,-3.3 -5.3,-6.8 0,-3.3 1.9,-6.8 5.3,-6.8 h 22.7 c 3.5,0 5.5,2.7 5.5,5.6 v 15.9 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.3,-8.3 -31.3,-30.6 v -37.3 c 0,-22.3 13.8,-30.6 30.7,-30.6 18.4,0 31.9,9.6 31.9,25.7 0,6.7 -2.9,8.3 -8.7,8.3 -4.7,0 -8.5,-1.3 -8.7,-5.5 -0.3,-6.3 -2.4,-13.3 -13.8,-13.3 z"/><path d="m 675.4,165.3 c 0,4.8 -4.1,9.1 -9,9.1 -5.2,0 -9.1,-4.3 -9.1,-9.1 0,-4.9 3.9,-9.1 9.1,-9.1 4.9,0 9,4.1 9,9.1 z"/><path d="m 731.5,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 763.2,143.8 v -37.3 c 0,-22.3 13.6,-30.6 31.2,-30.6 17.6,0 31.4,8.3 31.4,30.6 v 37.3 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.2,-8.3 -31.2,-30.6 z m 45.2,-37.3 c 0,-10.6 -5.3,-15.4 -14,-15.4 -8.8,0 -13.9,4.8 -13.9,15.4 v 37.3 c 0,10.6 5.1,15.4 13.9,15.4 8.7,0 14,-4.8 14,-15.4 z"/></g></svg></a>
+    <p class="slagord">Offentlig og kvalitetssikret</p>
+  </div>
+  <div class="topp-knapper">
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Min side
+    </button>
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Meny
+    </button>
+    <button type="button" class="meny-rund bare-mobil" aria-label="Åpne meny">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <h1>Søk etter yrker, utdanning og innhold</h1>
+
+  <form class="sok" role="search" onsubmit="return false">
+    <label for="sok" class="skjult">Søk etter yrker, utdanning og innhold</label>
+    <input id="sok" type="search" value="elektriker" readonly>
+    <button type="button" aria-label="Søk">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+    </button>
+  </form>
+
+  <div class="velger">
+    <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
+    <div class="brikker-ramme">
+      <ul class="brikker">
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(14)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="lonn" aria-pressed="false">Lønn <span data-antall="lonn">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="jobben" aria-pressed="false">Arbeidsoppgaver <span data-antall="jobben">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="hvem" aria-pressed="false">Arbeidsmarked <span data-antall="hvem">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="hvor" aria-pressed="false">Arbeidsplasser <span data-antall="hvor">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="etterpa" aria-pressed="false">Videre muligheter <span data-antall="etterpa">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="utforsk" aria-pressed="false">Utforsk <span data-antall="utforsk">(4)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="lignende" aria-pressed="false">Lignende yrker <span data-antall="lignende">(4)</span></button></li>
+        <li class="vis-flere-plass bare-desktop" hidden>
+          <button type="button" class="vis-flere" aria-expanded="false">
+            <span>Vis flere</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="oppsett">
+
+    <aside class="sidekolonne bare-desktop">
+      <div>
+        <h2 class="etikett legende-tittel">
+          <span>Farger og ikoner</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </h2>
+        <ul class="legende">
+          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+        </ul>
+      </div>
+
+      <div>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+          Del søk
+        </button>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"/></svg>
+          Lagre søk
+        </button>
+      </div>
+    </aside>
+
+    <div class="resultater">
+
+      <div class="treff">
+        <h2 class="etikett">Søkeresultat</h2>
+        <p class="meta"><span data-antall-ingress>14</span> resultater om elektriker.<span data-tolkning hidden></span></p>
+      </div>
+
+      <!-- 1. Hvordan blir du elektriker? -->
+      <section class="gruppe" data-gruppe="bli" data-tema="hvordan du blir elektriker" aria-labelledby="g-bli">
+        <h2 id="g-bli" class="seksjon">Hvordan blir du elektriker?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--utdanning" data-kort="veier-inn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel">Veier inn i yrket</h3>
+            <div class="vei">
+              <h4 class="vei-tittel">Fra ungdomsskolen</h4>
+              <ol class="steg">
+                <li>Vg1 Elektro og datateknologi</li>
+                <li>Vg2 Elenergi og ekom</li>
+                <li>2,5 år i lære</li>
+                <li>Fagbrev</li>
+              </ol>
+              <a class="pill" data-lenke="vg1-elektro">Finn skoler i ditt fylke</a>
+            </div>
+            <div class="vei" data-ekstra hidden>
+              <h4 class="vei-tittel">Med studiekompetanse</h4>
+              <p class="brodtekst">En 4-årig variant der du får både fagbrev og studiekompetanse.</p>
+              <a class="vei-lenke" data-lenke="elektrikerfaget-taf">Les om den 4-årige varianten</a>
+            </div>
+            <div class="vei" data-ekstra hidden>
+              <h4 class="vei-tittel">Som voksen med arbeidserfaring</h4>
+              <p class="brodtekst">Har du jobbet i fem år eller mer med oppgaver fra læreplanen, kan du ta fagbrev som praksiskandidat.</p>
+              <a class="vei-lenke" data-lenke="praksiskandidat">Les om praksiskandidat</a>
+            </div>
+            <button type="button" class="se-mer" aria-expanded="false">Se andre veier (2)</button>
+          </li>
+          <li class="kort kort--utdanning" data-kort="utdanning-elektrikerfaget">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="elektrikerfaget">Elektrikerfaget</a></h3>
+            <div class="beskrivelse">
+              <p class="brodtekst">Du lærer å installere, kontrollere, vedlikeholde og reparere elektriske systemer.</p>
+            </div>
+            <dl class="fakta">
+              <div><dt class="meta">Nivå</dt><dd class="faktaverdi">Videregående</dd></div>
+              <div><dt class="meta">Fører til</dt><dd class="faktaverdi">Fagbrev</dd></div>
+            </dl>
+          </li>
+          <li class="intervju" data-kort="intervju-kristian-utdanning">
+            <a data-lenke="intervju-kristian-utdanning">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/artikkelbilde_medium/public/Elektriker_Christina_S%C3%A6tre_Lea_1.jpg?VersionId=3&amp;h=7fe98ef3&amp;itok=25jhjetD" alt="Kristian Grønnestad i arbeidsjakke, fotografert foran en murvegg" width="600" height="387" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Kristian Grønnestad (26)</span>
+                  <span class="intervju-stilling">Elektriker</span>
+                  <span class="intervju-arbeidsgiver">Svithun Elektro AS, Stavanger</span>
+                </span>
+              </span>
+              <blockquote>– Jeg tok fagprøven på et faktisk husprosjekt, hvor jeg gjorde hele jobben fra A til Å.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 2. Hva tjener en elektriker? -->
+      <section class="gruppe" data-gruppe="lonn" data-tema="lønn" aria-labelledby="g-lonn">
+        <h2 id="g-lonn" class="seksjon">Hva tjener en elektriker?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke" data-kort="elektriker-lonn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="elektriker-lonn">Lønn</a></h3>
+            <dl class="fakta">
+              <div><dt class="meta">Vanlig årslønn</dt><dd class="faktaverdi">659 160 kr</dd></div>
+              <div><dt class="meta">Som lærling</dt><dd class="faktaverdi">282 480 kr</dd></div>
+            </dl>
+            <p class="meta kilde">Kilde: Statistisk sentralbyrå 2026. Tallene er samlet inn oktober 2025. Vanlig årslønn er medianlønnen for hele yrkesgruppen.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="sammenlign-lonn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="sammenlign-lonn">Sammenlign lønn</a></h3>
+            <p class="brodtekst">Sett elektriker opp mot et annet yrke i samme tabell.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 3. Hva er arbeidsoppgavene? -->
+      <section class="gruppe" data-gruppe="jobben" data-tema="arbeidsoppgavene" aria-labelledby="g-jobben">
+        <h2 id="g-jobben" class="seksjon">Hva er arbeidsoppgavene?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke kort--bilde" data-kort="yrke-elektriker">
+            <a data-lenke="yrke-elektriker" aria-hidden="true" tabindex="-1"><img class="kortbilde" src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/elektriker.png?VersionId=1&amp;h=ab502919&amp;itok=w2O36mns" alt="Elektriker med gul hjelm og arbeidshansker som trekker oransje kabler i taket" width="738" height="484" loading="lazy" referrerpolicy="no-referrer"></a>
+            <div>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="yrke-elektriker">Elektriker</a></h3>
+            <p class="brodtekst smal">Monterer, holder ved like og reparerer elektriske anlegg og utstyr.</p></div>
+          </li>
+          <li class="kort kort--yrke kort--video" data-kort="video-elektriker">
+            <a class="videobilde" data-lenke="video-elektriker" aria-hidden="true" tabindex="-1">
+              <img src="https://i.vimeocdn.com/video/2135340232-8cabf67a1b4429139e7fd82d3497c1c59d7b7a3b417b3885a9f8064f7b2bcedb-d_1280?region=us" alt="Kristian fester en kabel i taket med en hammer" width="1280" height="720" referrerpolicy="no-referrer">
+              <span class="spill"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="#333333" aria-hidden="true"><path d="M9 6l10 6-10 6z"/></svg></span></span>
+              <span class="lengde">2:09</span>
+            </a>
+            <div>
+              <p class="typelinje">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h13v12H3zM16 10l5-3v10l-5-3"/></svg>
+                <span>Video</span>
+              </p>
+              <h3 class="korttittel"><a data-lenke="video-elektriker">Bli med en elektriker på jobb</a></h3>
+              <p class="brodtekst">Se Kristian i arbeid.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 4. Hvem jobber som elektriker? -->
+      <section class="gruppe" data-gruppe="hvem" data-tema="hvem som jobber som elektriker" aria-labelledby="g-hvem">
+        <h2 id="g-hvem" class="seksjon">Hvem jobber som elektriker?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="arbeidsmarked">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="arbeidsmarked-tall">Arbeidsmarkedet</a></h3>
+            <dl class="fakta">
+              <div><dt class="meta">Ansatte</dt><dd class="faktaverdi">34 779</dd></div>
+            </dl>
+            <ul class="fordelinger">
+              <li>
+                <p class="etikett">Sektor</p>
+                <p class="fordeling-tekst">97 % privat sektor, 3 % offentlig sektor</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:97.2%"></span><span style="width:2.8%"></span></span>
+              </li>
+              <li>
+                <p class="etikett">Arbeidstid</p>
+                <p class="fordeling-tekst">90 % heltid, 10 % deltid</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:90.4%"></span><span style="width:9.6%"></span></span>
+              </li>
+              <li>
+                <p class="etikett">Kjønn</p>
+                <p class="fordeling-tekst">96 % menn, 4 % kvinner</p>
+                <span class="stolpe" aria-hidden="true"><span style="width:96.2%"></span><span style="width:3.8%"></span></span>
+              </li>
+            </ul>
+            <p class="meta kilde">Kilde: Statistisk sentralbyrå, ansatte i yrket elektriker, oktober 2025, via utdanning.no.</p>
+            <div class="handlinger">
+              <a class="pill" data-lenke="arbeidsmarked-tall">Se tallene fordelt på kjønn og sektor</a>
+            </div>
+          </li>
+          <li class="kort kort--verktoy" data-kort="jobbkartet">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="jobbkartet">Jobbkartet</a></h3>
+            <p class="brodtekst">Se hvor mange elektrikere som jobber i ditt fylke eller din kommune.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 5. Hvor kan du jobbe? -->
+      <section class="gruppe" data-gruppe="hvor" data-tema="hvor du kan jobbe" aria-labelledby="g-hvor">
+        <h2 id="g-hvor" class="seksjon">Hvor kan du jobbe?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke" data-kort="bedrifter">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="bedrifter-elektriker">Bedrifter</a></h3>
+            <dl class="fakta">
+              <div><dt class="meta">Antall</dt><dd class="faktaverdi">3 303</dd></div>
+              <div><dt class="meta">Årsverk</dt><dd class="faktaverdi">26 598</dd></div>
+            </dl>
+            <div class="handlinger">
+              <a class="pill" data-lenke="bedrifter-elektriker">Se bedrifter i din kommune</a>
+            </div>
+            <p class="meta kilde">Kilde: Nav (Aa-registeret), via utdanning.no. Tallene gjelder hele landet.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="finn-laerebedrift">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="finn-laerebedrift">Lærebedrifter</a></h3>
+            <dl class="fakta">
+              <div><dt class="meta">Godkjente</dt><dd class="faktaverdi">1 506</dd></div>
+              <div><dt class="meta">Med ledig læreplass</dt><dd class="faktaverdi">558</dd></div>
+            </dl>
+            <div class="handlinger">
+              <a class="pill" data-lenke="finn-laerebedrift">Finn lærebedrifter i din kommune</a>
+            </div>
+            <p class="meta kilde">Kilde: Vigo, via Finn lærebedrift på utdanning.no. Tallene oppdateres hver natt.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 6. Hva kan du gjøre etterpå? -->
+      <section class="gruppe" data-gruppe="etterpa" data-tema="videre muligheter" aria-labelledby="g-etterpa">
+        <h2 id="g-etterpa" class="seksjon">Hva kan du gjøre etterpå?</h2>
+        <ul class="kortliste">
+          <li class="intervju" data-kort="intervju-lars">
+            <a data-lenke="intervju-lars">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/DSC01323.jpg?VersionId=3&amp;itok=kfURY355" alt="Lars Bjerknes i svart t-skjorte fra Alfred Nesset" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Lars Bjerknes (27)</span>
+                  <span class="intervju-stilling">Elektriker</span>
+                  <span class="intervju-arbeidsgiver">Alfred Nesset, Ålesund</span>
+                </span>
+              </span>
+              <blockquote>– Elektrikere kan jobbe med bolig, næringsbygg, industri, offshore, båter, fly, utebelysning og mer.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+          <li class="kort kort--artikkel" data-kort="artikkel-fagskole">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="artikkel-fagskole">Fagskole</a></h3>
+            <p class="brodtekst">Høyere yrkesfaglig utdanning, på nivået over videregående.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="artikkel-y-veien">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="artikkel-y-veien">Y-veien</a></h3>
+            <p class="brodtekst">Kom inn på høyere utdanning med yrkesfag fra videregående.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 7. Vil du utforske andre muligheter? (telles ikke med i «Alle», verktøyene handler ikke om elektriker) -->
+      <section class="gruppe" data-gruppe="utforsk" data-tema="andre muligheter" aria-labelledby="g-utforsk">
+        <h2 id="g-utforsk" class="seksjon">Vil du utforske andre muligheter?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="muligheter-med-yrkesfag">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="muligheter-med-yrkesfag">Muligheter med yrkesfag</a></h3>
+            <p class="brodtekst">Velg utdanningsprogram og sted, og se hvilke yrker du kan bli.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="forslag-utdanninger-yrker">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="forslag-utdanninger-yrker">Få forslag til utdanninger og yrker</a></h3>
+            <p class="brodtekst">Svar på spørsmål om interessene dine, og få forslag.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="jobbkompasset" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="jobbkompasset">Jobbkompasset</a></h3>
+            <p class="brodtekst">Få inspirasjon til hvilke jobber som kan passe for deg.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="utdanningskompasset" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="utdanningskompasset">Utdanningskompasset</a></h3>
+            <p class="brodtekst">Få inspirasjon til hvilke utdanninger du kan velge mellom.</p>
+          </li>
+        </ul>
+        <button type="button" class="pill se-mer" aria-expanded="false">Se mer</button>
+      </section>
+
+      <!-- 8. Hvilke yrker ligner? (telles ikke med i «Alle») -->
+      <section class="gruppe" id="lignende" data-gruppe="lignende" data-tema="lignende yrker" aria-labelledby="g-lignende">
+        <h2 id="g-lignende" class="seksjon">Hvilke yrker ligner?</h2>
+        <ul class="lignende-liste">
+          <li data-yrke="automatiker"><a data-lenke="sok-automatiker">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/automatiker_0.jpg?VersionId=1&amp;h=1389ae57&amp;itok=P_u-ZmE6" alt="Automatiker i oransje kjeledress og hjelm som arbeider med kabler i et industrianlegg" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Automatiker</span></span>
+            <span class="lignende-linje">Mer programmering og styringssystemer, mindre kabling.</span>
+          </a></li>
+          <li data-yrke="energimontor"><a data-lenke="sok-energimontor">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/energimontor.png?VersionId=1&amp;h=ab502919&amp;itok=gMGvKk1L" alt="Energimontør med rød vernehjelm som arbeider med isolatorer i et koblingsanlegg" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Energimontør</span></span>
+            <span class="lignende-linje">Jobber i strømnettet ute, ofte i høyden og i uvær.</span>
+          </a></li>
+          <li data-yrke="heismontor"><a data-lenke="sok-heismontor">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/Heismont%C3%B8r_0402_fullsize.jpg?VersionId=1&amp;h=c0e34660&amp;itok=ZChJvkeW" alt="To heismontører som arbeider i en åpen heis" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Heismontør</span></span>
+            <span class="lignende-linje">Mer mekanikk, og du er stort sett i sjakter og maskinrom.</span>
+          </a></li>
+          <li data-yrke="elektroingenior"><a data-lenke="sok-elektroingenior-y-veien">
+            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/magasin/public/yrker/thinkstockphotos-453304897.jpg?VersionId=1&amp;h=0d92b08a&amp;itok=t-A3h8wo" alt="Person i arbeidsklær med refleks og hansker som kobler ledninger i taket" width="280" height="180" loading="lazy" referrerpolicy="no-referrer">
+            <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Elektroingeniør via y-veien</span></span>
+            <span class="lignende-linje">Planlegger anleggene andre bygger. Du kommer inn med fagbrev.</span>
+          </a></li>
+        </ul>
+      </section>
+
+      <!-- Veilederbanner: hele banneret er lenken -->
+      <section class="veileder" aria-labelledby="g-veileder" data-kort="veileder">
+        <a data-lenke="chat-veileder">
+          <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+          <span class="veileder-tekst" style="display:block">
+            <h2 id="g-veileder">Snakk med en veileder</h2>
+            <p class="brodtekst">Gratis og anonymt, på nett eller på et karrieresenter.</p>
+          </span>
+          <span class="pill">Gå til Karriereveiledning.no</span>
+        </a>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="bunn-innhold">
+    <div class="avsender"><strong>HK-dir</strong><br>Direktoratet for høyere utdanning og kompetanse</div>
+    <ul class="bunnlenker">
+      <li class="bare-desktop"><button type="button">For presse</button></li>
+      <li><button type="button">Om karriereveiledning.no</button></li>
+      <li><button type="button">Karrieresenter i ditt fylke</button></li>
+      <li><button type="button">Personvernerklæring</button></li>
+    </ul>
+    <div class="bunn-kontakt bare-desktop">
+      <div><strong>Webredaktør:</strong><br>[NAVN]</div>
+      <div><strong>Kontakt redaksjonen:</strong><br><button type="button">[E-POSTADRESSE]</button></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../felles.js"></script>
+</body>
+</html>
