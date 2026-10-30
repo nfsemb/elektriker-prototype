@@ -73,6 +73,10 @@ h1 { font-size: 30px; line-height: 38px; letter-spacing: -0.01em; }
   font-family: inherit; font-size: 16px; line-height: 1.25; color: var(--tekst); cursor: pointer; }
 .forslag-brikke:hover { border-color: var(--oransje); }
 .forslag-brikke:focus-visible { outline: 2px solid var(--fokus); outline-offset: 2px; }
+.forslag-mer { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 8px; border: none; background: none;
+  font-family: inherit; font-size: 16px; line-height: 24px; color: var(--tekst); text-decoration: underline; cursor: pointer; }
+.forslag-mer::after { content: ""; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.forslag-mer[aria-expanded="true"]::after { transform: translateY(2px) rotate(-135deg); }
 .toppbilde img { width: 100%; height: 220px; object-fit: cover; object-position: 60% 30%; border-bottom-left-radius: 50% 40%; }
 
 /* Velg etter interessene dine */
@@ -208,7 +212,7 @@ footer { background: var(--bunn); color: #ffffff; padding: 24px 16px; }
   <section class="topp-seksjon">
     <div class="sporsmal-omraade">
       <h1>Hva lurer du på?</h1>
-      <!-- Teksten som skrives inn, sendes ingen steder. Den lagres bare i nettleseren (sessionStorage), slik at resultatsiden kan vise den og sette det relevante spørsmålet øverst. Alle søk åpner resultatsiden for «elektriker». -->
+      <!-- Teksten som skrives inn, sendes ingen steder. Den lagres bare i nettleseren (sessionStorage), slik at sok/ kan finne yrket og resultatsiden kan sette det relevante spørsmålet øverst. -->
       <form class="sporsmal" role="search" action="sok/" novalidate>
         <label for="sporsmal" class="skjult">Hva lurer du på?</label>
         <input id="sporsmal" type="search" placeholder="Eks: Hva gjør en sosionom?" autocomplete="off" enterkeyhint="search">
@@ -216,9 +220,17 @@ footer { background: var(--bunn); color: #ffffff; padding: 24px 16px; }
       </form>
       <div class="forslag">
         <p class="forslag-tittel">Prøv for eksempel</p>
-        <ul class="forslag-liste">
+        <!-- Ett eksempel per yrke i prototypen. Bare elektriker vises først, de andre ligger bak «Vis flere». -->
+        <ul class="forslag-liste" id="forslag-liste">
           <li><button type="button" class="forslag-brikke" data-sok="Elektriker">Elektriker</button></li>
           <li><button type="button" class="forslag-brikke" data-sok="Hva tjener en elektriker?">Hva tjener en elektriker?</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="Hvordan blir jeg sykepleier?">Hvordan blir jeg sykepleier?</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="Hva gjør en psykolog?">Hva gjør en psykolog?</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="Hvor kan jeg jobbe som advokat?">Hvor kan jeg jobbe som advokat?</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="Politi">Politi</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="Jeg liker å hjelpe barn. Kan jeg bli lærer?">Jeg liker å hjelpe barn. Kan jeg bli lærer?</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="Hva kan jeg spesialisere meg i som lege?">Hva kan jeg spesialisere meg i som lege?</button></li>
+          <li><button type="button" class="forslag-mer" aria-expanded="false" aria-controls="forslag-liste">Vis flere</button></li>
         </ul>
       </div>
       <p class="advarsel">Ikke skriv inn personopplysninger.</p>
@@ -376,8 +388,8 @@ footer { background: var(--bunn); color: #ffffff; padding: 24px 16px; }
 </footer>
 
 <script>
-// Alle søk fører til den samme resultatsiden. Teksten lagres bare i nettleseren, så resultatsiden kan vise den
-// og sette det spørsmålet som passer best, øverst. Den sendes ingen steder.
+// Søket går til sok/, som sender det videre til resultatsiden for yrket det handler om. Teksten lagres bare i nettleseren,
+// så resultatsiden kan vise den og sette det spørsmålet som passer best, øverst. Den sendes ingen steder.
 const skjema = document.querySelector('.sporsmal');
 const felt = document.getElementById('sporsmal');
 skjema.addEventListener('submit', (e) => {
@@ -385,9 +397,9 @@ skjema.addEventListener('submit', (e) => {
   const tekst = felt.value.trim();
   if (!tekst) { felt.focus(); return; }
   try {
-    sessionStorage.setItem('elektriker:sok', tekst.slice(0, 200));
-    // Nytt søk starter alltid på «Alle».
-    sessionStorage.removeItem('elektriker:gruppe');
+    sessionStorage.setItem('ki-sok:sporsmal', tekst.slice(0, 200));
+    // Nytt søk starter alltid på «Alle», for alle yrkene.
+    Object.keys(sessionStorage).filter((k) => k.startsWith('ki-sok:gruppe:')).forEach((k) => sessionStorage.removeItem(k));
   } catch {}
   // Kort pause, så det ser ut som spørsmålet behandles.
   skjema.setAttribute('aria-busy', 'true');
@@ -400,6 +412,15 @@ document.querySelectorAll('.forslag-brikke').forEach((knapp) => {
     felt.value = knapp.dataset.sok;
     skjema.requestSubmit();
   });
+});
+
+// «Vis flere» viser eksemplene for de andre yrkene.
+const visFlere = document.querySelector('.forslag-mer');
+visFlere.addEventListener('click', () => {
+  const vis = visFlere.getAttribute('aria-expanded') !== 'true';
+  document.querySelectorAll('[data-flere]').forEach((li) => { li.hidden = !vis; });
+  visFlere.setAttribute('aria-expanded', String(vis));
+  visFlere.textContent = vis ? 'Vis færre' : 'Vis flere';
 });
 </script>
 </body>
