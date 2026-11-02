@@ -6,7 +6,8 @@ const KiSok = createRequire(import.meta.url)('../sok/ruting.js');
 const SAKER = [
   // Yrkessidene skal rutes som før
   ['Elektriker', 'elektriker'], ['Hva tjener en elektriker?', 'elektriker'],
-  ['Hvordan blir jeg sykepleier?', 'sykepleier'], ['Hva gjør en psykolog?', 'psykolog'],
+  ['Hvordan blir jeg sykepleier?', 'sykepleier'], ['Hvordan blir man psykolog?', 'psykolog'],
+  ['Hva gjør en psykolog?', 'psykolog'],
   ['Hvor kan jeg jobbe som advokat?', 'advokat'], ['Politi', 'politi'],
   ['Jeg liker å hjelpe barn. Kan jeg bli lærer?', 'laerer'],
   ['Hva kan jeg spesialisere meg i som lege?', 'lege'], ['Hva lærer man på medisin?', 'lege'],

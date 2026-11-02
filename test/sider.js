@@ -34,6 +34,7 @@ var SAKER = [
   { sok: 'Elektriker', side: 'elektriker' },
   { sok: 'Hva tjener en elektriker?', side: 'elektriker', forste: 'lonn' },
   { sok: 'Hvordan blir jeg sykepleier?', side: 'sykepleier', forste: 'bli' },
+  { sok: 'Hvordan blir man psykolog?', side: 'psykolog', forste: 'bli', ingress: ['Vi starter med hvordan du blir psykolog, som du spurte om.'] },
   { sok: 'Hva gjør en psykolog?', side: 'psykolog' },
   { sok: 'Hvor kan jeg jobbe som advokat?', side: 'advokat', forste: 'hvor' },
   { sok: 'Politi', side: 'politi' },
