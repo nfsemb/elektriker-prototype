@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Søk | utdanning.no</title>
+<link rel="stylesheet" href="../felles.css">
+</head>
+<body data-side="jobbsoking">
+
+<!--
+  LENKER
+  Alle adresser ligger her. Siden bygger href ut fra «side», «anker» og «tekst».
+  - side: adressen til målsiden (uten #anker), eller null hvis lenken mangler.
+  - anker: id på målsiden som det skal hoppes til, eller null.
+  - tekst: tekstfragment som utheves, { "start": "...", "slutt": "..." } (slutt er valgfri), eller null.
+  - status: "funnet" (funnet og sjekket av Claude), "manuell" (lagt inn av et menneske, skal aldri endres), "mangler".
+  Kjør `node scripts/sjekk-lenker.mjs jobbsoking` etter endringer.
+-->
+<script type="application/json" id="lenker">
+{
+  "slik-skriver-du-cv": {
+    "maal": "Artikkelen «Slik skriver du CV» på utdanning.no",
+    "side": "https://utdanning.no/utdanningsvalg_artikkel_slik_skriver_du_cv", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "Utdanningsvalg på utdanning.no (rapporten i docs/behov/resten.md)", "sjekket": "2026-10-31"
+  },
+  "5-tips-til-cv": {
+    "maal": "Artikkelen «5 tips til CV» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/5-tips-til-cv-0", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap for karriereveiledning.no og «Skriv CV og søknad». /5-tips-til-cv (uten -0) er «Sjekkliste for CV»", "sjekket": "2026-10-31"
+  },
+  "hvordan-soke-jobb-cv": {
+    "maal": "Delen «Hvordan skrive CV?» i artikkelen «Hvordan søke jobb?» på utdanning.no",
+    "side": "https://utdanning.no/tema/arbeidsliv/hvordan_soke_jobb", "anker": "hvordan-skrive-cv", "tekst": null,
+    "status": "funnet", "kilde": "søk på utdanning.no (rapporten). id på siden", "sjekket": "2026-10-31"
+  },
+  "cv-mal": {
+    "maal": "Artikkelen «CV - eksempel og mal» på utdanning.no, med CV-mal og CV-eksempel til nedlasting",
+    "side": "https://utdanning.no/utdanningsvalg_artikkel_cv_-_eksempel_og_mal", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "Utdanningsvalg på utdanning.no (rapporten). Filene ligger på et annet domene, så lenken går til artikkelen", "sjekket": "2026-10-31"
+  },
+  "tilpass-cv": {
+    "maal": "KI-verktøyet «Få forslag til hvordan du kan tilpasse CV-en» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/tilpass-CV", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "finn-ut-hva-du-kan": {
+    "maal": "KI-verktøyet «Finn ut hva du kan» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/finn-ut-hva-du-kan", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "sjekkliste-cv": {
+    "maal": "Sjekklisten «Sjekkliste for CV» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/5-tips-til-cv", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "stillingsannonse": {
+    "maal": "Artikkelen «4 tips til hva du kan se etter i en stillingsannonse» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/4-tips-til-hva-du-kan-se-etter-i-stillingsannonsen", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "cv-laerebedrift": {
+    "maal": "Siden «Hvordan skrive CV til lærebedriften» på utdanning.no, som viser filmen «Kapittel 1: Hvordan i all verden lager jeg en CV?»",
+    "side": "https://utdanning.no/yrkesfag/skal-du-snart-ut-i-laeretid/finn-laereplass/slik-soker-du-laereplass/slik-skriver-du-cv-til-laerebedriften", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra «Søke læreplass, steg for steg» på utdanning.no. Tittel og overskrift: «Hvordan skrive CV til lærebedriften». Siden har filmen og setningen «Når du søker læreplass, skal du vanligvis sende en CV sammen med søknaden din.»", "sjekket": "2026-10-31"
+  },
+  "soke-laereplass": {
+    "maal": "Artikkelen «Søke læreplass, steg for steg» på utdanning.no",
+    "side": "https://utdanning.no/yrkesfag/skal-du-snart-ut-i-laeretid/finn-laereplass/slik-soker-du-laereplass", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra «Hvordan søke jobb?» på utdanning.no (rapporten)", "sjekket": "2026-10-31"
+  },
+  "finn-laerebedrift": {
+    "maal": "Verktøyet «Finn lærebedrift» på utdanning.no, oversikten over godkjente lærebedrifter og ledige læreplasser",
+    "side": "https://utdanning.no/finnlarebedrift/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no. Tittelen «Finn Lærebedrift» settes i nettleseren", "sjekket": "2026-10-31"
+  },
+  "soknad-laereplass": {
+    "maal": "Artikkelen «Hvordan skrive søknad om læreplass» på utdanning.no",
+    "side": "https://utdanning.no/yrkesfag/skal-du-snart-ut-i-laeretid/finn-laereplass/slik-soker-du-laereplass/slik-skriver-du-soknad-om-laereplass", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra «Søke læreplass, steg for steg» på utdanning.no", "sjekket": "2026-10-31"
+  },
+  "intervju-laereplass": {
+    "maal": "Øvelsen «Hvilke spørsmål kan jeg få på intervjuet?» på utdanning.no, for intervju til læreplass",
+    "side": "https://utdanning.no/yrkesfag/skal-du-snart-ut-i-laeretid/finn-laereplass/tren-pa-intervju-til-laereplass/sporsmal-du-kan-fa-pa-intervjuet", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra «Tren på intervju til læreplass» på utdanning.no (rapporten)", "sjekket": "2026-10-31"
+  },
+  "god-oppforsel-intervju": {
+    "maal": "Artikkelen «God oppførsel på intervjuet» på utdanning.no, for intervju til læreplass",
+    "side": "https://utdanning.no/yrkesfag/skal-du-snart-ut-i-laeretid/finn-laereplass/tren-pa-intervju-til-laereplass/god-oppforsel-pa-intervjuet", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra «Tren på intervju til læreplass» på utdanning.no", "sjekket": "2026-10-31"
+  },
+  "4-tips-soknad": {
+    "maal": "Artikkelen «4 tips til søknad» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/5-tips-til-soknad", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "forsteutkast-soknad": {
+    "maal": "KI-verktøyet «Lag førsteutkast til jobbsøknaden» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/fa-hjelp-til-skrive-jobbsoknaden", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "4-tips-intervju": {
+    "maal": "Artikkelen «4 tips til intervju» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/4-tips-til-intervju", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "ov-intervjusporsmal": {
+    "maal": "KI-verktøyet «Øv på intervjuspørsmål» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/ov-deg-pa-intervjusporsmal", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "slik-skriver-du-jobbsoknad": {
+    "maal": "Artikkelen «Slik skriver du jobbsøknad» på utdanning.no",
+    "side": "https://utdanning.no/utdanningsvalg_artikkel_slik_skriver_du_jobbsoknad", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "Utdanningsvalg på utdanning.no (rapporten)", "sjekket": "2026-10-31"
+  },
+  "jobbintervju-slik-far-du-jobben": {
+    "maal": "Artikkelen «Jobbintervju - slik får du jobben» på utdanning.no (skrevet av ung.no)",
+    "side": "https://utdanning.no/utdanningsvalg_artikkel_jobbintervju_-_slik_far_du_jobben", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "Utdanningsvalg på utdanning.no (rapporten)", "sjekket": "2026-10-31"
+  },
+  "tilpasse-soknaden": {
+    "maal": "Artikkelen «Hvordan tilpasse søknaden til jobben» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/hvordan-tilpasse-soknaden-til-jobben", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Skriv CV og søknad» i «Hvordan søke jobb i Norge» på karriereveiledning.no", "sjekket": "2026-10-31"
+  },
+  "ulike-mater-sende": {
+    "maal": "Artikkelen «Ulike måter å sende CV og søknad» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/ulike-mater-sende-cv-og-soknad", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Skriv CV og søknad» i «Hvordan søke jobb i Norge» på karriereveiledning.no", "sjekket": "2026-10-31"
+  },
+  "fylle-ut-cv": {
+    "maal": "Spørsmål og svar «Må jeg fylle ut CV i rekrutteringssystemer når jeg har den som vedlegg?» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/vanlige-sporsmal/kan-jeg-bare-laste-opp-cv-en-min-nar-jeg-soker-jobb-i-stedet-fylle-ut-all", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap for karriereveiledning.no", "sjekket": "2026-10-31"
+  },
+  "etter-intervju": {
+    "maal": "Artikkelen «4 tips til hva du kan gjøre etter et jobbintervju» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/4-tips-til-hva-du-kan-gjore-etter-et-jobbintervju", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Øv på intervju» i «Hvordan søke jobb i Norge» på karriereveiledning.no", "sjekket": "2026-10-31"
+  },
+  "bestille-time": {
+    "maal": "Spørsmål og svar «Kan jeg bestille time til veiledning om jobbsøking?» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/vanlige-sporsmal/kan-jeg-bestille-time-til-veiledning-om-jobbsoking", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap for karriereveiledning.no (rapporten, «Felles: kontakt med veileder»)", "sjekket": "2026-10-31"
+  },
+  "under-18": {
+    "maal": "Siden «Hvordan søke jobb når du er under 18 år» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/under-18-3-tips-til-finne-og-soke-jobb", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap for karriereveiledning.no (rapporten)", "sjekket": "2026-10-31"
+  },
+  "4-steder": {
+    "maal": "Artikkelen «4 steder du kan lete etter jobb» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/6-steder-du-kan-lete-etter-jobb", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "slik-far-du-jobb": {
+    "maal": "Artikkelen «Slik får du jobb» på utdanning.no",
+    "side": "https://utdanning.no/utdanningsvalg_artikkel_slik_far_du_jobb", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "Utdanningsvalg på utdanning.no (rapporten)", "sjekket": "2026-10-31"
+  },
+  "forslag-ledige-stillinger": {
+    "maal": "KI-verktøyet «Få forslag til ledige stillinger» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/fa-forslag-til-jobber", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "sjekkliste-jobbsok": {
+    "maal": "Sjekklisten «Sjekkliste for jobbsøk» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/sjekkliste-jobbsok", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "faq-nettverk": {
+    "maal": "Spørsmål og svar «Hvordan kan nettverk hjelpe meg inn i arbeidslivet?» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/vanlige-sporsmal/hvordan-kan-nettverk-hjelpe-meg-inn-i-arbeidslivet", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap for karriereveiledning.no", "sjekket": "2026-10-31"
+  },
+  "faq-deltid": {
+    "maal": "Spørsmål og svar «Kan en deltidsjobb eller et vikariat føre til fast jobb?» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/vanlige-sporsmal/deltidsjobber-veien-til-fast", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap for karriereveiledning.no (rapporten)", "sjekket": "2026-10-31"
+  },
+  "chat-veileder": {
+    "maal": "Forsiden til Karriereveiledning.no",
+    "side": "https://karriereveiledning.no/", "anker": null, "tekst": null,
+    "status": "manuell", "kilde": "bestemt av Niels", "sjekket": "2026-10-27"
+  }
+}
+</script>
+
+<header class="topp">
+  <div>
+    <a href="../../" class="logolenke"><svg class="logo" viewBox="0 0 812.9 99.2" role="img" aria-label="Utdanning.no"><g transform="translate(-12.9,-75.2)" fill="#EE7B1A"><path d="m 59.7,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,22.3 -14.2,30.6 -32.1,30.6 -18,0 -32.1,-8.3 -32.1,-30.6 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,10.4 5.5,15.4 14.7,15.4 9.2,0 14.7,-4.9 14.7,-15.4 z"/><path d="m 148.2,75.9 c 3.7,0 5.5,4 5.5,7.8 0,4.1 -2,7.9 -5.5,7.9 h -19.5 v 76.5 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 91.6 H 91.7 c -3.5,0 -5.5,-3.6 -5.5,-7.9 0,-3.7 1.7,-7.8 5.5,-7.8 z"/><path d="m 193.4,75.9 c 17.6,0 31.4,8.3 31.4,30.6 V 143 c 0,22.3 -13.8,30.6 -31.4,30.6 h -23.6 c -4.5,0 -7.6,-2.5 -7.6,-5.3 v -87 c 0,-2.8 3.1,-5.4 7.6,-5.4 z m -13.9,15.2 v 67.2 h 13.9 c 8.8,0 14,-4.9 14,-15.4 V 106.4 C 207.4,96 202.2,91 193.4,91 h -13.9 z"/><path d="m 230.9,166.4 c 0,-0.3 0.1,-0.8 0.3,-1.3 l 25.8,-84 c 1.2,-4 6.1,-5.9 11.1,-5.9 5.1,0 10,1.9 11.2,5.9 l 25.8,84 c 0.1,0.5 0.3,0.9 0.3,1.3 0,4.1 -6.3,7.2 -10.9,7.2 -2.9,0 -5.2,-0.9 -5.9,-3.5 l -5.1,-17.8 h -30.6 l -5.1,17.8 c -0.7,2.5 -2.9,3.5 -5.9,3.5 -4.8,0 -11,-3 -11,-7.2 z m 48.7,-27.7 -11.6,-41 -11.6,41 z"/><path d="m 359.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 L 361,134.9 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 440.4,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 475.1,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 z"/><path d="m 554.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 618.6,91.1 c -8.9,0 -14,5 -14,15.4 v 37.3 c 0,10.4 5.1,15.4 13.9,15.4 8.7,0 14,-4.9 14,-15.4 v -7.9 h -10.8 c -3.5,0 -5.3,-3.3 -5.3,-6.8 0,-3.3 1.9,-6.8 5.3,-6.8 h 22.7 c 3.5,0 5.5,2.7 5.5,5.6 v 15.9 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.3,-8.3 -31.3,-30.6 v -37.3 c 0,-22.3 13.8,-30.6 30.7,-30.6 18.4,0 31.9,9.6 31.9,25.7 0,6.7 -2.9,8.3 -8.7,8.3 -4.7,0 -8.5,-1.3 -8.7,-5.5 -0.3,-6.3 -2.4,-13.3 -13.8,-13.3 z"/><path d="m 675.4,165.3 c 0,4.8 -4.1,9.1 -9,9.1 -5.2,0 -9.1,-4.3 -9.1,-9.1 0,-4.9 3.9,-9.1 9.1,-9.1 4.9,0 9,4.1 9,9.1 z"/><path d="m 731.5,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 763.2,143.8 v -37.3 c 0,-22.3 13.6,-30.6 31.2,-30.6 17.6,0 31.4,8.3 31.4,30.6 v 37.3 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.2,-8.3 -31.2,-30.6 z m 45.2,-37.3 c 0,-10.6 -5.3,-15.4 -14,-15.4 -8.8,0 -13.9,4.8 -13.9,15.4 v 37.3 c 0,10.6 5.1,15.4 13.9,15.4 8.7,0 14,-4.8 14,-15.4 z"/></g></svg></a>
+    <p class="slagord">Offentlig og kvalitetssikret</p>
+  </div>
+  <div class="topp-knapper">
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Min side
+    </button>
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Meny
+    </button>
+    <button type="button" class="meny-rund bare-mobil" aria-label="Åpne meny">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <h1>Søk etter yrker, utdanning og innhold</h1>
+
+  <form class="sok" role="search" onsubmit="return false">
+    <label for="sok" class="skjult">Søk etter yrker, utdanning og innhold</label>
+    <input id="sok" type="search" value="hvordan skrive cv" readonly>
+    <button type="button" aria-label="Søk">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+    </button>
+  </form>
+
+
+  <div class="velger">
+    <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
+    <div class="brikker-ramme">
+      <ul class="brikker">
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(32)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="cv" aria-pressed="false">CV <span data-antall="cv">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="mal" aria-pressed="false">Mal <span data-antall="mal">(1)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="tilpasse" aria-pressed="false">Tilpasse CV <span data-antall="tilpasse">(4)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="laereplass" aria-pressed="false">Læreplass <span data-antall="laereplass">(6)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="soknad" aria-pressed="false">Søknad og intervju <span data-antall="soknad">(11)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="finne" aria-pressed="false">Finne jobb <span data-antall="finne">(7)</span></button></li>
+        <li class="vis-flere-plass bare-desktop" hidden>
+          <button type="button" class="vis-flere" aria-expanded="false">
+            <span>Vis flere</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="oppsett">
+
+    <aside class="sidekolonne bare-desktop">
+      <div>
+        <h2 class="etikett legende-tittel">
+          <span>Farger og ikoner</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </h2>
+        <ul class="legende">
+          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+        </ul>
+      </div>
+
+      <div>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+          Del søk
+        </button>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"/></svg>
+          Lagre søk
+        </button>
+      </div>
+    </aside>
+
+    <div class="resultater">
+
+      <div class="treff">
+        <h2 class="etikett">Søkeresultat</h2>
+        <p class="meta"><span data-antall-ingress>32</span> resultater. Du skrev «<span data-sok-tekst>hvordan skrive cv</span>», og vi forstår det som jobbsøking.<span data-tolkning hidden></span></p>
+      </div>
+
+      <!-- 1. Hva skal stå i en CV? -->
+      <section class="gruppe" data-gruppe="cv" data-tema="hva som skal stå i en CV" data-ord="cv|innhold" aria-labelledby="g-cv">
+        <h2 id="g-cv" class="seksjon">Hva skal stå i en CV?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel" data-kort="slik-skriver-du-cv">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="slik-skriver-du-cv">Slik skriver du CV</a></h3>
+            <p class="brodtekst">En kort og punktvis oppramsing av det du har gjort i livet.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="5-tips-til-cv">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="5-tips-til-cv">5 tips til CV</a></h3>
+            <p class="brodtekst">Hva du kan skrive om utdanning, jobber og språk, med eksempel fra fagbrev som elektriker.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="hvordan-soke-jobb-cv">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="hvordan-soke-jobb-cv">Hvordan søke jobb?</a></h3>
+            <p class="brodtekst">CV står for curriculum vitae og viser hvem du er og hva du kan.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 2. Finnes det en mal jeg kan bruke? -->
+      <section class="gruppe" data-gruppe="mal" data-tema="maler" data-ord="mal|eksempel|cv mal|cv-mal" aria-labelledby="g-mal">
+        <h2 id="g-mal" class="seksjon">Finnes det en mal jeg kan bruke?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel" data-kort="cv-mal">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="cv-mal">CV – eksempel og mal</a></h3>
+            <p class="brodtekst">To Word-filer du kan laste ned og skrive videre på.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 3. Hvordan får jeg CV-en til å passe jobben? -->
+      <section class="gruppe" data-gruppe="tilpasse" data-tema="hvordan du tilpasser CV-en" data-ord="tilpass*|sjekkliste" aria-labelledby="g-tilpasse">
+        <h2 id="g-tilpasse" class="seksjon">Hvordan får jeg CV-en til å passe jobben?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="tilpass-cv">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="tilpass-cv">Få forslag til hvordan du kan tilpasse CV-en</a></h3>
+            <p class="brodtekst">Legg inn en stillingsannonse og din erfaring, og du ender med et utkast.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="finn-ut-hva-du-kan">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="finn-ut-hva-du-kan">Finn ut hva du kan</a></h3>
+            <p class="brodtekst">Få forslag til hvordan du beskriver deg selv, til bruk i CV og søknad.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="sjekkliste-cv">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="sjekkliste-cv">Sjekkliste for CV</a></h3>
+            <p class="brodtekst">Svar på spørsmål, og få tips til hva du kan forbedre.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="stillingsannonse">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="stillingsannonse">4 tips til hva du kan se etter i en stillingsannonse</a></h3>
+            <p class="brodtekst">Bruk den når du skriver CV og søknad, eller forbereder deg til intervju.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 4. Skal du søke læreplass? -->
+      <section class="gruppe" data-gruppe="laereplass" data-tema="læreplass" data-ord="lærling*|læreplass*|lærebedrift*" aria-labelledby="g-laereplass">
+        <h2 id="g-laereplass" class="seksjon">Skal du søke læreplass?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel kort--video" data-kort="cv-laerebedrift">
+            <a class="videobilde" data-lenke="cv-laerebedrift" aria-hidden="true" tabindex="-1">
+              <img src="https://i.vimeocdn.com/video/2123463044-b5ab446a68775a0bf77f4a22eb4f2b04a2e2708f81e137d8915999758eef7b8d-d_1280?region=us" alt="Ung mann i grønn skjorte som snakker mot kamera og gestikulerer med begge hendene" width="1280" height="720" referrerpolicy="no-referrer">
+              <span class="spill"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="#333333" aria-hidden="true"><path d="M9 6l10 6-10 6z"/></svg></span></span>
+            </a>
+            <div>
+              <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h13v12H3zM16 10l5-3v10l-5-3"/></svg><span>Video</span></p>
+              <h3 class="korttittel"><a data-lenke="cv-laerebedrift">Hvordan skrive CV til lærebedriften</a></h3>
+              <p class="brodtekst">Du skal vanligvis sende den sammen med søknaden din.</p>
+            </div>
+          </li>
+          <li class="kort kort--artikkel" data-kort="soke-laereplass">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="soke-laereplass">Søke læreplass, steg for steg</a></h3>
+            <p class="brodtekst">Du går fram som med en jobb, men må gå gjennom Vigo.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="finn-laerebedrift">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="finn-laerebedrift">Finn lærebedrift</a></h3>
+            <p class="brodtekst">Oversikt over godkjente bedrifter og ledige læreplasser.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="soknad-laereplass">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="soknad-laereplass">Hvordan skrive søknad om læreplass</a></h3>
+            <p class="brodtekst">Det første inntrykket lærebedriften får av deg.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="intervju-laereplass" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="intervju-laereplass">Hvilke spørsmål kan jeg få på intervjuet?</a></h3>
+            <p class="brodtekst">Øv deg ved å skrive svar, og lagre dem som et dokument.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="god-oppforsel-intervju" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="god-oppforsel-intervju">God oppførsel på intervjuet</a></h3>
+            <p class="brodtekst">Vær presis, smil og snakk tydelig.</p>
+          </li>
+        </ul>
+        <button type="button" class="pill se-mer" aria-expanded="false">Se mer</button>
+      </section>
+
+      <!-- 5. Hva med søknaden og intervjuet? -->
+      <section class="gruppe" data-gruppe="soknad" data-tema="søknad og intervju" data-ord="søknad*|jobbsøknad*|søknadsbrev*|intervju*|jobbintervju*" aria-labelledby="g-soknad">
+        <h2 id="g-soknad" class="seksjon">Hva med søknaden og intervjuet?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel" data-kort="4-tips-soknad">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="4-tips-soknad">4 tips til søknad</a></h3>
+            <p class="brodtekst">Vis arbeidsgiver at du forstår jobben og hvordan du vil løse oppgavene.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="forsteutkast-soknad">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="forsteutkast-soknad">Lag førsteutkast til jobbsøknaden</a></h3>
+            <p class="brodtekst">Et ferdig forslag på få minutter, tilpasset jobben.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="4-tips-intervju">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="4-tips-intervju">4 tips til intervju</a></h3>
+            <p class="brodtekst">Vis hva du kan bidra med i jobben, og husk at det er normalt å være nervøs.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="ov-intervjusporsmal">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="ov-intervjusporsmal">Øv på intervjuspørsmål</a></h3>
+            <p class="brodtekst">Lim inn en stillingsannonse, og få trening i å snakke om deg selv.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="slik-skriver-du-jobbsoknad" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="slik-skriver-du-jobbsoknad">Slik skriver du jobbsøknad</a></h3>
+            <p class="brodtekst">Tilpasset elever på ungdomstrinnet, med eksempel du kan laste ned.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="jobbintervju-slik-far-du-jobben" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="jobbintervju-slik-far-du-jobben">Jobbintervju – slik får du jobben</a></h3>
+            <p class="brodtekst">Hvordan du forbereder deg, og hvilke spørsmål som er vanlige.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="tilpasse-soknaden" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="tilpasse-soknaden">Hvordan tilpasse søknaden til jobben</a></h3>
+            <p class="brodtekst">Forklar hvorfor du vil ha stillingen, og hva du kan bidra med.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="ulike-mater-sende" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="ulike-mater-sende">Ulike måter å sende CV og søknad</a></h3>
+            <p class="brodtekst">Fra digitale systemer til utskrift i butikken eller på kafeen.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="fylle-ut-cv" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="fylle-ut-cv">Må jeg fylle ut CV i rekrutteringssystemer når jeg har den som vedlegg?</a></h3>
+            <p class="brodtekst">Ja, som regel, særlig hvis arbeidsgiveren ber om det.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="etter-intervju" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="etter-intervju">4 tips til hva du kan gjøre etter et jobbintervju</a></h3>
+            <p class="brodtekst">Noen arbeidsgivere gir tilbakemelding raskt, mens andre bruker flere uker.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="bestille-time" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="bestille-time">Kan jeg bestille time til veiledning om jobbsøking?</a></h3>
+            <p class="brodtekst">Gratis for deg over 19 år hos et karrieresenter, og for alle på nettet når det passer deg.</p>
+          </li>
+        </ul>
+        <button type="button" class="pill se-mer" aria-expanded="false">Se mer</button>
+      </section>
+
+      <!-- 6. Hvor finner jeg jobb? -->
+      <section class="gruppe" data-gruppe="finne" data-tema="hvor du finner jobb" data-ord="finne jobb|under 18|ledig*|søke jobb|søker jobb|jobbsøking|deltid*|ekstrajobb*|vikariat*|få jobb|får jeg jobb|får man jobb" aria-labelledby="g-finne">
+        <h2 id="g-finne" class="seksjon">Hvor finner jeg jobb?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel" data-kort="under-18">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="under-18">Hvordan søke jobb når du er under 18 år</a></h3>
+            <p class="brodtekst">Ser du etter deltidsjobb eller sommerjobb?</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="4-steder">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="4-steder">4 steder du kan lete etter jobb</a></h3>
+            <p class="brodtekst">Portaler med ledige stillinger, nettverket ditt, bedriftenes nettsteder og bemanningsbyråer.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="slik-far-du-jobb">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="slik-far-du-jobb">Slik får du jobb</a></h3>
+            <p class="brodtekst">Bruk nettverket ditt, og møt opp personlig hos bedriftene.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="forslag-ledige-stillinger">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="forslag-ledige-stillinger">Få forslag til ledige stillinger</a></h3>
+            <p class="brodtekst">Skriv inn utdanning og erfaring, og velg gjerne sted.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="sjekkliste-jobbsok" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="sjekkliste-jobbsok">Sjekkliste for jobbsøk</a></h3>
+            <p class="brodtekst">Svar på spørsmål, og få tips til CV, søknad og hvor du kan lete.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="faq-nettverk" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="faq-nettverk">Hvordan kan nettverk hjelpe meg inn i arbeidslivet?</a></h3>
+            <p class="brodtekst">En del bedrifter rekrutterer via anbefalinger i stedet for å lyse ut stillinger.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="faq-deltid" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="faq-deltid">Kan en deltidsjobb eller et vikariat føre til fast jobb?</a></h3>
+            <p class="brodtekst">Ja, mange starter i mindre stillinger før de får tilbud om flere vakter eller større stillingsprosent.</p>
+          </li>
+        </ul>
+        <button type="button" class="pill se-mer" aria-expanded="false">Se mer</button>
+      </section>
+
+      <!-- Veilederbanner: hele banneret er lenken. Lenken går til forsiden på karriereveiledning.no, så teksten lover ikke chat eller telefon. -->
+      <section class="veileder" aria-labelledby="g-veileder" data-kort="veileder">
+        <a data-lenke="chat-veileder">
+          <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+          <span class="veileder-tekst" style="display:block">
+            <h2 id="g-veileder">Snakk med en veileder</h2>
+            <p class="brodtekst">Usikker på CV-en din? Karriereveiledning.no gir gratis veiledning om utdanning og jobb.</p>
+          </span>
+          <span class="pill">Gå til Karriereveiledning.no</span>
+        </a>
+      </section>
+
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="bunn-innhold">
+    <div class="avsender"><strong>HK-dir</strong><br>Direktoratet for høyere utdanning og kompetanse</div>
+    <ul class="bunnlenker">
+      <li class="bare-desktop"><button type="button">For presse</button></li>
+      <li><button type="button">Om karriereveiledning.no</button></li>
+      <li><button type="button">Karrieresenter i ditt fylke</button></li>
+      <li><button type="button">Personvernerklæring</button></li>
+    </ul>
+    <div class="bunn-kontakt bare-desktop">
+      <div><strong>Webredaktør:</strong><br>[NAVN]</div>
+      <div><strong>Kontakt redaksjonen:</strong><br><button type="button">[E-POSTADRESSE]</button></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../ruting.js"></script>
+<script src="../felles.js"></script>
+</body>
+</html>

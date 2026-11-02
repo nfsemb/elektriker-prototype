@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Søk | utdanning.no</title>
+<link rel="stylesheet" href="../felles.css">
+</head>
+<body data-side="verktoy">
+
+<!--
+  LENKER
+  Alle adresser ligger her. Siden bygger href ut fra «side», «anker» og «tekst».
+  - side: adressen til målsiden (uten #anker), eller null hvis lenken mangler.
+  - anker: id på målsiden som det skal hoppes til, eller null.
+  - tekst: tekstfragment som utheves, { "start": "...", "slutt": "..." } (slutt er valgfri), eller null.
+  - status: "funnet" (funnet og sjekket av Claude), "manuell" (lagt inn av et menneske, skal aldri endres), "mangler".
+  Kjør `node scripts/sjekk-lenker.mjs verktoy` etter endringer.
+-->
+<script type="application/json" id="lenker">
+{
+  "jobbkompasset": {
+    "maal": "Verktøyet Jobbkompasset på utdanning.no, der du velger et interesseområde og utforsker yrker",
+    "side": "https://utdanning.no/jobbkompasset/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Tittel og overskrift «Jobbkompasset», «Hva er du interessert i?» med fire interesseområder", "sjekket": "2026-10-31"
+  },
+  "utdanningskompasset": {
+    "maal": "Verktøyet Utdanningskompasset på utdanning.no, der du velger interesseområder og utforsker utdanninger",
+    "side": "https://utdanning.no/utdanningskompasset/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Tittel og overskrift «Utdanningskompasset»", "sjekket": "2026-10-31"
+  },
+  "karakterkalkulator": {
+    "maal": "Karakterkalkulatoren på utdanning.no, der du regner ut poengene dine",
+    "side": "https://utdanning.no/karakterkalkulator/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Tittel og overskrift «Karakterkalkulatoren» (rendres i nettleseren)", "sjekket": "2026-10-31"
+  },
+  "studievelgeren": {
+    "maal": "Studievelgeren på utdanning.no, der du ser hvilke studier du kan komme inn på med dine poeng",
+    "side": "https://utdanning.no/karakterkalkulator/studievelger", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Overskriften er «Studievelger», fanetittelen «Karakterkalkulatoren» (kontrollert i nettleseren)", "sjekket": "2026-10-31"
+  },
+  "fagskolevelgeren": {
+    "maal": "Fagskolevelgeren på utdanning.no, der du ser hvilke fagskoleutdanninger du kan komme inn på",
+    "side": "https://utdanning.no/fagskolevelgeren/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Tittel og overskrift «Fagskolevelgeren»", "sjekket": "2026-10-31"
+  },
+  "finn-laerebedrift": {
+    "maal": "Verktøyet «Finn lærebedrift» på utdanning.no, oversikten over godkjente lærebedrifter og ledige læreplasser",
+    "side": "https://utdanning.no/finnlarebedrift/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy) (finnlarebedrift.no omdirigeres hit). Tittelen «Finn Lærebedrift» settes i nettleseren", "sjekket": "2026-10-31"
+  },
+  "sammenlign": {
+    "maal": "Verktøyet «Sammenlign» på sammenlign.utdanning.no, der du velger å sammenligne yrker eller utdanninger",
+    "side": "https://sammenlign.utdanning.no/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Tittel «Sammenlign utdanninger og yrker», overskrift «Jeg vil sammenligne» (rendres i nettleseren)", "sjekket": "2026-10-31"
+  },
+  "jobbkartet": {
+    "maal": "Jobbkartet på utdanning.no, arbeidsmarkedet i Norge på kart",
+    "side": "https://utdanning.no/jobbkartet", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Overskrift «Jobbkartet», «Utforsk arbeidsmarkedet i Norge på kart»", "sjekket": "2026-10-31"
+  },
+  "likestilling": {
+    "maal": "Siden «Likestilling i arbeidslivet» på utdanning.no, kjønnsbalansen i de vanligste yrkene",
+    "side": "https://utdanning.no/likestilling", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Tittel «Likestilling», overskrift «Likestilling i arbeidslivet»", "sjekket": "2026-10-31"
+  },
+  "muligheter-med-yrkesfag": {
+    "maal": "Verktøyet «Hva kan du bli med yrkesfag?» på utdanning.no (kalt «Muligheter med yrkesfag» på verktøysiden), der du velger utdanningsprogram og sted",
+    "side": "https://utdanning.no/muligheter-med-yrkesfag", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Overskrift «Hva kan du bli med yrkesfag?»", "sjekket": "2026-10-31"
+  },
+  "veien-til-fagbrev": {
+    "maal": "Veien til fagbrev på utdanning.no, de ulike måtene du kan få fag- eller svennebrev på",
+    "side": "https://utdanning.no/fagbrev/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy) (veientilfagbrev.no omdirigeres hit). Overskrift «Veien til fagbrev»", "sjekket": "2026-10-31"
+  },
+  "veien-til-studiekompetanse": {
+    "maal": "Veien til studiekompetanse på utdanning.no, mulighetene dine for å ta høyere utdanning",
+    "side": "https://utdanning.no/studiekompetanse", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Tittel og overskrift «Veien til studiekompetanse»", "sjekket": "2026-10-31"
+  },
+  "realkompetansevurdering": {
+    "maal": "Verktøyet Realkompetansevurdering på utdanning.no, med tre brukerreiser",
+    "side": "https://utdanning.no/realkompetansevurdering/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Tittel og overskrift «Realkompetansevurdering»", "sjekket": "2026-10-31"
+  },
+  "utdanningssystemet": {
+    "maal": "Verktøyet «Det norske utdanningssystemet» på utdanning.no (kalt «Utdanningssystemet» på verktøysiden)",
+    "side": "https://utdanning.no/utdanningssystemet/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Overskriften «Det norske utdanningssystemet» settes i nettleseren (kontrollert i Playwright), fanetittelen er tom", "sjekket": "2026-10-31"
+  },
+  "yrkesfaghandboka": {
+    "maal": "Yrkesfaghåndboka på utdanning.no, hjelpemiddel for deg som går yrkesfag eller vurderer å velge det",
+    "side": "https://utdanning.no/yrkesfag", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Overskrift «Yrkesfaghåndboka»", "sjekket": "2026-10-31"
+  },
+  "veien-til-utveksling": {
+    "maal": "Veien til utveksling på utdanning.no, der du bygger ditt eget utvekslingspass",
+    "side": "https://utdanning.no/veien-til-utveksling/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Overskrift «Veien til utveksling», fanetittelen er «Utdanning i utlandet»", "sjekket": "2026-10-31"
+  },
+  "alle-yrker": {
+    "maal": "Oversikten «Utforsk yrker» (Interessevelgeren, alle yrker) på utdanning.no, med filter på interesse og nivå",
+    "side": "https://utdanning.no/interessevelgeren/yrker", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Alle yrker» i hovedmenyen på utdanning.no (/interessesiden#/yrker/ omdirigeres hit). Overskrift «Utforsk yrker», fanetittel «Interessevelgeren»", "sjekket": "2026-10-31"
+  },
+  "alle-verktoy": {
+    "maal": "Verktøysiden på utdanning.no, oversikten over alle verktøyene",
+    "side": "https://utdanning.no/verktoy", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Verktøy» i hovedmenyen på utdanning.no. Overskrift «Verktøy»", "sjekket": "2026-10-31"
+  },
+  "forslag-utdanninger-yrker": {
+    "maal": "KI-verktøyet «Få forslag til utdanninger og yrker» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/fa-forslag-til-utdanninger-yrker", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (lenken der er avkuttet, så parameteren er fjernet). Tittel og overskrift «Få forslag til utdanninger og yrker»", "sjekket": "2026-10-31"
+  },
+  "jobbkompasset-artikkel": {
+    "maal": "Artikkelen «Jobbkompasset» på utdanning.no, for å forstå hva verktøyet er",
+    "side": "https://utdanning.no/tema/karriereveiledere_og_foresatte_arbeidsliv/jobbkompasset", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søk på utdanning.no (rapporten i docs/behov/resten.md). Tittel og overskrift «Jobbkompasset»", "sjekket": "2026-10-31"
+  },
+  "chat-veileder": {
+    "maal": "Forsiden til Karriereveiledning.no",
+    "side": "https://karriereveiledning.no/", "anker": null, "tekst": null,
+    "status": "manuell", "kilde": "bestemt av Niels", "sjekket": "2026-10-27"
+  }
+}
+</script>
+
+<header class="topp">
+  <div>
+    <a href="../../" class="logolenke"><svg class="logo" viewBox="0 0 812.9 99.2" role="img" aria-label="Utdanning.no"><g transform="translate(-12.9,-75.2)" fill="#EE7B1A"><path d="m 59.7,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,22.3 -14.2,30.6 -32.1,30.6 -18,0 -32.1,-8.3 -32.1,-30.6 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,10.4 5.5,15.4 14.7,15.4 9.2,0 14.7,-4.9 14.7,-15.4 z"/><path d="m 148.2,75.9 c 3.7,0 5.5,4 5.5,7.8 0,4.1 -2,7.9 -5.5,7.9 h -19.5 v 76.5 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 91.6 H 91.7 c -3.5,0 -5.5,-3.6 -5.5,-7.9 0,-3.7 1.7,-7.8 5.5,-7.8 z"/><path d="m 193.4,75.9 c 17.6,0 31.4,8.3 31.4,30.6 V 143 c 0,22.3 -13.8,30.6 -31.4,30.6 h -23.6 c -4.5,0 -7.6,-2.5 -7.6,-5.3 v -87 c 0,-2.8 3.1,-5.4 7.6,-5.4 z m -13.9,15.2 v 67.2 h 13.9 c 8.8,0 14,-4.9 14,-15.4 V 106.4 C 207.4,96 202.2,91 193.4,91 h -13.9 z"/><path d="m 230.9,166.4 c 0,-0.3 0.1,-0.8 0.3,-1.3 l 25.8,-84 c 1.2,-4 6.1,-5.9 11.1,-5.9 5.1,0 10,1.9 11.2,5.9 l 25.8,84 c 0.1,0.5 0.3,0.9 0.3,1.3 0,4.1 -6.3,7.2 -10.9,7.2 -2.9,0 -5.2,-0.9 -5.9,-3.5 l -5.1,-17.8 h -30.6 l -5.1,17.8 c -0.7,2.5 -2.9,3.5 -5.9,3.5 -4.8,0 -11,-3 -11,-7.2 z m 48.7,-27.7 -11.6,-41 -11.6,41 z"/><path d="m 359.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 L 361,134.9 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 440.4,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 475.1,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 z"/><path d="m 554.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 618.6,91.1 c -8.9,0 -14,5 -14,15.4 v 37.3 c 0,10.4 5.1,15.4 13.9,15.4 8.7,0 14,-4.9 14,-15.4 v -7.9 h -10.8 c -3.5,0 -5.3,-3.3 -5.3,-6.8 0,-3.3 1.9,-6.8 5.3,-6.8 h 22.7 c 3.5,0 5.5,2.7 5.5,5.6 v 15.9 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.3,-8.3 -31.3,-30.6 v -37.3 c 0,-22.3 13.8,-30.6 30.7,-30.6 18.4,0 31.9,9.6 31.9,25.7 0,6.7 -2.9,8.3 -8.7,8.3 -4.7,0 -8.5,-1.3 -8.7,-5.5 -0.3,-6.3 -2.4,-13.3 -13.8,-13.3 z"/><path d="m 675.4,165.3 c 0,4.8 -4.1,9.1 -9,9.1 -5.2,0 -9.1,-4.3 -9.1,-9.1 0,-4.9 3.9,-9.1 9.1,-9.1 4.9,0 9,4.1 9,9.1 z"/><path d="m 731.5,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 763.2,143.8 v -37.3 c 0,-22.3 13.6,-30.6 31.2,-30.6 17.6,0 31.4,8.3 31.4,30.6 v 37.3 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.2,-8.3 -31.2,-30.6 z m 45.2,-37.3 c 0,-10.6 -5.3,-15.4 -14,-15.4 -8.8,0 -13.9,4.8 -13.9,15.4 v 37.3 c 0,10.6 5.1,15.4 13.9,15.4 8.7,0 14,-4.8 14,-15.4 z"/></g></svg></a>
+    <p class="slagord">Offentlig og kvalitetssikret</p>
+  </div>
+  <div class="topp-knapper">
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Min side
+    </button>
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Meny
+    </button>
+    <button type="button" class="meny-rund bare-mobil" aria-label="Åpne meny">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <h1>Søk etter yrker, utdanning og innhold</h1>
+
+  <form class="sok" role="search" onsubmit="return false">
+    <label for="sok" class="skjult">Søk etter yrker, utdanning og innhold</label>
+    <input id="sok" type="search" value="jobbkompasset" readonly>
+    <button type="button" aria-label="Søk">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+    </button>
+  </form>
+
+  <div class="velger">
+    <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
+    <div class="brikker-ramme">
+      <ul class="brikker">
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(6)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="verktoyet" aria-pressed="false">Verktøyet <span data-antall="verktoyet">(1)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="annen-mate" aria-pressed="false">Annen måte <span data-antall="annen-mate">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="om" aria-pressed="false">Om Jobbkompasset <span data-antall="om">(1)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="alle-verktoy" aria-pressed="false">Alle verktøy <span data-antall="alle-verktoy">(1)</span></button></li>
+        <li class="vis-flere-plass bare-desktop" hidden>
+          <button type="button" class="vis-flere" aria-expanded="false">
+            <span>Vis flere</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="oppsett">
+
+    <aside class="sidekolonne bare-desktop">
+      <div>
+        <h2 class="etikett legende-tittel">
+          <span>Farger og ikoner</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </h2>
+        <ul class="legende">
+          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+        </ul>
+      </div>
+
+      <div>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+          Del søk
+        </button>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"/></svg>
+          Lagre søk
+        </button>
+      </div>
+    </aside>
+
+    <div class="resultater">
+
+      <div class="treff">
+        <h2 class="etikett">Søkeresultat</h2>
+        <p class="meta"><span data-antall-ingress>6</span> resultater. Du skrev «<span data-sok-tekst>jobbkompasset</span>», og vi forstår det som et søk etter et verktøy.</p>
+      </div>
+
+      <!-- 1. Verktøyet du søkte etter: ett stort kort, uten spørsmålsoverskrift. felles.js flytter kortet for verktøyet søket gjelder
+           fra [data-verktoy-pool] (nederst) hit. Uten treff står Jobbkompasset her. -->
+      <section class="gruppe" data-gruppe="verktoyet" aria-labelledby="g-verktoyet">
+        <h2 id="g-verktoyet" class="skjult">Verktøyet du søkte etter</h2>
+        <ul class="kortliste" data-verktoy-plass></ul>
+      </section>
+
+      <!-- 2. Vil du utforske på en annen måte? Verktøyet som står øverst, skjules her (data-verktoy-kort). -->
+      <section class="gruppe" data-gruppe="annen-mate" aria-labelledby="g-annen-mate">
+        <h2 id="g-annen-mate" class="seksjon">Vil du utforske på en annen måte?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="utdanningskompasset" data-verktoy-kort="utdanningskompasset">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="utdanningskompasset">Utdanningskompasset</a></h3>
+            <p class="brodtekst">Få inspirasjon til hvilke utdanninger du kan velge mellom.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="alle-yrker" data-verktoy-kort="alle-yrker">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="alle-yrker">Alle yrker</a></h3>
+            <p class="brodtekst">Fortell om interessene dine eller det du kan, og se hva som passer.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="forslag-utdanninger-yrker">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="forslag-utdanninger-yrker">Få forslag til utdanninger og yrker</a></h3>
+            <p class="brodtekst">Svar på spørsmål om interessene dine, og se hva KI foreslår.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 3. Hva er Jobbkompasset? Vises bare når Jobbkompasset står øverst (data-kun-verktoy). -->
+      <section class="gruppe" data-gruppe="om" data-kun-verktoy="jobbkompasset" aria-labelledby="g-om">
+        <h2 id="g-om" class="seksjon">Hva er Jobbkompasset?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel" data-kort="jobbkompasset-artikkel">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="jobbkompasset-artikkel">Jobbkompasset</a></h3>
+            <p class="brodtekst">Velg retning og utforsk yrkene, på egen hånd eller sammen med foresatte.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 4. Vil du se alle verktøyene? Skjules når «Alle verktøy» står øverst. -->
+      <section class="gruppe" data-gruppe="alle-verktoy" data-verktoy-kort="alle-verktoy" aria-labelledby="g-alle-verktoy">
+        <h2 id="g-alle-verktoy" class="seksjon">Vil du se alle verktøyene?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="alle-verktoy">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="alle-verktoy">Alle verktøy</a></h3>
+            <p class="brodtekst">Ulike tjenester til inspirasjon for deg som skal gjøre et utdanningsvalg.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Veilederbanner: hele banneret er lenken. Lenken går til forsiden på karriereveiledning.no, så teksten lover ikke chat eller telefon. -->
+      <section class="veileder" aria-labelledby="g-veileder" data-kort="veileder">
+        <a data-lenke="chat-veileder">
+          <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+          <span class="veileder-tekst" style="display:block">
+            <h2 id="g-veileder">Snakk med en veileder</h2>
+            <p class="brodtekst">Usikker på hvilket verktøy du trenger? Karriereveiledning.no gir gratis veiledning om utdanning og jobb.</p>
+          </span>
+          <span class="pill">Gå til Karriereveiledning.no</span>
+        </a>
+      </section>
+
+      <!-- Ett kort per verktøy. felles.js flytter kortet for verktøyet søket gjelder, til [data-verktoy-plass] øverst.
+           De andre blir her: skjult og ikke telt. -->
+      <ul class="kortliste" data-verktoy-pool hidden>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="jobbkompasset" data-kort="verktoy-jobbkompasset">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="jobbkompasset">Jobbkompasset</a></h3>
+          <p class="brodtekst">Få inspirasjon til hvilke jobber som kan passe for deg.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="jobbkompasset">Åpne Jobbkompasset</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="utdanningskompasset" data-kort="verktoy-utdanningskompasset">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="utdanningskompasset">Utdanningskompasset</a></h3>
+          <p class="brodtekst">Få inspirasjon til hvilke utdanninger du kan velge mellom.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="utdanningskompasset">Åpne Utdanningskompasset</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="karakterkalkulator" data-kort="verktoy-karakterkalkulator">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="karakterkalkulator">Karakterkalkulatoren</a></h3>
+          <p class="brodtekst">Regn ut hvor mange poeng du har, og se hva du kan komme inn på.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="karakterkalkulator">Åpne Karakterkalkulatoren</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="studievelgeren" data-kort="verktoy-studievelgeren">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="studievelgeren">Studievelgeren</a></h3>
+          <p class="brodtekst">Sjekk hvilke studier du kan komme inn på.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="studievelgeren">Åpne Studievelgeren</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="fagskolevelgeren" data-kort="verktoy-fagskolevelgeren">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="fagskolevelgeren">Fagskolevelgeren</a></h3>
+          <p class="brodtekst">Se hvilke fagskoletilbud du kan søke deg inn på.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="fagskolevelgeren">Åpne Fagskolevelgeren</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="finn-laerebedrift" data-kort="verktoy-finn-laerebedrift">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="finn-laerebedrift">Finn lærebedrift</a></h3>
+          <p class="brodtekst">Oversikt over godkjente bedrifter og ledige læreplasser.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="finn-laerebedrift">Åpne Finn lærebedrift</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="sammenlign" data-kort="verktoy-sammenlign">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="sammenlign">Sammenlign</a></h3>
+          <p class="brodtekst">Velg yrker eller utdanninger, og se lønn, arbeidsledighet og mer opp mot hverandre.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="sammenlign">Åpne Sammenlign</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="jobbkartet" data-kort="verktoy-jobbkartet">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="jobbkartet">Jobbkartet</a></h3>
+          <p class="brodtekst">Se hvor jobbene er, og hvordan arbeidsmarkedet utvikler seg.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="jobbkartet">Åpne Jobbkartet</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="likestilling" data-kort="verktoy-likestilling">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="likestilling">Likestilling</a></h3>
+          <p class="brodtekst">Se hvor stor andel menn og kvinner som jobber i de vanligste yrkene i Norge.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="likestilling">Åpne Likestilling</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="muligheter-med-yrkesfag" data-kort="verktoy-muligheter-med-yrkesfag">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="muligheter-med-yrkesfag">Hva kan du bli med yrkesfag?</a></h3>
+          <p class="brodtekst">Velg utdanningsprogram og sted, og se hvilke yrker du kan velge blant.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="muligheter-med-yrkesfag">Åpne verktøyet</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="veien-til-fagbrev" data-kort="verktoy-veien-til-fagbrev">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="veien-til-fagbrev">Veien til fagbrev</a></h3>
+          <p class="brodtekst">Se de ulike måtene du kan få fag- eller svennebrev på.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="veien-til-fagbrev">Åpne Veien til fagbrev</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="veien-til-studiekompetanse" data-kort="verktoy-veien-til-studiekompetanse">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="veien-til-studiekompetanse">Veien til studiekompetanse</a></h3>
+          <p class="brodtekst">Se mulighetene dine for å ta høyere utdanning.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="veien-til-studiekompetanse">Åpne Veien til studiekompetanse</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="realkompetansevurdering" data-kort="verktoy-realkompetansevurdering">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="realkompetansevurdering">Realkompetansevurdering</a></h3>
+          <p class="brodtekst">Se veien som er relevant for deg, og følg tre eksempler gjennom prosessen.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="realkompetansevurdering">Åpne Realkompetansevurdering</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="utdanningssystemet" data-kort="verktoy-utdanningssystemet">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="utdanningssystemet">Utdanningssystemet</a></h3>
+          <p class="brodtekst">Velg unge eller voksne, og se veien gjennom utdanningen i Norge.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="utdanningssystemet">Åpne Utdanningssystemet</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="yrkesfaghandboka" data-kort="verktoy-yrkesfaghandboka">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="yrkesfaghandboka">Yrkesfaghåndboka</a></h3>
+          <p class="brodtekst">Hjelpemiddel for deg som går yrkesfag, eller vurderer å velge det.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="yrkesfaghandboka">Åpne Yrkesfaghåndboka</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="veien-til-utveksling" data-kort="verktoy-veien-til-utveksling">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="veien-til-utveksling">Veien til utveksling</a></h3>
+          <p class="brodtekst">Spill deg gjennom, og bygg ditt eget utvekslingspass underveis.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="veien-til-utveksling">Åpne Veien til utveksling</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="alle-yrker" data-kort="verktoy-alle-yrker">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="alle-yrker">Alle yrker</a></h3>
+          <p class="brodtekst">Fortell om interessene dine eller det du kan, og se hva som passer.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="alle-yrker">Åpne Alle yrker</a>
+          </div>
+        </li>
+        <li class="kort kort--verktoy kort--stort" data-verktoy="alle-verktoy" data-kort="verktoy-alle-verktoy">
+          <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+          <h3 class="korttittel"><a data-lenke="alle-verktoy">Alle verktøy</a></h3>
+          <p class="brodtekst">Ulike tjenester til inspirasjon for deg som skal gjøre et utdanningsvalg.</p>
+          <div class="handlinger">
+            <a class="pill" data-lenke="alle-verktoy">Åpne Alle verktøy</a>
+          </div>
+        </li>
+      </ul>
+
+
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="bunn-innhold">
+    <div class="avsender"><strong>HK-dir</strong><br>Direktoratet for høyere utdanning og kompetanse</div>
+    <ul class="bunnlenker">
+      <li class="bare-desktop"><button type="button">For presse</button></li>
+      <li><button type="button">Om karriereveiledning.no</button></li>
+      <li><button type="button">Karrieresenter i ditt fylke</button></li>
+      <li><button type="button">Personvernerklæring</button></li>
+    </ul>
+    <div class="bunn-kontakt bare-desktop">
+      <div><strong>Webredaktør:</strong><br>[NAVN]</div>
+      <div><strong>Kontakt redaksjonen:</strong><br><button type="button">[E-POSTADRESSE]</button></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../ruting.js"></script>
+<script src="../felles.js"></script>
+</body>
+</html>

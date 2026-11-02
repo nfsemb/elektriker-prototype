@@ -39,13 +39,6 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
     </button>
   </form>
-
-  <!-- Vises bare når søket ikke nevner noe yrke i prototypen. Ellers sendes deltakeren rett videre. -->
-  <section class="velg-yrke" hidden aria-labelledby="velg-yrke-tittel">
-    <h2 id="velg-yrke-tittel" class="seksjon">Hvilket yrke vil du vite mer om?</h2>
-    <p class="brodtekst">Vi fant ikke noe bestemt yrke i spørsmålet ditt. Velg et yrke, så viser vi det vi har om det.</p>
-    <ul class="yrkevalg"></ul>
-  </section>
 </main>
 
 <footer>
@@ -64,26 +57,12 @@
   </div>
 </footer>
 
-<script src="felles.js"></script>
+<script src="ruting.js"></script>
 <script>
-// Sender søket fra forsiden til resultatsiden for yrket det handler om.
+// Sender søket fra forsiden til siden rutingen finner for det (ruting.js).
 // Uten søk går siden til elektriker, slik /sok/ alltid har gjort.
 (function () {
-  var sok = KiSok.hentSok();
-  var yrke = sok ? KiSok.finnYrke(sok) : 'elektriker';
-  if (yrke) { location.replace(yrke + '/' + location.search); return; }
-  document.getElementById('sok').value = sok;
-  var liste = document.querySelector('.yrkevalg');
-  KiSok.YRKER.forEach(function (y) {
-    var li = document.createElement('li');
-    var a = document.createElement('a');
-    a.className = 'pill';
-    a.href = y.id + '/';
-    a.textContent = y.navn.charAt(0).toUpperCase() + y.navn.slice(1);
-    li.appendChild(a);
-    liste.appendChild(li);
-  });
-  document.querySelector('.velg-yrke').hidden = false;
+  location.replace(KiSok.finnSide(KiSok.hentSok()).side + '/' + location.search);
 })();
 </script>
 </body>

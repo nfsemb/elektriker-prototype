@@ -1,49 +1,11 @@
-// Felles skript for resultatsidene i sok/<yrke>/ og for sok/ (som sender søket til riktig yrke).
+// Felles skript for resultatsidene i sok/<side>/. Rutingen (yrkene, søket og hvilken side søket skal til) ligger i ruting.js,
+// som må lastes først. Yrkessidene har data-yrke på body, situasjonssidene har data-side. Begge brukes som side-id.
 (function () {
   'use strict';
 
-  // ---------- Yrkene i prototypen ----------
-  // Søket fra forsiden ligger bare i nettleseren (sessionStorage) og sendes ingen steder.
-  var NOKKEL_SOK = 'ki-sok:sporsmal';
-  var NOKKEL_GRUPPE = 'ki-sok:gruppe:'; // + yrke, så valgt tema huskes per yrke
-
-  // Ord som viser at søket handler om et yrke. Grensene (G) gjør at for eksempel «politiker» ikke treffer «politi».
-  var G = '(^|[^a-zæøå])';
-  var YRKER = [
-    { id: 'elektriker', navn: 'elektriker', ord: new RegExp(G + 'elektrik(er|ar)') },
-    { id: 'sykepleier', navn: 'sykepleier', ord: new RegExp(G + 'sykepleie') },
-    { id: 'advokat', navn: 'advokat', ord: new RegExp(G + '(advokat|jurist|juss?([^a-zæøå]|$)|jusstudi|rettsvitenskap)') },
-    { id: 'politi', navn: 'politi', ord: new RegExp(G + 'politi(?!k|sk)') },
-    { id: 'lege', navn: 'lege', ord: new RegExp(G + '(lege(r|n|ne|vakt|yrket|studiet|utdanning(en)?|spesialist(er)?)?([^a-zæøå]|$)|medisin|doktor)') },
-    { id: 'psykolog', navn: 'psykolog', ord: new RegExp(G + 'psykolog') },
-    // «lærer» er også et verb («hva lærer man?»), så det teller bare når ingen andre yrker er nevnt, og ikke etter et pronomen.
-    { id: 'laerer', navn: 'lærer', ord: new RegExp(G + '(lærer(e|en|ne|yrket|utdanning(en)?)?|lektor(er)?|adjunkt)([^a-zæøå]|$)'), sist: true }
-  ];
-  // «jeg lærer» er et verb, men «blir jeg lærer», «som lærer» og «bli lærer» handler om yrket.
-  var VERB_LAERER = /(jeg|du|man|han|hun|vi|de|dere|ikke|mer|mest) lærer|lærer (jeg|du|man|han|hun|vi|de|dere|meg|deg|seg|om|av)([^a-zæøå]|$)/;
-  var YRKE_LAERER = /(bli|blir|ble|er|være|vært|som|en|til) (jeg |du |man )?lærer/;
-
-  // Returnerer yrket søket handler om, eller null. Nevnes flere, vinner det som står først i teksten.
-  function finnYrke(tekst) {
-    if (!tekst) return null;
-    var t = tekst.toLowerCase();
-    var best = null, bestPos = Infinity;
-    YRKER.forEach(function (y) {
-      if (y.sist) return;
-      var m = y.ord.exec(t);
-      if (m && m.index < bestPos) { best = y; bestPos = m.index; }
-    });
-    if (best) return best.id;
-    var laerer = YRKER.filter(function (y) { return y.sist; })[0];
-    return laerer.ord.test(t) && (!VERB_LAERER.test(t) || YRKE_LAERER.test(t)) ? laerer.id : null;
-  }
-
-  function hentSok() { try { return sessionStorage.getItem(NOKKEL_SOK); } catch (e) { return null; } }
-
-  window.KiSok = { YRKER: YRKER, finnYrke: finnYrke, hentSok: hentSok, NOKKEL_SOK: NOKKEL_SOK, NOKKEL_GRUPPE: NOKKEL_GRUPPE };
-
-  var yrke = document.body.getAttribute('data-yrke');
-  if (!yrke) return; // sok/ bruker bare funksjonene over
+  var erYrkesside = !!document.body.getAttribute('data-yrke');
+  var side = document.body.getAttribute('data-yrke') || document.body.getAttribute('data-side');
+  if (!side) return; // felles.js brukes bare på resultatsidene
 
   // ---------- Lenker ----------
   var lenker = {};
@@ -76,6 +38,13 @@
   });
   if (/[?&]vis-mangler\b/.test(location.search)) document.documentElement.classList.add('vis-mangler');
 
+  // Resten bygger på ruting.js (window.KiSok). Mangler den, for eksempel når en gammel HTML-fil i nettleserens hurtigminne møter
+  // en ny felles.js, står siden som den er, uten tilpasning til søket. Lenkene over virker fortsatt.
+  if (!window.KiSok) {
+    console.error('felles.js: ruting.js er ikke lastet (window.KiSok mangler), så siden vises uten tilpasning til søket. Last siden på nytt uten hurtigminne.');
+    return;
+  }
+
   // ---------- Søket ----------
   // Uten søk, eller når søket bare er et yrke, vises standard sortering.
   // Er søket et spørsmål som passer med en av gruppene, flyttes den gruppen øverst, og resten følger i standard rekkefølge.
@@ -92,7 +61,29 @@
     { gruppe: 'utforsk', ord: ['passer for meg', 'passer meg', 'interesse', 'hva kan jeg bli', 'vet ikke', 'usikker', 'andre muligheter'] }
   ];
 
+  // Situasjonssidene gir hver gruppe egne ord i data-ord="a|b|c". Finnes data-ord på minst én gruppe, brukes de i stedet for MATCH.
+  // Reglene er de samme: hele ord (* på slutten treffer ordstart), uttrykk med flere ord teller dobbelt, og ved likt antall
+  // poeng vinner gruppen som står først på siden. Sider uten data-ord, som yrkessidene, bruker MATCH som før.
+  var harDataOrd = !!document.querySelector('[data-gruppe][data-ord]');
+
+  function poengFor(tekst, uttrykk) {
+    return uttrykk.reduce(function (sum, o) {
+      if (!KiSok.harOrd(tekst, [o])) return sum;
+      return sum + (KiSok.normaliser(o.replace(/\*$/, '')).trim().indexOf(' ') !== -1 ? 2 : 1);
+    }, 0);
+  }
+
+  function finnGruppeMedDataOrd(tekst) {
+    var best = null, bestPoeng = 0;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-gruppe][data-ord]'), function (g) {
+      var poeng = poengFor(tekst, g.getAttribute('data-ord').split('|').filter(Boolean));
+      if (poeng > bestPoeng) { best = { gruppe: g.getAttribute('data-gruppe'), poeng: poeng }; bestPoeng = poeng; }
+    });
+    return best;
+  }
+
   function finnGruppe(tekst) {
+    if (harDataOrd) return finnGruppeMedDataOrd(tekst);
     var t = ' ' + tekst.toLowerCase().replace(/[?!.,;:«»"]/g, ' ').replace(/\s+/g, ' ') + ' ';
     var best = null, bestPoeng = 0;
     MATCH.forEach(function (m) {
@@ -105,12 +96,18 @@
     return best;
   }
 
-  // Søket brukes bare når det handler om dette yrket, eller ikke nevner noe yrke (valgt fra listen i sok/).
-  // Handler det om et annet yrke, for eksempel etter en lenke under «Lignende yrker», vises bare yrkesnavnet.
-  var sok = hentSok();
-  var sokYrke = finnYrke(sok);
-  if (sok && (sokYrke === yrke || sokYrke === null)) {
-    document.getElementById('sok').value = sok;
+  // Det effektive søket: det lagrede søket når rutingen sender det til denne siden, ellers eksempelsøket som står i markupen.
+  // Handler det lagrede om noe annet, for eksempel etter en lenke under «Lignende yrker», vises bare eksempelet.
+  // Alt som avhenger av søket, bruker det effektive søket, så en side som åpnes direkte (en delt lenke), ser ut som eksempelet.
+  var felt = document.getElementById('sok');
+  var lagret = KiSok.hentSok();
+  var bruktLagret = !!lagret && KiSok.finnSide(lagret).side === side;
+  var sok = bruktLagret ? lagret : felt.value;
+  felt.value = sok;
+
+  // Gruppene flyttes etter søket på yrkessidene (MATCH) og på situasjonssider som har data-ord på gruppene.
+  // Andre situasjonssider har egne grupper og egne regler.
+  if ((erYrkesside || harDataOrd) && bruktLagret) {
     var treff = finnGruppe(sok);
     var forste = treff && document.querySelector('[data-gruppe="' + treff.gruppe + '"]');
     if (forste) {
@@ -123,26 +120,138 @@
         alleChip.parentNode.insertBefore(chipFlytt.parentNode, alleChip.nextSibling);
       }
       var tolkning = document.querySelector('[data-tolkning]');
-      tolkning.textContent = ' Vi starter med ' + forste.getAttribute('data-tema') + ', som du spurte om.';
-      tolkning.hidden = false;
+      var tema = forste.getAttribute('data-tema');
+      if (tolkning && tema) {
+        // Yrkessidene (MATCH) har alltid sagt «som du spurte om». På situasjonssidene sier siden det bare når gruppen fikk minst to poeng
+        // (et uttrykk med flere ord, eller to ord som treffer). Ett vidt ord som «yrkesfag» eller «liker» er ikke det samme som å spørre om temaet.
+        var spurtOm = !harDataOrd || treff.poeng >= 2;
+        tolkning.textContent = ' Vi starter med ' + tema + (spurtOm ? ', som du spurte om.' : '.');
+        tolkning.hidden = false;
+      }
     }
   }
 
+  // ---------- Det søket sier ----------
+  // Situasjonssidene tilpasses søket med attributter i markupen. Yrkessidene har ingen av dem.
+  // Et element som ikke passer søket, får hidden og data-irrelevant. Det telles ikke, og «Velg tema» viser det aldri.
+  function vis(el, skalVises) {
+    el.hidden = !skalVises;
+    if (skalVises) el.removeAttribute('data-irrelevant'); else el.setAttribute('data-irrelevant', '');
+  }
+  function uttrykkene(el, attributt) { return el.getAttribute(attributt).split('|').filter(Boolean); }
+
+  // data-sok-tekst: det effektive søket som tekst.
+  document.querySelectorAll('[data-sok-tekst]').forEach(function (el) { el.textContent = sok; });
+
+  // data-mente-boks: vises når søket ligner et yrke vi har (skrivefeil). a[data-mente] inni peker til yrkessiden.
+  // data-uten-mente: motsatt, vises når søket ikke ligner noe yrke.
+  var mente = KiSok.finnSide(sok).mente;
+  var menteYrke = KiSok.YRKER.filter(function (y) { return y.id === mente; })[0];
+  document.querySelectorAll('[data-mente-boks]').forEach(function (boks) {
+    vis(boks, !!menteYrke);
+    if (!menteYrke) return;
+    boks.querySelectorAll('a[data-mente]').forEach(function (a) {
+      a.setAttribute('href', '../' + menteYrke.id + '/');
+      a.textContent = menteYrke.navn.charAt(0).toUpperCase() + menteYrke.navn.slice(1);
+    });
+  });
+  document.querySelectorAll('[data-uten-mente]').forEach(function (el) { vis(el, !menteYrke); });
+
+  // data-vis-hvis="a|b": vises når søket har et av uttrykkene som hele ord (uttrykk med * på slutten treffer ordstart).
+  // data-vis-ikke-hvis="a|b": vises når søket ikke har noen av dem.
+  // data-vis-hvis-lik="a|b": vises når hele søket er lik et av dem (store bokstaver og tegnsetting teller ikke).
+  document.querySelectorAll('[data-vis-hvis]').forEach(function (el) {
+    vis(el, KiSok.harOrd(sok, uttrykkene(el, 'data-vis-hvis')));
+  });
+  document.querySelectorAll('[data-vis-ikke-hvis]').forEach(function (el) {
+    vis(el, !KiSok.harOrd(sok, uttrykkene(el, 'data-vis-ikke-hvis')));
+  });
+  document.querySelectorAll('[data-vis-hvis-lik]').forEach(function (el) {
+    vis(el, uttrykkene(el, 'data-vis-hvis-lik').some(function (u) { return KiSok.normaliser(u) === KiSok.normaliser(sok); }));
+  });
+
+  // ---------- Verktøyet øverst ----------
+  // Verktøysiden har ett kort per verktøy i [data-verktoy-pool] (skjult, med data-verktoy="id" på hvert kort). Kortet for verktøyet
+  // søket gjelder, flyttes inn i [data-verktoy-plass]. De andre blir i poolen, som er skjult og ikke telles. Gjelder søket
+  // ikke noe verktøy vi har kort for, vises Jobbkompasset, som er eksempelsøket.
+  // data-verktoy-kort="id" skjules når id er verktøyet øverst (det står der allerede). data-kun-verktoy="id" vises bare da.
+  var verktoyPlass = document.querySelector('[data-verktoy-plass]');
+  var verktoyPool = document.querySelector('[data-verktoy-pool]');
+  if (verktoyPlass && verktoyPool) {
+    var verktoyId = KiSok.finnSide(sok).verktoy;
+    var toppkort = verktoyId && verktoyPool.querySelector('[data-verktoy="' + verktoyId + '"]');
+    if (!toppkort) {
+      verktoyId = 'jobbkompasset';
+      toppkort = verktoyPool.querySelector('[data-verktoy="jobbkompasset"]');
+    }
+    if (toppkort) verktoyPlass.appendChild(toppkort);
+    document.querySelectorAll('[data-verktoy-kort]').forEach(function (el) {
+      vis(el, el.getAttribute('data-verktoy-kort') !== verktoyId);
+    });
+    document.querySelectorAll('[data-kun-verktoy]').forEach(function (el) {
+      vis(el, el.getAttribute('data-kun-verktoy') === verktoyId);
+    });
+  }
+
   // ---------- Antall ----------
-  // «Lignende yrker» og «Utforsk» handler ikke om dette yrket og telles ikke med i «Alle».
+  // Kort i et element med data-irrelevant telles ikke, og heller ikke kortene som blir igjen i verktøypoolen eller ligger i en variant
+  // som ikke er valgt (se «Valg»). På yrkessidene handler «Lignende yrker» og «Utforsk» ikke om dette yrket og telles ikke med i «Alle».
+  // På situasjonssidene telles alle gruppene. Tellingen kjøres på nytt når et valg endres.
   var grupper = Array.prototype.slice.call(document.querySelectorAll('[data-gruppe]'));
   var antall = { alle: 0 };
-  grupper.forEach(function (g) {
-    var id = g.getAttribute('data-gruppe');
-    antall[id] = g.querySelectorAll(id === 'lignende' ? '[data-yrke]' : '[data-kort]').length;
-    if (id !== 'lignende' && id !== 'utforsk') antall.alle += antall[id];
+  // Tallene i markupen gjelder eksempelsøket. Har siden elementer som ikke passer søket, kan de med rette avvike.
+  var avviker = !document.querySelector('[data-irrelevant]');
+
+  function tell(advar) {
+    antall = { alle: 0 };
+    grupper.forEach(function (g) {
+      var id = g.getAttribute('data-gruppe');
+      var iAlle = !(erYrkesside && (id === 'lignende' || id === 'utforsk'));
+      var kort = g.querySelectorAll(erYrkesside && id === 'lignende' ? '[data-yrke]' : '[data-kort]');
+      antall[id] = Array.prototype.filter.call(kort, function (k) { return !k.closest('[data-irrelevant], [data-verktoy-pool], [data-valg][hidden]'); }).length;
+      if (iAlle) antall.alle += antall[id];
+    });
+    document.querySelectorAll('[data-antall]').forEach(function (el) {
+      var tekst = '(' + antall[el.getAttribute('data-antall')] + ')';
+      if (el.textContent !== tekst) {
+        if (advar && avviker) console.warn('Antall i markupen stemmer ikke:', el.getAttribute('data-antall'), el.textContent, '→', tekst);
+        el.textContent = tekst;
+      }
+    });
+    var ingress = document.querySelector('[data-antall-ingress]');
+    if (ingress && ingress.textContent !== String(antall.alle)) {
+      if (advar && avviker) console.warn('Antall i ingressen stemmer ikke');
+      ingress.textContent = antall.alle;
+    }
+    // Sider uten «Alle (N)» (ingen «Velg tema») har tallet her, så testsiden kan sjekke at det følger kortene som vises.
+    document.body.setAttribute('data-antall-kort', String(antall.alle));
+  }
+
+  // ---------- Valg ----------
+  // «Hva kan jeg bli med psykologi?» spør først hvilken utdanning deltakeren mener. Hver knapp button[data-valg-knapp="id"] velger
+  // en utdanning, og elementene med data-valg="id" er innholdet for den. Før et valg er alle [data-valg] skjult og telles ikke.
+  // Et trykk viser elementene med samme id, skjuler de andre og setter aria-pressed på knappene. Valget kan endres, og trykk på
+  // den valgte knappen beholder valget. En gruppe der alt er varianter, vises bare når en av variantene vises. Valget lagres ikke.
+  var valgKnapper = document.querySelectorAll('button[data-valg-knapp]');
+  var valgElementer = document.querySelectorAll('[data-valg]');
+
+  function settValg(id) {
+    valgElementer.forEach(function (el) { el.hidden = el.getAttribute('data-valg') !== id; });
+    valgKnapper.forEach(function (k) { k.setAttribute('aria-pressed', String(k.getAttribute('data-valg-knapp') === id)); });
+    grupper.forEach(function (g) {
+      if (g.querySelector('[data-valg]')) g.hidden = g.hasAttribute('data-irrelevant') || !g.querySelector('[data-valg]:not([hidden])');
+    });
+  }
+
+  // Ingen utdanning er valgt når siden åpnes. Første telling kommer etter dette, så den teller riktige kort.
+  if (valgElementer.length) settValg(null);
+  tell(true);
+  valgKnapper.forEach(function (knapp) {
+    knapp.addEventListener('click', function () {
+      settValg(knapp.getAttribute('data-valg-knapp'));
+      tell(false);
+    });
   });
-  document.querySelectorAll('[data-antall]').forEach(function (el) {
-    var tekst = '(' + antall[el.getAttribute('data-antall')] + ')';
-    if (el.textContent !== tekst) { console.warn('Antall i markupen stemmer ikke:', el.getAttribute('data-antall'), el.textContent, '→', tekst); el.textContent = tekst; }
-  });
-  var ingress = document.querySelector('[data-antall-ingress]');
-  if (ingress && ingress.textContent !== String(antall.alle)) { console.warn('Antall i ingressen stemmer ikke'); ingress.textContent = antall.alle; }
 
   // ---------- Se mer ----------
   // Viser resten av kortene i en gruppe eller et kort, og skjuler dem igjen.
@@ -157,8 +266,23 @@
     });
   });
 
+  // ---------- Nytt søk ----------
+  // En knapp med data-nytt-sok="tekst" starter et nytt søk, slik forsiden gjør: teksten blir søket, valgt tema nullstilles
+  // for alle sider, og rutingen i sok/ velger siden. Søket går bare via sessionStorage og sendes ingen steder.
+  document.querySelectorAll('button[data-nytt-sok]').forEach(function (knapp) {
+    knapp.addEventListener('click', function () {
+      try {
+        sessionStorage.setItem(KiSok.NOKKEL_SOK, knapp.getAttribute('data-nytt-sok'));
+        Object.keys(sessionStorage).filter(function (k) { return k.indexOf(KiSok.NOKKEL_GRUPPE) === 0; }).forEach(function (k) { sessionStorage.removeItem(k); });
+      } catch (e) {}
+      location.href = '../';
+    });
+  });
+
   // ---------- Velg tema ----------
-  var NOKKEL = NOKKEL_GRUPPE + yrke;
+  // Sider uten «Velg tema» (bli-med-psykologi) har ingen chips å styre, og alt under her gjelder bare chipsene. Denne delen må stå sist.
+  if (!document.querySelector('.brikker')) return;
+  var NOKKEL = KiSok.NOKKEL_GRUPPE + side;
   var brikker = document.querySelectorAll('[data-velg]');
 
   function lagre(id) { try { sessionStorage.setItem(NOKKEL, id); } catch (e) {} }
@@ -170,6 +294,16 @@
   var flereLi = rad.querySelector('.vis-flere-plass');
   var flere = flereLi.querySelector('button');
   var chipLi = Array.prototype.filter.call(rad.children, function (li) { return li !== flereLi; });
+  // Chipen for en gruppe som ikke passer søket, skjules for godt og tas ikke med i «Vis N temaer til».
+  function erIrrelevant(id) {
+    var g = id !== 'alle' && document.querySelector('[data-gruppe="' + id + '"]');
+    return !!g && g.hasAttribute('data-irrelevant');
+  }
+  chipLi = chipLi.filter(function (li) {
+    var borte = erIrrelevant(li.querySelector('[data-velg]').getAttribute('data-velg'));
+    if (borte) li.hidden = true;
+    return !borte;
+  });
   var apen = false;
 
   function settTekst(tekst, opp) {
@@ -204,8 +338,9 @@
   tilpass();
 
   function velg(id, rull) {
-    if (id !== 'alle' && !document.querySelector('[data-gruppe="' + id + '"]')) id = 'alle';
-    grupper.forEach(function (g) { g.hidden = !(id === 'alle' || g.getAttribute('data-gruppe') === id); });
+    if (id !== 'alle' && (!document.querySelector('[data-gruppe="' + id + '"]') || erIrrelevant(id))) id = 'alle';
+    // En gruppe som ikke passer søket, vises aldri
+    grupper.forEach(function (g) { g.hidden = g.hasAttribute('data-irrelevant') || !(id === 'alle' || g.getAttribute('data-gruppe') === id); });
     brikker.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-velg') === id)); });
     // Sørg for at valgt chip synes i den vannrette raden (for eksempel etter Tilbake)
     var chip = document.querySelector('[data-velg="' + id + '"]');
@@ -224,4 +359,5 @@
   });
   velg(hent() || 'alle');
   window.addEventListener('pageshow', function (e) { if (e.persisted) velg(hent() || 'alle'); });
+
 })();

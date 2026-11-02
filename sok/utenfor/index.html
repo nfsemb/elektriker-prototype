@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Søk | utdanning.no</title>
+<link rel="stylesheet" href="../felles.css">
+</head>
+<body data-side="utenfor">
+
+<!--
+  LENKER
+  Alle adresser ligger her. Siden bygger href ut fra «side», «anker» og «tekst».
+  - side: adressen til målsiden (uten #anker), eller null hvis lenken mangler.
+  - anker: id på målsiden som det skal hoppes til, eller null.
+  - tekst: tekstfragment som utheves, { "start": "...", "slutt": "..." } (slutt er valgfri), eller null.
+  - status: "funnet" (funnet og sjekket av Claude), "manuell" (lagt inn av et menneske, skal aldri endres), "mangler".
+  Kjør `node scripts/sjekk-lenker.mjs utenfor` etter endringer.
+-->
+<script type="application/json" id="lenker">
+{
+  "4-steder": {
+    "maal": "Artikkelen «4 steder du kan lete etter jobb» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/6-steder-du-kan-lete-etter-jobb", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "forslag-ledige-stillinger": {
+    "maal": "KI-verktøyet «Få forslag til ledige stillinger» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/fa-forslag-til-jobber", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "under-18": {
+    "maal": "Siden «Hvordan søke jobb når du er under 18 år» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/under-18-3-tips-til-finne-og-soke-jobb", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap for karriereveiledning.no (rapporten)", "sjekket": "2026-10-31"
+  },
+  "4-tips-soknad": {
+    "maal": "Artikkelen «4 tips til søknad» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/5-tips-til-soknad", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "forsteutkast-soknad": {
+    "maal": "KI-verktøyet «Lag førsteutkast til jobbsøknaden» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/fa-hjelp-til-skrive-jobbsoknaden", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "sjekkliste-cv": {
+    "maal": "Sjekklisten «Sjekkliste for CV» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/5-tips-til-cv", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Jobb» i menyen på karriereveiledning.no (Nyutdannet og skal søke jobb)", "sjekket": "2026-10-31"
+  },
+  "jobbkompasset-data-it": {
+    "maal": "Jobbkompasset på utdanning.no, området «Teknologi og realfag», kategorien «Data og IT», som viser yrker innenfor data og IT",
+    "side": "https://utdanning.no/jobbkompasset/?tema=Teknologi_og_realfag&kategori=Data_og_IT", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no. Adressen er den verktøyet selv får når du velger «Teknologi og realfag» og «Data og IT». Åpnet direkte i nettleseren: siden viser «Utforsk yrker innenfor Data og IT»", "sjekket": "2026-10-31"
+  },
+  "finn-laerebedrift": {
+    "maal": "Verktøyet «Finn lærebedrift» på utdanning.no, oversikten over godkjente lærebedrifter og ledige læreplasser",
+    "side": "https://utdanning.no/finnlarebedrift/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (samme adresse som på sok/verktoy, sok/videregaende og sok/jobbsoking). Tittelen «Finn Lærebedrift» settes i nettleseren", "sjekket": "2026-10-31"
+  },
+  "kontakt-veileder": {
+    "maal": "Kontaktsiden til Karriereveiledning.no, der du velger chat, telefon eller e-post",
+    "side": "https://karriereveiledning.no/kontakt-karriereveileder", "anker": null, "tekst": null,
+    "status": "manuell", "kilde": "bestemt av Niels 2026-10-31", "sjekket": "2026-10-31"
+  }
+}
+</script>
+
+<header class="topp">
+  <div>
+    <a href="../../" class="logolenke"><svg class="logo" viewBox="0 0 812.9 99.2" role="img" aria-label="Utdanning.no"><g transform="translate(-12.9,-75.2)" fill="#EE7B1A"><path d="m 59.7,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,22.3 -14.2,30.6 -32.1,30.6 -18,0 -32.1,-8.3 -32.1,-30.6 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,10.4 5.5,15.4 14.7,15.4 9.2,0 14.7,-4.9 14.7,-15.4 z"/><path d="m 148.2,75.9 c 3.7,0 5.5,4 5.5,7.8 0,4.1 -2,7.9 -5.5,7.9 h -19.5 v 76.5 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 91.6 H 91.7 c -3.5,0 -5.5,-3.6 -5.5,-7.9 0,-3.7 1.7,-7.8 5.5,-7.8 z"/><path d="m 193.4,75.9 c 17.6,0 31.4,8.3 31.4,30.6 V 143 c 0,22.3 -13.8,30.6 -31.4,30.6 h -23.6 c -4.5,0 -7.6,-2.5 -7.6,-5.3 v -87 c 0,-2.8 3.1,-5.4 7.6,-5.4 z m -13.9,15.2 v 67.2 h 13.9 c 8.8,0 14,-4.9 14,-15.4 V 106.4 C 207.4,96 202.2,91 193.4,91 h -13.9 z"/><path d="m 230.9,166.4 c 0,-0.3 0.1,-0.8 0.3,-1.3 l 25.8,-84 c 1.2,-4 6.1,-5.9 11.1,-5.9 5.1,0 10,1.9 11.2,5.9 l 25.8,84 c 0.1,0.5 0.3,0.9 0.3,1.3 0,4.1 -6.3,7.2 -10.9,7.2 -2.9,0 -5.2,-0.9 -5.9,-3.5 l -5.1,-17.8 h -30.6 l -5.1,17.8 c -0.7,2.5 -2.9,3.5 -5.9,3.5 -4.8,0 -11,-3 -11,-7.2 z m 48.7,-27.7 -11.6,-41 -11.6,41 z"/><path d="m 359.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 L 361,134.9 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 440.4,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 475.1,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 z"/><path d="m 554.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 618.6,91.1 c -8.9,0 -14,5 -14,15.4 v 37.3 c 0,10.4 5.1,15.4 13.9,15.4 8.7,0 14,-4.9 14,-15.4 v -7.9 h -10.8 c -3.5,0 -5.3,-3.3 -5.3,-6.8 0,-3.3 1.9,-6.8 5.3,-6.8 h 22.7 c 3.5,0 5.5,2.7 5.5,5.6 v 15.9 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.3,-8.3 -31.3,-30.6 v -37.3 c 0,-22.3 13.8,-30.6 30.7,-30.6 18.4,0 31.9,9.6 31.9,25.7 0,6.7 -2.9,8.3 -8.7,8.3 -4.7,0 -8.5,-1.3 -8.7,-5.5 -0.3,-6.3 -2.4,-13.3 -13.8,-13.3 z"/><path d="m 675.4,165.3 c 0,4.8 -4.1,9.1 -9,9.1 -5.2,0 -9.1,-4.3 -9.1,-9.1 0,-4.9 3.9,-9.1 9.1,-9.1 4.9,0 9,4.1 9,9.1 z"/><path d="m 731.5,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 763.2,143.8 v -37.3 c 0,-22.3 13.6,-30.6 31.2,-30.6 17.6,0 31.4,8.3 31.4,30.6 v 37.3 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.2,-8.3 -31.2,-30.6 z m 45.2,-37.3 c 0,-10.6 -5.3,-15.4 -14,-15.4 -8.8,0 -13.9,4.8 -13.9,15.4 v 37.3 c 0,10.6 5.1,15.4 13.9,15.4 8.7,0 14,-4.8 14,-15.4 z"/></g></svg></a>
+    <p class="slagord">Offentlig og kvalitetssikret</p>
+  </div>
+  <div class="topp-knapper">
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Min side
+    </button>
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Meny
+    </button>
+    <button type="button" class="meny-rund bare-mobil" aria-label="Åpne meny">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <h1>Søk etter yrker, utdanning og innhold</h1>
+
+  <form class="sok" role="search" onsubmit="return false">
+    <label for="sok" class="skjult">Søk etter yrker, utdanning og innhold</label>
+    <input id="sok" type="search" value="hvilke it-relaterte firmaer søker praktikanter til uke 44 i 2026 akkurat nå?" readonly>
+    <button type="button" aria-label="Søk">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+    </button>
+  </form>
+
+  <div class="velger">
+    <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
+    <div class="brikker-ramme">
+      <ul class="brikker">
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(7)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="lete" aria-pressed="false">Lete selv <span data-antall="lete">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="soke" aria-pressed="false">Søke <span data-antall="soke">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="it" aria-pressed="false">IT-jobber <span data-antall="it">(1)</span></button></li>
+        <li class="vis-flere-plass bare-desktop" hidden>
+          <button type="button" class="vis-flere" aria-expanded="false">
+            <span>Vis flere</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="oppsett">
+
+    <aside class="sidekolonne bare-desktop">
+      <div>
+        <h2 class="etikett legende-tittel">
+          <span>Farger og ikoner</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </h2>
+        <ul class="legende">
+          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+        </ul>
+      </div>
+
+      <div>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+          Del søk
+        </button>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"/></svg>
+          Lagre søk
+        </button>
+      </div>
+    </aside>
+
+    <div class="resultater">
+
+      <!-- Avvisningen står i ingressen. Den sier bare det søket faktisk fant: vi har ingen oversikt over bedrifter som tar inn praktikanter, og ingen oversikt over alle ledige jobber og praksisplasser. Karriereveiledning.no har KI-verktøyet «Få forslag til ledige stillinger» (forslag og lenker til utlysninger på arbeidsplassen.no), og utdanning.no har «Finn lærebedrift» med ledige læreplasser, så ingressen sier «alle» og ikke at vi ikke har noen. Begge setningene sender videre til «Hvor kan du lete selv?». Om søket nevner praktikant eller praksisplass, avgjør felles.js hvilken setning som vises. -->
+      <div class="treff">
+        <h2 class="etikett">Søkeresultat</h2>
+        <p class="avvisning">
+          <span data-vis-hvis="praktikant*|praksisplass*">Vi har ikke oversikt over hvilke bedrifter som tar inn praktikanter akkurat nå, men vi kan vise deg hvor du kan lete.</span>
+          <span data-vis-ikke-hvis="praktikant*|praksisplass*" hidden>Vi har ikke oversikt over alle ledige jobber og praksisplasser, men vi kan vise deg hvor du kan lete.</span>
+        </p>
+      </div>
+
+      <!-- Veilederen står øverst, rett etter ingressen, fordi den er det nærmeste vi har til et svar. Lenken går til kontaktsiden (aldri til chat-lenken, som starter en ekte chat). Telefon og åpningstider er lest av kontaktsiden og åpningstidssiden 2026-10-31. -->
+      <section class="veileder--topp" aria-labelledby="g-veileder" data-kort="veileder">
+        <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+        <div class="veileder--topp-tekst">
+          <h2 id="g-veileder">Snakk med en karriereveileder</h2>
+          <p>Gratis og anonymt, på chat eller telefon 23&nbsp;50&nbsp;61&nbsp;95 (mandag–torsdag 09:00–15:00, fredag 09:00–12:00).</p>
+        </div>
+        <a class="pill" data-lenke="kontakt-veileder">Kontakt en veileder</a>
+      </section>
+
+      <!-- 1. Hvor kan du lete selv? Finn lærebedrift vises bare når søket nevner lærling, læreplass eller lærebedrift (for eksempel «lærlingplass akkurat nå»). Verktøyet har ledige læreplasser, og det er det nærmeste vi har til en oversikt over hvem som tar inn lærlinger. -->
+      <section class="gruppe" data-gruppe="lete" aria-labelledby="g-lete">
+        <h2 id="g-lete" class="seksjon">Hvor kan du lete selv?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="finn-laerebedrift" data-vis-hvis="lærling*|læreplass*|lærebedrift*" hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="finn-laerebedrift">Finn lærebedrift</a></h3>
+            <p class="brodtekst">Oversikt over godkjente bedrifter og ledige læreplasser.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="4-steder">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="4-steder">4 steder du kan lete etter jobb</a></h3>
+            <p class="brodtekst">Portaler med ledige stillinger, nettverket ditt, bedriftenes nettsteder og bemanningsbyråer.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="forslag-ledige-stillinger">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="forslag-ledige-stillinger">Få forslag til ledige stillinger</a></h3>
+            <p class="brodtekst">Skriv inn utdanning og erfaring, og velg gjerne sted.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="under-18">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="under-18">Hvordan søke jobb når du er under 18 år</a></h3>
+            <p class="brodtekst">Ser du etter deltidsjobb eller sommerjobb?</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 2. Klar til å søke? -->
+      <section class="gruppe" data-gruppe="soke" aria-labelledby="g-soke">
+        <h2 id="g-soke" class="seksjon">Klar til å søke?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel" data-kort="4-tips-soknad">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="4-tips-soknad">4 tips til søknad</a></h3>
+            <p class="brodtekst">Vis arbeidsgiver at du forstår jobben og hvordan du vil løse oppgavene.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="forsteutkast-soknad">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="forsteutkast-soknad">Lag førsteutkast til jobbsøknaden</a></h3>
+            <p class="brodtekst">Et ferdig forslag på få minutter, tilpasset jobben.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="sjekkliste-cv">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="sjekkliste-cv">Sjekkliste for CV</a></h3>
+            <p class="brodtekst">Svar på spørsmål, og få tips til hva du kan forbedre.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 3. Hvilke IT-jobber finnes? Vises bare når søket handler om IT, data eller teknologi. -->
+      <section class="gruppe" data-gruppe="it" data-vis-hvis="it|data|teknologi|programmer*" aria-labelledby="g-it">
+        <h2 id="g-it" class="seksjon">Hvilke IT-jobber finnes?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="jobbkompasset-data-it">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="jobbkompasset-data-it">Jobbkompasset</a></h3>
+            <p class="brodtekst">Se yrker innenfor Data og IT, for eksempel informatikk og programmering, datasikkerhet og kunstig intelligens.</p>
+          </li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="bunn-innhold">
+    <div class="avsender"><strong>HK-dir</strong><br>Direktoratet for høyere utdanning og kompetanse</div>
+    <ul class="bunnlenker">
+      <li class="bare-desktop"><button type="button">For presse</button></li>
+      <li><button type="button">Om karriereveiledning.no</button></li>
+      <li><button type="button">Karrieresenter i ditt fylke</button></li>
+      <li><button type="button">Personvernerklæring</button></li>
+    </ul>
+    <div class="bunn-kontakt bare-desktop">
+      <div><strong>Webredaktør:</strong><br>[NAVN]</div>
+      <div><strong>Kontakt redaksjonen:</strong><br><button type="button">[E-POSTADRESSE]</button></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../ruting.js"></script>
+<script src="../felles.js"></script>
+</body>
+</html>

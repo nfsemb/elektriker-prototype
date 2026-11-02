@@ -38,6 +38,8 @@ a:hover { color: var(--fokus); }
 img { display: block; max-width: 100%; height: auto; }
 button { font-family: inherit; color: inherit; }
 .skjult { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* hidden skal alltid skjule, også når en klasse setter display (for eksempel grid på kort med bilde) */
+[hidden] { display: none !important; }
 
 .pill { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 16px;
   border: 1px solid var(--oransje); border-radius: 1.625em; background: #ffffff; color: var(--tekst);
@@ -71,6 +73,7 @@ h1 { font-size: 30px; line-height: 38px; letter-spacing: -0.01em; }
 .oppsett { display: flex; flex-direction: column; gap: 24px; }
 .resultater { display: flex; flex-direction: column; gap: 24px; }
 .treff { margin-bottom: -16px; } /* første gruppe nærmere antall treff */
+.treff p { overflow-wrap: anywhere; } /* søket står i ingressen, og kan være ett langt ord uten mellomrom */
 
 /* Velg tema: rad med chips */
 .brikker-ramme { position: relative; }
@@ -167,6 +170,16 @@ h1 { font-size: 30px; line-height: 38px; letter-spacing: -0.01em; }
 .veileder p { margin-bottom: 12px; }
 .veileder .pill { width: 100%; background: #ffffff; color: var(--veileder); border-color: #ffffff; }
 
+/* Kompakt veileder rett under ingressen, for situasjoner der en veileder er det nærmeste vi har til et svar (siden «Utenfor»).
+   Samme form som «Usikker på hvor du skal begynne?» i skissen: lys flate uten kortramme og en mørk knapp, så den leses
+   som en overgang til et menneske og ikke som et treff i en gruppe. */
+.veileder--topp { background: var(--utdanning); border-radius: 8px; padding: 16px; }
+.veileder--topp img { width: 72px; height: 72px; object-fit: cover; object-position: center 25%; border-radius: 8px; margin-bottom: 12px; background: var(--utdanning-kant); }
+.veileder--topp h2 { font-size: 18px; line-height: 24px; margin-bottom: 4px; }
+.veileder--topp p { font-size: 16px; line-height: 24px; margin-bottom: 12px; }
+.veileder--topp .pill { width: 100%; background: var(--tekst); color: #ffffff; border-color: var(--tekst); }
+.veileder--topp .pill:hover { background: var(--oransje-lys); color: var(--tekst); }
+
 /* Bunntekst */
 footer { background: var(--bunn); color: #ffffff; padding: 24px 16px; }
 .bunn-innhold { display: flex; flex-direction: column; gap: 20px; }
@@ -226,6 +239,13 @@ a.pill:not([href]) { display: none !important; }
   .veileder h2 { font-size: 20px; line-height: 26px; }
   .veileder p { margin-bottom: 0; }
   .veileder .pill { width: auto; }
+  .treff + .veileder--topp { margin-top: -32px; } /* nærmere ingressen enn mellom gruppene */
+  .veileder--topp { padding: 24px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .veileder--topp img { flex: none; width: 88px; height: 88px; margin-bottom: 0; }
+  .veileder--topp-tekst { flex: 1 1 320px; max-width: 65ch; }
+  .veileder--topp h2 { font-size: 20px; line-height: 26px; }
+  .veileder--topp p { margin-bottom: 0; }
+  .veileder--topp .pill { width: auto; }
   footer { padding: 40px 24px; }
   .bunn-innhold { max-width: 1230px; margin: 0 auto; display: grid; grid-template-columns: 240px minmax(0, 1fr) 260px; gap: 40px; align-items: start; }
   .bunnlenker { display: flex; flex-direction: column; gap: 4px; }
@@ -250,15 +270,105 @@ a.pill:not([href]) { display: none !important; }
   @page { size: A4; margin: 12mm; }
   * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
   body { width: 390px; margin: 0 auto; }
-  .gruppe[hidden], #lignende[hidden] { display: block !important; }
+  .gruppe[hidden]:not([data-irrelevant]), #lignende[hidden] { display: block !important; }
   .brikker { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
   .brikker-ramme::after { display: none; }
-  .kort, .intervju, .lignende-liste li, .veileder, .avsender { break-inside: avoid; }
+  .kort, .intervju, .lignende-liste li, .veileder, .veileder--topp, .avsender { break-inside: avoid; }
   .gruppe > h2 { break-after: avoid; }
 }
 
-/* sok/: velg yrke når søket ikke nevner noe yrke */
+/* sok/: mellomsiden som sender søket videre */
 .velg-side { min-height: 70vh; }
-.velg-yrke { display: flex; flex-direction: column; gap: 12px; max-width: 760px; }
-.yrkevalg { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 0; padding: 0; list-style: none; }
-@media screen and (min-width: 768px) { .velg-yrke { margin: 0 auto; } }
+
+/* Situasjonssider: avvisning i ingressen og brikker som starter et nytt søk eller går til en side */
+.treff .avvisning { max-width: 65ch; margin: 4px 0 16px; font-size: 16px; line-height: 24px; color: var(--tekst); overflow-wrap: anywhere; } /* søket kan være ett langt ord */
+.brodtekst + .sporsmal-brikker { margin-top: 12px; }
+.sporsmal-brikker { display: flex; flex-wrap: wrap; gap: 8px; }
+/* Samme utseende som .forslag-brikke på forsiden */
+.sporsmal-brikker button, .sporsmal-brikker a { display: inline-flex; align-items: center; max-width: 100%; min-height: 44px; padding: 8px 16px; border: 1px solid var(--oransje-lys); border-radius: 1.625em;
+  background: var(--oransje-lys); font-family: inherit; font-size: 16px; line-height: 1.25; color: var(--tekst); text-align: left; text-decoration: none; cursor: pointer; }
+.sporsmal-brikker button:hover, .sporsmal-brikker a:hover { border-color: var(--oransje); color: var(--tekst); }
+@media screen and (min-width: 768px) {
+  .treff .avvisning { margin-bottom: 40px; }
+}
+
+/* Verktøysiden: verktøyet deltakeren søkte etter, som stort kort øverst. Større tittel og tekst, og en fylt knapp «Åpne <verktøy>». */
+.kort--stort { padding: 20px; }
+.kort--stort .korttittel { font-size: 24px; line-height: 30px; margin: 4px 0 12px; }
+.kort--stort .brodtekst { font-size: 18px; line-height: 27px; max-width: 65ch; margin-bottom: 20px; }
+.kort--stort .handlinger .pill { width: 100%; margin-top: 0; background: var(--oransje); border-color: var(--oransje); color: var(--tekst); font-weight: 500; }
+.kort--stort .handlinger .pill:hover { background: var(--oransje-lys); }
+@media screen and (min-width: 768px) {
+  .kort--stort { padding: 28px; }
+  .kort--stort .korttittel { font-size: 28px; line-height: 34px; margin: 0 0 12px; }
+  .kort--stort .handlinger .pill { width: auto; }
+}
+
+/* Videregående: sammenligning av to veier i ett kort. Kolonnene står under hverandre på mobil, for to kolonner på 390 px gir for smal tekst. */
+.sammenligning { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin: 12px 0 4px; }
+.sammenligning-kolonne { background: #ffffff; border: 1px solid var(--artikkel-kant); border-radius: 8px; padding: 12px 16px; }
+.sammenligning-tittel { font-family: var(--font-slab); font-weight: 700; font-size: 18px; line-height: 24px; margin: 0 0 8px; }
+.sammenligning ul { display: flex; flex-direction: column; }
+.sammenligning li { font-size: 16px; line-height: 24px; padding: 8px 0; border-top: 1px solid var(--artikkel-kant); }
+.sammenligning li:first-child { border-top: none; padding-top: 0; }
+.sammenligning li:last-child { padding-bottom: 0; }
+
+/* Liten lenkerad under veilederbanneret, for lærere, rådgivere og foresatte. Hver lenke er minst 44 px høy. */
+.lenkerad { margin-top: -8px; }
+.lenkerad .etikett { margin-bottom: 4px; }
+.lenkerad ul { display: flex; flex-direction: column; }
+.lenkerad a { display: inline-block; padding: 10px 0; font-size: 16px; line-height: 24px; text-decoration: underline; }
+@media screen and (min-width: 768px) {
+  .sammenligning { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+  .sammenligning-kolonne { padding: 16px 20px; }
+  .veileder + .lenkerad { margin-top: -40px; } /* nærmere veilederen enn mellom gruppene */
+  .lenkerad ul { flex-direction: row; flex-wrap: wrap; gap: 0 32px; }
+}
+@media print {
+  .sammenligning-kolonne, .lenkerad { break-inside: avoid; }
+}
+
+/* Sykepleie: datatreff med en liten tabell i et kort (poenggrenser per lærested). Tabellen deler bredden mellom kolonnene og får aldri vannrett rulling:
+   lange ord brytes, og overskriften «Førstegangsvitnemål» har bløte skilletegn (&shy;) så den kan deles i smale kolonner. */
+.datatabell { width: 100%; margin: 12px 0 0; border-collapse: collapse; table-layout: fixed; font-size: 16px; line-height: 24px; }
+.datatabell th, .datatabell td { padding: 8px 8px 8px 0; text-align: left; vertical-align: top; border-top: 1px solid var(--utdanning-kant); overflow-wrap: anywhere; }
+.datatabell th:last-child, .datatabell td:last-child { padding-right: 0; }
+.datatabell thead th { padding-top: 0; border-top: none; vertical-align: bottom; font-weight: 500; font-size: 14px; line-height: 20px; color: var(--tekst-etikett); hyphens: manual; }
+.datatabell th:first-child { width: 38%; }
+.datatabell tbody th { font-weight: 400; }
+.datatabell td { font-weight: 500; font-variant-numeric: tabular-nums; }
+.datatabell a { text-decoration: underline; }
+@media screen and (min-width: 768px) {
+  .datatabell { max-width: 62ch; }
+  .datatabell thead th { font-size: 15px; line-height: 22px; }
+  .datatabell th:first-child { width: 40%; }
+}
+@media print {
+  .datatabell { break-inside: avoid; }
+}
+
+/* Utforsk: to valg under ingressen (videregående eller studier), og en lenke under kortene i en gruppe.
+   Valgene ligger i .treff, så de bruker samme brikker som «Spørsmål» på uklart-siden. Bunnmarginen holder avstanden til veilederen lik den under
+   en ingress uten valg (-16 px mobil og -40 px desktop er .treff sin negative bunnmargin). */
+.treff .avvisning--med-valg { margin-bottom: 12px; }
+.treff .valg-ingress { margin-bottom: 16px; }
+.gruppe > .gruppe-lenke { margin-top: 12px; }
+@media screen and (min-width: 768px) {
+  .treff .valg-ingress { margin-bottom: 40px; }
+}
+
+/* Hva kan jeg bli med psykologi?: to utdanningskort der deltakeren velger hvilken utdanning hun mener. Kortene står under hverandre
+   på mobil og ved siden av hverandre fra 768 px, og knappen ligger nederst i kortet. Den valgte knappen (aria-pressed="true") får samme
+   mørke fyll som en valgt chip i «Velg tema». Bunnmarginen er som under .valg-ingress, så avstanden til gruppene under blir som vanlig. */
+.treff .valg { display: flex; flex-direction: column; gap: 12px; margin: 12px 0 16px; }
+.valg .kort { display: flex; flex-direction: column; }
+.valg .handlinger { margin-top: auto; }
+.valg .pill[aria-pressed="true"], .valg .pill[aria-pressed="true"]:hover { background: var(--tekst); border-color: var(--tekst); color: #ffffff; }
+@media screen and (min-width: 768px) {
+  .treff .valg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin: 16px 0 40px; }
+}
+@media print {
+  .valg .kort { break-inside: avoid; }
+  /* Gruppene som venter på et valg skrives ikke ut som overskrifter uten innhold (reglen over viser ellers alle skjulte grupper) */
+  .gruppe[hidden]:has([data-valg]):not(:has([data-valg]:not([hidden]))) { display: none !important; }
+}

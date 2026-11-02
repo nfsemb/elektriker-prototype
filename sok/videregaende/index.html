@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Søk | utdanning.no</title>
+<link rel="stylesheet" href="../felles.css">
+</head>
+<body data-side="videregaende">
+
+<!--
+  LENKER
+  Alle adresser ligger her. Siden bygger href ut fra «side», «anker» og «tekst».
+  - side: adressen til målsiden (uten #anker), eller null hvis lenken mangler.
+  - anker: id på målsiden som det skal hoppes til, eller null.
+  - tekst: tekstfragment som utheves, { "start": "...", "slutt": "..." } (slutt er valgfri), eller null.
+  - status: "funnet" (funnet og sjekket av Claude), "manuell" (lagt inn av et menneske, skal aldri endres), "mangler".
+  Kjør `node scripts/sjekk-lenker.mjs videregaende` etter endringer.
+-->
+<script type="application/json" id="lenker">
+{
+  "hjelp-forskjell": {
+    "maal": "Delen «Bør jeg velge studieforberedende eller yrkesfag?» i artikkelen «Hjelp, jeg skal velge utdanningsprogram på videregående» på utdanning.no",
+    "side": "https://utdanning.no/tema/videregaende_opplaering/hjelp_jeg_skal_velge_utdanningsprogram_pa_videregaende", "anker": "bor-jeg-velge-studieforberedende-eller-yrkesfag", "tekst": null,
+    "status": "funnet", "kilde": "lenken «Bør jeg velge yrkesfag eller studieforberedende?» på utdanning.no/tema/utdanning/videregaende (rapporten docs/behov/vgs.md). id på siden", "sjekket": "2026-10-31"
+  },
+  "film-elektro": {
+    "maal": "Siden «Elektro og datateknologi» i Yrkesfaghåndboka på utdanning.no, med filmen om utdanningsprogrammet",
+    "side": "https://utdanning.no/yrkesfag/vurderer-du-yrkesfag/bli-kjent-med-de-yrkesfaglige-utdanningsprogrammene/elektro-og-datateknologi", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "Yrkesfaghåndboka, «Bli kjent med de yrkesfaglige utdanningsprogrammene» (rapporten). Filmen er bygd inn på siden (YouTube)", "sjekket": "2026-10-31"
+  },
+  "film-studiespesialisering": {
+    "maal": "Filmen om Studiespesialisering blant filmene om alle utdanningsprogrammene på siden «Videregående opplæring» på utdanning.no",
+    "side": "https://utdanning.no/tema/utdanning/videregaende/", "anker": "video", "tekst": null,
+    "status": "funnet", "kilde": "navigasjonslenken «Filmer av utdanningsprogrammene» på siden. id på siden. Filmene åpnes fra et karusellkort", "sjekket": "2026-10-31"
+  },
+  "pabygging": {
+    "maal": "Artikkelen «Påbygging til generell studiekompetanse» i Yrkesfaghåndboka på utdanning.no",
+    "side": "https://utdanning.no/yrkesfag/fullfort-yrkesfag-hva-na/videre-utdanning-etter-yrkesfag/universitet-eller-hogskole/pabygging-til-generell-studiekompetanse", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra «Hjelp, jeg skal velge utdanningsprogram på videregående» (rapporten)", "sjekket": "2026-10-31"
+  },
+  "omvalg": {
+    "maal": "Artikkelen «Kan jeg bytte eller ta opp videregående opplæring?» på utdanning.no, om omvalg",
+    "side": "https://utdanning.no/tema/videregaende_opplaering/kan_jeg_bytte_eller_ta_opp_videregaende_opplaering", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap.xml og siden «Videregående opplæring» (rapporten)", "sjekket": "2026-10-31"
+  },
+  "taf-ysk": {
+    "maal": "Delen «Yrkesfag med studiekompetanse (TAF/YSK)» i artikkelen «Andre varianter i videregående opplæring» på utdanning.no",
+    "side": "https://utdanning.no/tema/andre_varianter_i_videregaende_opplaering", "anker": "yrkesfag-med-studiekompetanse-tafysk", "tekst": null,
+    "status": "funnet", "kilde": "sitemap.xml (rapporten). id på siden", "sjekket": "2026-10-31"
+  },
+  "film-foreldre": {
+    "maal": "Filmen «3 ting foreldrene dine tar feil av» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/3-ting-foreldrene-dine-tar-feil-av", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap for karriereveiledning.no og situasjonene «Videregående» og «Vet ikke hva jeg skal velge» (rapporten). Tittelen er lest fra sidedata. Filmen ligger på Vimeo", "sjekket": "2026-10-31"
+  },
+  "intervju-kristian": {
+    "maal": "Yrkesintervjuet med Kristian Grønnestad, ned til sitatet om videre utdanning etter fagbrev",
+    "side": "https://utdanning.no/tema/yrkesintervju/elektriker", "anker": null, "tekst": { "start": "Etter fagbrev kan du ta", "slutt": "videre utdanning" },
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen for elektriker", "sjekket": "2026-10-31"
+  },
+  "y-veien": {
+    "maal": "Artikkelen «Y-veien» på utdanning.no",
+    "side": "https://utdanning.no/tema/yrkesfag_universitet_og_hogskole/y-veien", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra «Hjelp, jeg skal velge utdanningsprogram på videregående»", "sjekket": "2026-10-31"
+  },
+  "veien-til-studiekompetanse": {
+    "maal": "Verktøyet «Veien til studiekompetanse» på utdanning.no",
+    "side": "https://utdanning.no/studiekompetanse", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no. Overskriften settes i nettleseren", "sjekket": "2026-10-31"
+  },
+  "intervju-tine-marie": {
+    "maal": "Yrkesintervjuet med energimontør Tine Marie Os, ned til sitatet om valget etter ungdomsskolen",
+    "side": "https://utdanning.no/tema/yrkesintervju/energimontor_1", "anker": null, "tekst": { "start": "Jeg vurderte både rørlegger- og tømrerfaget", "slutt": "elektro virket mer spennende" },
+    "status": "funnet", "kilde": "søke-API-et på utdanning.no (innholdstype Intervju), rapporten docs/behov/vgs.md. Publisert 16.10.2026", "sjekket": "2026-10-31"
+  },
+  "intervju-anine": {
+    "maal": "Yrkesintervjuet med rørlegger Anine Kjus Bolstad, ned til sitatet om studiespesialisering",
+    "side": "https://utdanning.no/tema/yrkesintervju/rorlegger_0", "anker": null, "tekst": { "start": "Jeg gikk egentlig studiespesialisering", "slutt": "ville gjøre videre" },
+    "status": "funnet", "kilde": "søke-API-et på utdanning.no (innholdstype Intervju), rapporten docs/behov/vgs.md. Publisert 23.03.2026", "sjekket": "2026-10-31"
+  },
+  "intervju-trude-helen": {
+    "maal": "Yrkesintervjuet med glassfagarbeider Trude Helen Jensen, ned til sitatet om rådgiverens anbefaling etter ungdomsskolen",
+    "side": "https://utdanning.no/tema/yrkesintervju/glassfagarbeider_0", "anker": null, "tekst": { "start": "Etter ungdomsskolen hadde jeg lyst til å gå bygg- og anleggsteknikk", "slutt": "ga generell studiekompetanse" },
+    "status": "funnet", "kilde": "søke-API-et på utdanning.no (innholdstype Intervju), rapporten docs/behov/vgs.md. Publisert 02.09.2025", "sjekket": "2026-10-31"
+  },
+  "intervju-martin": {
+    "maal": "Yrkesintervjuet med IT-utvikler Martin Ek Brombach, ned til sitatet om valget mellom fagbrev og høyere utdanning",
+    "side": "https://utdanning.no/tema/yrkesintervju/it-utvikler", "anker": null, "tekst": { "start": "Hvis du ønsker en formell utdanning", "slutt": "eller et universitet" },
+    "status": "funnet", "kilde": "søke-API-et på utdanning.no (innholdstype Intervju), rapporten docs/behov/vgs.md. Publisert 27.10.2026", "sjekket": "2026-10-31"
+  },
+  "finn-laerebedrift": {
+    "maal": "Verktøyet «Finn lærebedrift» på utdanning.no, oversikten over godkjente lærebedrifter og ledige læreplasser, der du velger fag og sted (fylke og kommune)",
+    "side": "https://utdanning.no/finnlarebedrift/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (samme adresse som på sok/jobbsoking og sok/verktoy). Tittelen «Finn Lærebedrift» settes i nettleseren. Stedsvalget har fylke og kommune, sjekket i nettleseren", "sjekket": "2026-10-31"
+  },
+  "viktig-laereplass": {
+    "maal": "Artikkelen «Viktig å vite når du skal finne læreplass» på utdanning.no",
+    "side": "https://utdanning.no/tema/videregaende_opplaering_videregaende_voksne_arbeidsliv_yrkesfag/viktig_vite_nar_du_skal_finne_laereplass", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap.xml og dagens søk på «læreplass» (rapporten)", "sjekket": "2026-10-31"
+  },
+  "laerling-lonn": {
+    "maal": "Artikkelen «Hva får jeg i lønn som lærling?» på utdanning.no, med lønn i prosent av begynnerlønn per halvår",
+    "side": "https://utdanning.no/tema/yrkesfag_videregaende_opplaering/hva_far_jeg_i_lonn_som_laerling", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap.xml (rapporten)", "sjekket": "2026-10-31"
+  },
+  "soknadsfrister": {
+    "maal": "Faktasiden «Søknadsfrister til videregående opplæring» på utdanning.no",
+    "side": "https://utdanning.no/tema/videregaende_opplaering/soknadsfrister_til_videregaende_opplaering", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap.xml (rapporten)", "sjekket": "2026-10-31"
+  },
+  "opplaeringskontor": {
+    "maal": "Artikkelen «Opplæringskontor» på utdanning.no",
+    "side": "https://utdanning.no/tema/videregaende_opplaering_yrkesfag/opplaeringskontor", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap.xml og dagens søk (rapporten)", "sjekket": "2026-10-31"
+  },
+  "ikke-laereplass": {
+    "maal": "Artikkelen «Hva skjer hvis jeg ikke får læreplass?» i Yrkesfaghåndboka på utdanning.no",
+    "side": "https://utdanning.no/yrkesfag/skal-du-snart-ut-i-laeretid/finn-laereplass/hva-hvis-du-ikke-far-laereplass", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "Yrkesfaghåndboka, «Jeg er lærling», «Finn læreplass» (rapporten)", "sjekket": "2026-10-31"
+  },
+  "yff": {
+    "maal": "Artikkelen «Hva er yrkesfaglig fordypning (YFF)?» i Yrkesfaghåndboka på utdanning.no",
+    "side": "https://utdanning.no/yrkesfag/gar-du-vg1-eller-vg2-yrkesfag/yrkesfaglig-fordypning-yff/hva-er-yrkesfaglig-fordypning-yff", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "Yrkesfaghåndboka, «Jeg går vg1 eller vg2 yrkesfag» (rapporten)", "sjekket": "2026-10-31"
+  },
+  "videregaende-oversikt": {
+    "maal": "Oversikten «Videregående opplæring» på utdanning.no, med alle utdanningsprogrammene og valg av fylke og kommune",
+    "side": "https://utdanning.no/tema/utdanning/videregaende/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap.xml og hovedmenyen (rapporten). Fylke og kommune er sjekket i nettleseren", "sjekket": "2026-10-31"
+  },
+  "muligheter-med-yrkesfag": {
+    "maal": "Verktøyet «Hva kan du bli med yrkesfag?» på utdanning.no, der du velger utdanningsprogram og sted (kommune)",
+    "side": "https://utdanning.no/muligheter-med-yrkesfag", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenketabellen på sok/elektriker og sok/verktoy. Stedslista er kommuner, sjekket i nettleseren. Adressene med utdanningsprogram uten kommune gir svarkode 500, så lenken går til startsiden", "sjekket": "2026-10-31"
+  },
+  "vg1-elektro": {
+    "maal": "Utdanningsbeskrivelsen for Vg1 Elektro og datateknologi, der du kan velge fylke og finne skoler",
+    "side": "https://utdanning.no/utdanning/vgs/elele1----", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenketabellen på sok/elektriker (lenke fra yrkesbeskrivelsen og utdanningsløpet)", "sjekket": "2026-10-31"
+  },
+  "vg1-studiespesialisering": {
+    "maal": "Utdanningsbeskrivelsen for Vg1 Studiespesialisering, der du kan velge fylke og finne skoler",
+    "side": "https://utdanning.no/utdanning/vgs/stusp1----", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenke fra «Hjelp, jeg skal velge utdanningsprogram på videregående» (rapporten)", "sjekket": "2026-10-31"
+  },
+  "quiz-videregaende": {
+    "maal": "Quizen «Hva vet du om videregående?» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/hva-vet-du-om-videregaende", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "situasjonen «Vet ikke hva jeg skal velge» på karriereveiledning.no (rapporten). Tittelen er lest fra sidedata", "sjekket": "2026-10-31"
+  },
+  "forslag-utdanninger-yrker": {
+    "maal": "KI-verktøyet «Få forslag til utdanninger og yrker» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/fa-forslag-til-utdanninger-yrker", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenketabellen på sok/psykolog, sok/verktoy og andre sider", "sjekket": "2026-10-31"
+  },
+  "faq-usikker": {
+    "maal": "Spørsmål og svar «Hva skal jeg velge på videregående hvis jeg er usikker?» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/vanlige-sporsmal/hva-gjor-jeg-hvis-jeg-er-usikker-pa-hva-jeg-skal-velge-pa-videregaende", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap for karriereveiledning.no og situasjonen «Vet ikke hva jeg skal velge» (rapporten)", "sjekket": "2026-10-31"
+  },
+  "side-laerer": {
+    "maal": "Resultatsiden for lærer i prototypen",
+    "side": "../laerer/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen", "sjekket": "2026-10-31"
+  },
+  "fra-grunnskole": {
+    "maal": "Artikkelen «Fra grunnskole til videregående» på utdanning.no, skrevet til foresatte og rådgivere",
+    "side": "https://utdanning.no/tema/karriereveiledere_og_foresatte_videregaende_opplaering/fra_grunnskole_til_videregaende", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap.xml (rapporten)", "sjekket": "2026-10-31"
+  },
+  "verktoy-valg-videregaende": {
+    "maal": "Siden «Verktøy for valg av videregående» på karriereveiledning.no, for fagfolk som arbeider med utdanningsvalg",
+    "side": "https://karriereveiledning.no/verktoy-valg-av-videregaende", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "karriereveiledning.no, «For fagfolk» (rapporten). Tittelen er lest fra sidedata", "sjekket": "2026-10-31"
+  },
+  "chat-veileder": {
+    "maal": "Forsiden til Karriereveiledning.no",
+    "side": "https://karriereveiledning.no/", "anker": null, "tekst": null,
+    "status": "manuell", "kilde": "bestemt av Niels", "sjekket": "2026-10-27"
+  }
+}
+</script>
+
+<header class="topp">
+  <div>
+    <a href="../../" class="logolenke"><svg class="logo" viewBox="0 0 812.9 99.2" role="img" aria-label="Utdanning.no"><g transform="translate(-12.9,-75.2)" fill="#EE7B1A"><path d="m 59.7,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,22.3 -14.2,30.6 -32.1,30.6 -18,0 -32.1,-8.3 -32.1,-30.6 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,10.4 5.5,15.4 14.7,15.4 9.2,0 14.7,-4.9 14.7,-15.4 z"/><path d="m 148.2,75.9 c 3.7,0 5.5,4 5.5,7.8 0,4.1 -2,7.9 -5.5,7.9 h -19.5 v 76.5 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 91.6 H 91.7 c -3.5,0 -5.5,-3.6 -5.5,-7.9 0,-3.7 1.7,-7.8 5.5,-7.8 z"/><path d="m 193.4,75.9 c 17.6,0 31.4,8.3 31.4,30.6 V 143 c 0,22.3 -13.8,30.6 -31.4,30.6 h -23.6 c -4.5,0 -7.6,-2.5 -7.6,-5.3 v -87 c 0,-2.8 3.1,-5.4 7.6,-5.4 z m -13.9,15.2 v 67.2 h 13.9 c 8.8,0 14,-4.9 14,-15.4 V 106.4 C 207.4,96 202.2,91 193.4,91 h -13.9 z"/><path d="m 230.9,166.4 c 0,-0.3 0.1,-0.8 0.3,-1.3 l 25.8,-84 c 1.2,-4 6.1,-5.9 11.1,-5.9 5.1,0 10,1.9 11.2,5.9 l 25.8,84 c 0.1,0.5 0.3,0.9 0.3,1.3 0,4.1 -6.3,7.2 -10.9,7.2 -2.9,0 -5.2,-0.9 -5.9,-3.5 l -5.1,-17.8 h -30.6 l -5.1,17.8 c -0.7,2.5 -2.9,3.5 -5.9,3.5 -4.8,0 -11,-3 -11,-7.2 z m 48.7,-27.7 -11.6,-41 -11.6,41 z"/><path d="m 359.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 L 361,134.9 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 440.4,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 475.1,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 z"/><path d="m 554.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 618.6,91.1 c -8.9,0 -14,5 -14,15.4 v 37.3 c 0,10.4 5.1,15.4 13.9,15.4 8.7,0 14,-4.9 14,-15.4 v -7.9 h -10.8 c -3.5,0 -5.3,-3.3 -5.3,-6.8 0,-3.3 1.9,-6.8 5.3,-6.8 h 22.7 c 3.5,0 5.5,2.7 5.5,5.6 v 15.9 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.3,-8.3 -31.3,-30.6 v -37.3 c 0,-22.3 13.8,-30.6 30.7,-30.6 18.4,0 31.9,9.6 31.9,25.7 0,6.7 -2.9,8.3 -8.7,8.3 -4.7,0 -8.5,-1.3 -8.7,-5.5 -0.3,-6.3 -2.4,-13.3 -13.8,-13.3 z"/><path d="m 675.4,165.3 c 0,4.8 -4.1,9.1 -9,9.1 -5.2,0 -9.1,-4.3 -9.1,-9.1 0,-4.9 3.9,-9.1 9.1,-9.1 4.9,0 9,4.1 9,9.1 z"/><path d="m 731.5,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 763.2,143.8 v -37.3 c 0,-22.3 13.6,-30.6 31.2,-30.6 17.6,0 31.4,8.3 31.4,30.6 v 37.3 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.2,-8.3 -31.2,-30.6 z m 45.2,-37.3 c 0,-10.6 -5.3,-15.4 -14,-15.4 -8.8,0 -13.9,4.8 -13.9,15.4 v 37.3 c 0,10.6 5.1,15.4 13.9,15.4 8.7,0 14,-4.8 14,-15.4 z"/></g></svg></a>
+    <p class="slagord">Offentlig og kvalitetssikret</p>
+  </div>
+  <div class="topp-knapper">
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Min side
+    </button>
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Meny
+    </button>
+    <button type="button" class="meny-rund bare-mobil" aria-label="Åpne meny">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <h1>Søk etter yrker, utdanning og innhold</h1>
+
+  <form class="sok" role="search" onsubmit="return false">
+    <label for="sok" class="skjult">Søk etter yrker, utdanning og innhold</label>
+    <input id="sok" type="search" value="Hva er forskjellen på yrkesfag og studieforberedende?" readonly>
+    <button type="button" aria-label="Søk">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+    </button>
+  </form>
+
+
+  <div class="velger">
+    <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
+    <div class="brikker-ramme">
+      <ul class="brikker">
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(28)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="forskjell" aria-pressed="false">Forskjellen <span data-antall="forskjell">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="fast" aria-pressed="false">Låse seg fast <span data-antall="fast">(7)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="andre" aria-pressed="false">Andres valg <span data-antall="andre">(4)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="laerling" aria-pressed="false">Lærling <span data-antall="laerling">(7)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="linjer" aria-pressed="false">Linjer <span data-antall="linjer">(4)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="passer" aria-pressed="false">Passer for meg <span data-antall="passer">(3)</span></button></li>
+        <li class="vis-flere-plass bare-desktop" hidden>
+          <button type="button" class="vis-flere" aria-expanded="false">
+            <span>Vis flere</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="oppsett">
+
+    <aside class="sidekolonne bare-desktop">
+      <div>
+        <h2 class="etikett legende-tittel">
+          <span>Farger og ikoner</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </h2>
+        <ul class="legende">
+          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+        </ul>
+      </div>
+
+      <div>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+          Del søk
+        </button>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"/></svg>
+          Lagre søk
+        </button>
+      </div>
+    </aside>
+
+    <div class="resultater">
+
+      <!-- Ingressen følger søket: det deltakeren skrev står i anførselstegn (data-sok-tekst), og siden sier at den forstår det som et valg på videregående. Søker du bare «yrkesfag», kommer en linje om å bli yrkesfaglærer (felles.js: data-vis-hvis-lik). -->
+      <div class="treff">
+        <h2 class="etikett">Søkeresultat</h2>
+        <p class="meta"><span data-antall-ingress>28</span> resultater. Du skrev «<span data-sok-tekst>Hva er forskjellen på yrkesfag og studieforberedende?</span>», og vi forstår det som et valg på videregående.<span data-tolkning hidden></span></p>
+        <p class="avvisning" data-vis-hvis-lik="yrkesfag" hidden>Lette du etter å bli yrkesfaglærer? <a data-lenke="side-laerer">Se resultatene for lærer.</a></p>
+      </div>
+
+      <!-- 1. Hva er forskjellen på yrkesfag og studieforberedende? Sammenligningskortet sier bare det artikkelen sier (kilde og dyplenke på kortet). Filmbildene ligger på utdanning.no; filmene er YouTube-filmer, og filmlengde står ikke på utdanning.no, så ingen lengde vises. -->
+      <section class="gruppe" data-gruppe="forskjell" data-tema="forskjellen på yrkesfag og studieforberedende" data-ord="forskjell*|studieforberedende|studiespesialisering|yrkesfag" aria-labelledby="g-forskjell">
+        <h2 id="g-forskjell" class="seksjon">Hva er forskjellen på yrkesfag og studieforberedende?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel" data-kort="forskjell-sammenligning">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="hjelp-forskjell">Bør jeg velge studieforberedende eller yrkesfag?</a></h3>
+            <p class="brodtekst">Utdanningsprogram er det mange kaller linjer.</p>
+            <div class="sammenligning">
+              <div class="sammenligning-kolonne">
+                <h4 class="sammenligning-tittel">Studieforberedende</h4>
+                <ul>
+                  <li>Gir studiekompetanse, det vanligste kravet for å studere på universitet og høgskole.</li>
+                  <li>Fem utdanningsprogram, for eksempel idrettsfag og studiespesialisering.</li>
+                  <li>Studiespesialisering kan være noe for deg hvis du liker klasseromsundervisning og synes fag som matematikk, språk, samfunnsfag eller naturfag høres spennende ut.</li>
+                </ul>
+              </div>
+              <div class="sammenligning-kolonne">
+                <h4 class="sammenligning-tittel">Yrkesfag</h4>
+                <ul>
+                  <li>Gir yrkeskompetanse, som du trenger for å jobbe med et bestemt yrke.</li>
+                  <li>Ti utdanningsprogram, for eksempel elektro og datateknologi.</li>
+                  <li>Vanligst er to år på skole og to år som lærling i en bedrift.</li>
+                  <li>Mindre teori og mer praktisk arbeid, men du har fortsatt norsk, engelsk og naturfag.</li>
+                </ul>
+              </div>
+            </div>
+            <p class="meta kilde">Kilde: utdanning.no, «Hjelp, jeg skal velge utdanningsprogram på videregående», oppdatert 29. oktober 2026.</p>
+            <div class="handlinger">
+              <a class="pill" data-lenke="hjelp-forskjell">Les hele forklaringen på utdanning.no</a>
+            </div>
+          </li>
+          <li class="kort kort--artikkel kort--video" data-kort="film-elektro">
+            <a class="videobilde" data-lenke="film-elektro" aria-hidden="true" tabindex="-1">
+              <img src="https://utdanning.no/tema/utdanning/videregaende/_app/immutable/assets/elele1----.CbaxlJ05.png" alt="To unge personer ved en trevegg. Den ene smiler og rekker hånden mot noe utstyr til høyre i bildet" width="694" height="360" loading="lazy" referrerpolicy="no-referrer">
+              <span class="spill"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="#333333" aria-hidden="true"><path d="M9 6l10 6-10 6z"/></svg></span></span>
+            </a>
+            <div>
+              <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h13v12H3zM16 10l5-3v10l-5-3"/></svg><span>Video</span></p>
+              <h3 class="korttittel"><a data-lenke="film-elektro">Elektro og datateknologi</a></h3>
+              <p class="brodtekst">Yrkesfag for deg med interesse for teknologi, presisjonsarbeid og hvordan elektriske systemer fungerer.</p>
+            </div>
+          </li>
+          <li class="kort kort--artikkel kort--video" data-kort="film-studiespesialisering">
+            <a class="videobilde" data-lenke="film-studiespesialisering" aria-hidden="true" tabindex="-1">
+              <img src="https://utdanning.no/tema/utdanning/videregaende/_app/immutable/assets/stusp1----.DqZiw1UY.png" alt="Tre personer i hvite laboratoriefrakker ved en arbeidsbenk med kolber og glassutstyr" width="641" height="360" loading="lazy" referrerpolicy="no-referrer">
+              <span class="spill"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="#333333" aria-hidden="true"><path d="M9 6l10 6-10 6z"/></svg></span></span>
+            </a>
+            <div>
+              <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h13v12H3zM16 10l5-3v10l-5-3"/></svg><span>Video</span></p>
+              <h3 class="korttittel"><a data-lenke="film-studiespesialisering">Studiespesialisering</a></h3>
+              <p class="brodtekst">Et studieforberedende program, blant filmene om alle utdanningsprogrammene.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 2. Låser jeg meg fast hvis jeg velger yrkesfag? Kristian Grønnestad brukes også på sok/elektriker, med et annet sitat. Navnet på ordningen følger siden: «TAF/YSK». -->
+      <section class="gruppe" data-gruppe="fast" data-tema="omvalg og videre studier" data-ord="låse*|fast|påbygg*|studiekompetanse*|studere videre|bytte|omvalg|ysk|taf|etter yrkesfag" aria-labelledby="g-fast">
+        <h2 id="g-fast" class="seksjon">Låser jeg meg fast hvis jeg velger yrkesfag?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel" data-kort="pabygging">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="pabygging">Påbygging til generell studiekompetanse</a></h3>
+            <p class="brodtekst">Du har rett til det etter vg2 yrkesfag, og det tar normalt ett år.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="omvalg">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="omvalg">Kan jeg bytte eller ta opp videregående opplæring?</a></h3>
+            <p class="brodtekst">Med omvalg kan du ombestemme deg så mange ganger du vil frem til det kalenderåret du fyller 19 år.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="taf-ysk">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="taf-ysk">Yrkesfag med studiekompetanse (TAF/YSK)</a></h3>
+            <p class="brodtekst">Du får fagbrev og kan begynne på høyere utdanning, men det tar fire år eller mer og gjennomføres ulikt i fylkene.</p>
+          </li>
+          <li class="kort kort--artikkel kort--video" data-kort="film-foreldre">
+            <a class="videobilde" data-lenke="film-foreldre" aria-hidden="true" tabindex="-1">
+              <img src="https://i.vimeocdn.com/video/2143918118-332ec0d4455af62703e95883ae3e0d9fc8ae12dafc42bf5892cc72b0cca7bde0-d_1280?region=us" alt="Teksten «3 ting fatter'n ikke har greie på» over bilde av fargerike hus og trær" width="1280" height="720" loading="lazy" referrerpolicy="no-referrer">
+              <span class="spill"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="#333333" aria-hidden="true"><path d="M9 6l10 6-10 6z"/></svg></span></span>
+            </a>
+            <div>
+              <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h13v12H3zM16 10l5-3v10l-5-3"/></svg><span>Video</span></p>
+              <h3 class="korttittel"><a data-lenke="film-foreldre">3 ting foreldrene dine tar feil av</a></h3>
+              <p class="brodtekst">Uansett hvilket utdanningsprogram du velger, kan det gi deg muligheten til å studere videre på fagskole, høgskole eller universitet.</p>
+            </div>
+          </li>
+          <li class="intervju" data-kort="intervju-kristian">
+            <a data-lenke="intervju-kristian">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/Elektriker_Christina_S%C3%A6tre_Lea_1.jpg?VersionId=3&amp;h=1805017e&amp;itok=jWO34eEB" alt="Kristian Grønnestad i svart og rød arbeidsjakke, foran en murvegg" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Kristian Grønnestad (26)</span>
+                  <span class="intervju-stilling">Elektriker</span>
+                  <span class="intervju-arbeidsgiver">Svithun Elektro AS, Stavanger</span>
+                </span>
+              </span>
+              <blockquote>– Etter fagbrev kan du ta videre utdanning.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+          <li class="kort kort--artikkel" data-kort="y-veien" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="y-veien">Y-veien</a></h3>
+            <p class="brodtekst">Høyere utdanning uten påbygging eller forkurs, hvis du har relevant yrkeskompetanse.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="veien-til-studiekompetanse" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="veien-til-studiekompetanse">Veien til studiekompetanse</a></h3>
+            <p class="brodtekst">Se mulighetene dine for å ta høyere utdanning.</p>
+          </li>
+        </ul>
+        <button type="button" class="pill se-mer" aria-expanded="false">Se mer</button>
+      </section>
+
+      <!-- 3. Hvordan var valget for andre? Fire ekte yrkesintervjuer på utdanning.no (fagarbeidere som ser tilbake, ikke elever som velger nå). Alle fire peker mot yrkesfag, og det er ført i docs/avvik.md. -->
+      <section class="gruppe" data-gruppe="andre" data-tema="erfaringer fra andre" data-ord="andre|erfaring*" aria-labelledby="g-andre">
+        <h2 id="g-andre" class="seksjon">Hvordan var valget for andre?</h2>
+        <ul class="kortliste">
+          <li class="intervju" data-kort="intervju-tine-marie">
+            <a data-lenke="intervju-tine-marie">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/energimont%C3%B8r_ingrid_nostdal.jpg?VersionId=1&amp;itok=vZTe4gGj" alt="Tine Marie Os med hvit vernehjelm og gul arbeidsgenser med refleks, foran et stort elektrisk anlegg" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Tine Marie Os (21)</span>
+                  <span class="intervju-stilling">Energimontør</span>
+                  <span class="intervju-arbeidsgiver">Nett-Tjenester AS, Torp</span>
+                </span>
+              </span>
+              <blockquote>– Jeg vurderte både rørlegger- og tømrerfaget, men syntes elektro virket mer spennende.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+          <li class="intervju" data-kort="intervju-anine">
+            <a data-lenke="intervju-anine">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/r%C3%B8rlegger-2.jpg?VersionId=3&amp;h=5c9d2124&amp;itok=eByka1u1" alt="Anine Kjus Bolstad med briller og mørkeblå genser med glidelås, inne på en byggeplass" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Anine Kjus Bolstad (26)</span>
+                  <span class="intervju-stilling">Rørlegger</span>
+                  <span class="intervju-arbeidsgiver">Eriksen &amp; Jensen As</span>
+                </span>
+              </span>
+              <blockquote>– Jeg gikk egentlig studiespesialisering på videregående, uten å være helt sikker på hva jeg ville gjøre videre.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+          <li class="intervju" data-kort="intervju-trude-helen">
+            <a data-lenke="intervju-trude-helen">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/glassfagarbeider_a%CC%8Arivat.jpg?VersionId=3&amp;h=736775b9&amp;itok=IW-TnX-K" alt="Trude Helen Jensen med briller og langt lyst hår som smiler til kamera" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Trude Helen Jensen (25)</span>
+                  <span class="intervju-stilling">Glassfagarbeider</span>
+                  <span class="intervju-arbeidsgiver">Glassmester, J. Eberg Hansen AS, Mosjøen</span>
+                </span>
+              </span>
+              <blockquote>– Etter ungdomsskolen hadde jeg lyst til å gå bygg- og anleggsteknikk, men rådgiveren på skolen anbefalte meg en linje som ga generell studiekompetanse.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+          <li class="intervju" data-kort="intervju-martin">
+            <a data-lenke="intervju-martin">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/IT-utvikler1_ingrid_nostdal.jpg?VersionId=1&amp;itok=A1iJf4m3" alt="Martin Ek Brombach med svart caps og beige genser med glidelås, foran store vinduer" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Martin Ek Brombach (21)</span>
+                  <span class="intervju-stilling">IT-utvikler</span>
+                  <span class="intervju-arbeidsgiver">Pointer Norge, Moss</span>
+                </span>
+              </span>
+              <blockquote>– Hvis du ønsker en formell utdanning, kan du enten ta fagbrev eller studere ved en høgskole eller et universitet.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 4. Hvordan blir jeg lærling? Lærlinglønnen har tallene og forbeholdene slik artikkelen sier dem. Finn lærebedrift har stedsvalg med fylke og kommune. -->
+      <section class="gruppe" data-gruppe="laerling" data-tema="lærlingveien" data-ord="lærling*|læreplass*|lærebedrift*|opplæringskontor*|fagbrev*|yff" aria-labelledby="g-laerling">
+        <h2 id="g-laerling" class="seksjon">Hvordan blir jeg lærling?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="finn-laerebedrift">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="finn-laerebedrift">Finn lærebedrift</a></h3>
+            <p class="brodtekst">Oversikt over godkjente bedrifter og ledige læreplasser.</p>
+            <div class="handlinger">
+              <a class="pill" data-lenke="finn-laerebedrift">Finn lærebedrifter i din kommune</a>
+            </div>
+          </li>
+          <li class="kort kort--artikkel" data-kort="viktig-laereplass">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="viktig-laereplass">Viktig å vite når du skal finne læreplass</a></h3>
+            <p class="brodtekst">Ingen er garantert plass, og derfor bør du starte jakten tidlig.</p>
+          </li>
+          <li class="kort kort--yrke" data-kort="laerling-lonn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="laerling-lonn">Hva får jeg i lønn som lærling?</a></h3>
+            <p class="meta merknad">Prosent av begynnerlønnen, trolig beregnet slik hvis du følger hovedmodellen.</p>
+            <dl class="fakta">
+              <div><dt class="meta">1. halvår</dt><dd class="faktaverdi">30 prosent</dd></div>
+              <div><dt class="meta">2. halvår</dt><dd class="faktaverdi">40 prosent</dd></div>
+              <div><dt class="meta">3. halvår</dt><dd class="faktaverdi">50 prosent</dd></div>
+              <div><dt class="meta">4. halvår</dt><dd class="faktaverdi">80 prosent</dd></div>
+            </dl>
+            <p class="meta kilde">Kilde: utdanning.no, «Hva får jeg i lønn som lærling?», oppdatert 29. oktober 2026. Hovedmodellen er to år i videregående skole og to år i en godkjent lærebedrift. Lønnen varierer etter fag, om du er organisert og om lærebedriften følger gjeldende tariffavtale.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="soknadsfrister">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="soknadsfrister">Søknadsfrister til videregående opplæring</a></h3>
+            <dl class="fakta">
+              <div><dt class="meta">Søknadsfrist for formidling av læreplass</dt><dd class="faktaverdi">1. mars</dd></div>
+            </dl>
+            <p class="meta kilde">Kilde: utdanning.no, «Søknadsfrister til videregående opplæring», oppdatert 29. juni 2026.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="opplaeringskontor" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="opplaeringskontor">Opplæringskontor</a></h3>
+            <p class="brodtekst">Et samarbeid mellom bedrifter om inntak og oppfølging av lærlinger.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="ikke-laereplass" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="ikke-laereplass">Hva skjer hvis jeg ikke får læreplass?</a></h3>
+            <p class="brodtekst">Med rett til videregående og registrert søknad i Vigo har du krav på et alternativt opplæringsopplegg, ofte vg3 i skole.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="yff" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="yff">Hva er yrkesfaglig fordypning (YFF)?</a></h3>
+            <p class="brodtekst">Et fag på vg1 og vg2 der du kan prøve lærefag i en bedrift, og mange får læreplass gjennom det.</p>
+          </li>
+        </ul>
+        <button type="button" class="pill se-mer" aria-expanded="false">Se mer</button>
+      </section>
+
+      <!-- 5. Hvilke linjer kan jeg velge der jeg bor? Oversikten har fylke og kommune, «Hva kan du bli med yrkesfag?» har utdanningsprogram og kommune (sjekket i nettleseren). -->
+      <section class="gruppe" data-gruppe="linjer" data-tema="linjene der du bor" data-ord="linje*|program*|utdanningsprogram*|vg1|der jeg bor|fylke|kommune" aria-labelledby="g-linjer">
+        <h2 id="g-linjer" class="seksjon">Hvilke linjer kan jeg velge der jeg bor?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--utdanning" data-kort="videregaende-oversikt">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="videregaende-oversikt">Videregående opplæring</a></h3>
+            <p class="brodtekst">Se alle utdanningsprogrammene, og velg fylke og kommune der du vil gå.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="muligheter-med-yrkesfag">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="muligheter-med-yrkesfag">Hva kan du bli med yrkesfag?</a></h3>
+            <p class="brodtekst">Velg utdanningsprogram og sted, og se hvilke yrker du kan velge blant.</p>
+          </li>
+          <li class="kort kort--utdanning" data-kort="vg1-elektro">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="vg1-elektro">Vg1 Elektro og datateknologi</a></h3>
+            <p class="brodtekst">Se hva du kan velge på vg2, og finn skoler i ditt fylke.</p>
+            <dl class="fakta">
+              <div><dt class="meta">Nivå</dt><dd class="faktaverdi">Videregående</dd></div>
+              <div><dt class="meta">Type</dt><dd class="faktaverdi">Yrkesfaglig</dd></div>
+            </dl>
+          </li>
+          <li class="kort kort--utdanning" data-kort="vg1-studiespesialisering">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="vg1-studiespesialisering">Vg1 Studiespesialisering</a></h3>
+            <p class="brodtekst">Se hva du kan velge på vg2, og finn skoler i ditt fylke.</p>
+            <dl class="fakta">
+              <div><dt class="meta">Nivå</dt><dd class="faktaverdi">Videregående</dd></div>
+              <div><dt class="meta">Type</dt><dd class="faktaverdi">Studieforberedende</dd></div>
+            </dl>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 6. Hva passer for meg? Quiz og KI-verktøy på karriereveiledning.no og et spørsmål og svar for den som er usikker. -->
+      <section class="gruppe" data-gruppe="passer" data-tema="hva som passer for deg" data-ord="passer|usikker|velge" aria-labelledby="g-passer">
+        <h2 id="g-passer" class="seksjon">Hva passer for meg?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="quiz-videregaende">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="quiz-videregaende">Hva vet du om videregående?</a></h3>
+            <p class="brodtekst">Svarene kan gi deg tips om fag, valg og muligheter.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="forslag-utdanninger-yrker">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="forslag-utdanninger-yrker">Få forslag til utdanninger og yrker</a></h3>
+            <p class="brodtekst">Svar på spørsmål om interessene dine, og få forslag.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="faq-usikker">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="faq-usikker">Hva skal jeg velge på videregående hvis jeg er usikker?</a></h3>
+            <p class="brodtekst">Det er lurt å utforske interessene dine, sette seg inn i utdanningsprogrammene og snakke med en veileder først.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Veilederbanner: hele banneret er lenken. Lenken går til forsiden på karriereveiledning.no, så teksten lover ikke chat eller telefon. -->
+      <section class="veileder" aria-labelledby="g-veileder" data-kort="veileder">
+        <a data-lenke="chat-veileder">
+          <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+          <span class="veileder-tekst" style="display:block">
+            <h2 id="g-veileder">Snakk med en veileder</h2>
+            <p class="brodtekst">Usikker på hva du skal velge? Karriereveiledning.no gir gratis veiledning om utdanning og jobb.</p>
+          </span>
+          <span class="pill">Gå til Karriereveiledning.no</span>
+        </a>
+      </section>
+
+      <!-- Spørsmålet kom i klynger, som en skoleoppgave. Lærere, rådgivere og foresatte får en liten lenkerad under veilederen. -->
+      <section class="lenkerad" aria-labelledby="g-lenkerad">
+        <h2 id="g-lenkerad" class="etikett">Til lærere, rådgivere og foresatte</h2>
+        <ul>
+          <li><a data-lenke="fra-grunnskole">Fra grunnskole til videregående</a></li>
+          <li><a data-lenke="verktoy-valg-videregaende">Verktøy for valg av videregående</a></li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="bunn-innhold">
+    <div class="avsender"><strong>HK-dir</strong><br>Direktoratet for høyere utdanning og kompetanse</div>
+    <ul class="bunnlenker">
+      <li class="bare-desktop"><button type="button">For presse</button></li>
+      <li><button type="button">Om karriereveiledning.no</button></li>
+      <li><button type="button">Karrieresenter i ditt fylke</button></li>
+      <li><button type="button">Personvernerklæring</button></li>
+    </ul>
+    <div class="bunn-kontakt bare-desktop">
+      <div><strong>Webredaktør:</strong><br>[NAVN]</div>
+      <div><strong>Kontakt redaksjonen:</strong><br><button type="button">[E-POSTADRESSE]</button></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../ruting.js"></script>
+<script src="../felles.js"></script>
+</body>
+</html>

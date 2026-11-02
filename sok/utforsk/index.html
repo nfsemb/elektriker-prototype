@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Søk | utdanning.no</title>
+<link rel="stylesheet" href="../felles.css">
+</head>
+<body data-side="utforsk">
+
+<!--
+  LENKER
+  Alle adresser ligger her. Siden bygger href ut fra «side», «anker» og «tekst».
+  - side: adressen til målsiden (uten #anker), eller null hvis lenken mangler.
+  - anker: id på målsiden som det skal hoppes til, eller null.
+  - tekst: tekstfragment som utheves, { "start": "...", "slutt": "..." } (slutt er valgfri), eller null.
+  - status: "funnet" (funnet og sjekket av Claude), "manuell" (lagt inn av et menneske, skal aldri endres), "mangler".
+  Kjør `node scripts/sjekk-lenker.mjs utforsk` etter endringer.
+-->
+<script type="application/json" id="lenker">
+{
+  "samle-vgs": {
+    "maal": "Samlesiden «Vet ikke hva jeg skal velge» på karriereveiledning.no, for deg som skal velge videregående",
+    "side": "https://karriereveiledning.no/karrierevalg/vet-ikke-hva-jeg-skal-velge", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap på karriereveiledning.no (rapporten om situasjon 3), hentet på nytt. Siden sier «Usikker på hvilken linje som passer deg best?»", "sjekket": "2026-10-31"
+  },
+  "samle-studier": {
+    "maal": "Samlesiden «Aner ikke hva jeg vil studere» på karriereveiledning.no, for deg som skal velge studier",
+    "side": "https://karriereveiledning.no/karrierevalg/aner-ikke-hva-jeg-vil-studere", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap på karriereveiledning.no (rapporten om situasjon 3), hentet på nytt. Siden sier «Lurer du på hvordan du kan finne en utdanning som passer for deg?»", "sjekket": "2026-10-31"
+  },
+  "seks-trinn": {
+    "maal": "Artikkelen «6 trinn til valg av utdanning» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/6-trinn-til-ditt-valg", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap og samlesiden «Aner ikke hva jeg vil studere» (rapporten om situasjon 3), hentet på nytt", "sjekket": "2026-10-31"
+  },
+  "vanskelig-a-velge": {
+    "maal": "Artikkelen «Derfor kan det være vanskelig å velge utdanning» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/hvorfor-kan-det-vaere-vanskelig-ta-et-valg", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap og samlesiden (rapporten om situasjon 3), hentet på nytt. Ikke «/derfor-kan-det-vaere-vanskelig-ta-et-valg», som er en annen artikkel for voksne", "sjekket": "2026-10-31"
+  },
+  "forslag-utdanninger-yrker": {
+    "maal": "KI-verktøyet «Få forslag til utdanninger og yrker» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/fa-forslag-til-utdanninger-yrker", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "samme adresse som på de andre sidene (verktøysiden på utdanning.no, parameteren fjernet). Varianten med «?tema=11» og «-og-yrker» gir 404 og er ikke brukt", "sjekket": "2026-10-31"
+  },
+  "jobbkompasset": {
+    "maal": "Jobbkompasset på utdanning.no",
+    "side": "https://utdanning.no/jobbkompasset/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no, hentet på nytt", "sjekket": "2026-10-31"
+  },
+  "utdanningskompasset": {
+    "maal": "Utdanningskompasset på utdanning.no",
+    "side": "https://utdanning.no/utdanningskompasset/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no, hentet på nytt", "sjekket": "2026-10-31"
+  },
+  "interessetester": {
+    "maal": "Artikkelen «Interessetester» på utdanning.no, som samler interessetester og verktøy",
+    "side": "https://utdanning.no/tema/karriereveiledere_og_foresatte_videregaende_opplaering_universitet_og_hogskole_fagskole_arbeidsliv_videregaende_voksne_videreutdanning_emner_og_kurs/interessetester", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søk på utdanning.no etter «interessetest» (rapporten om situasjon 3), hentet på nytt", "sjekket": "2026-10-31"
+  },
+  "tips-yrker": {
+    "maal": "Artikkelen «4 tips til hvordan du kan finne ut mer om yrker» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/4-tips-til-hvordan-du-kan-finne-ut-mer-om-yrker", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap og samlesiden (rapporten om situasjon 3), hentet på nytt", "sjekket": "2026-10-31"
+  },
+  "tips-utdanninger": {
+    "maal": "Artikkelen «3 tips til å bli kjent med utdanninger» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/3-tips-bli-kjent-med-utdanninger", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap og samlesiden (rapporten om situasjon 3), hentet på nytt", "sjekket": "2026-10-31"
+  },
+  "for-og-imot": {
+    "maal": "Filmen «Slik lager du en for og imot-liste» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/lag-en-og-imotliste", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap og samlesiden (rapporten om situasjon 3), hentet på nytt. Filmen (Vimeo) er innebygd på siden", "sjekket": "2026-10-31"
+  },
+  "intervju-julianne": {
+    "maal": "Yrkesintervjuet med Julianne Steira Jensen, laborant, ned til sitatet i kortet",
+    "side": "https://utdanning.no/tema/yrkesintervju/laborant_0", "anker": null, "tekst": { "start": "Jeg var veldig usikker på hva jeg ville etter 10. klasse" },
+    "status": "funnet", "kilde": "rapporten om situasjon 3. Intervjuet er lest på nytt og sitatet kontrollert ordrett (publisert 18.10.2025)", "sjekket": "2026-10-31"
+  },
+  "intervju-erling": {
+    "maal": "Yrkesintervjuet med Erling Berge Monsen, kjemiker, ned til sitatet i kortet",
+    "side": "https://utdanning.no/tema/yrkesintervju/kjemiker", "anker": null, "tekst": { "start": "Jeg var som mange andre, usikker på hva jeg skulle bli" },
+    "status": "funnet", "kilde": "rapporten om situasjon 3. Intervjuet er lest på nytt og sitatet kontrollert ordrett (publisert 15.06.2026)", "sjekket": "2026-10-31"
+  },
+  "intervju-alexandra": {
+    "maal": "Yrkesintervjuet med Alexandra Visnes, keramiker, ned til sitatet i kortet",
+    "side": "https://utdanning.no/tema/yrkesintervju/keramiker_1", "anker": null, "tekst": { "start": "Jeg visste ikke hva jeg skulle bli, og valgte å utdanne meg til lærer" },
+    "status": "funnet", "kilde": "rapporten om situasjon 3. Intervjuet er lest på nytt og sitatet kontrollert ordrett (publisert 27.06.2025)", "sjekket": "2026-10-31"
+  },
+  "video-banemontor": {
+    "maal": "Yrkesvideoen «Yrkesintervju - hva gjør en banemontør?», seksjonen «Bli med en banemontør på jobb» på yrkesbeskrivelsen",
+    "side": "https://utdanning.no/yrker/beskrivelse/banemontor", "anker": "yrke-videoer", "tekst": null,
+    "status": "funnet", "kilde": "rapporten om situasjon 3. Yrkesbeskrivelsen har seksjonen med id yrke-videoer og filmen (Vimeo), åpnet i Playwright 2026-10-31. Spilleren viser tittelen og 01:45", "sjekket": "2026-10-31"
+  },
+  "kontakt-veileder": {
+    "maal": "Kontaktsiden til Karriereveiledning.no, der du velger chat, telefon eller e-post",
+    "side": "https://karriereveiledning.no/kontakt-karriereveileder", "anker": null, "tekst": null,
+    "status": "manuell", "kilde": "bestemt av Niels 2026-10-31", "sjekket": "2026-10-31"
+  }
+}
+</script>
+
+<header class="topp">
+  <div>
+    <a href="../../" class="logolenke"><svg class="logo" viewBox="0 0 812.9 99.2" role="img" aria-label="Utdanning.no"><g transform="translate(-12.9,-75.2)" fill="#EE7B1A"><path d="m 59.7,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,22.3 -14.2,30.6 -32.1,30.6 -18,0 -32.1,-8.3 -32.1,-30.6 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,10.4 5.5,15.4 14.7,15.4 9.2,0 14.7,-4.9 14.7,-15.4 z"/><path d="m 148.2,75.9 c 3.7,0 5.5,4 5.5,7.8 0,4.1 -2,7.9 -5.5,7.9 h -19.5 v 76.5 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 91.6 H 91.7 c -3.5,0 -5.5,-3.6 -5.5,-7.9 0,-3.7 1.7,-7.8 5.5,-7.8 z"/><path d="m 193.4,75.9 c 17.6,0 31.4,8.3 31.4,30.6 V 143 c 0,22.3 -13.8,30.6 -31.4,30.6 h -23.6 c -4.5,0 -7.6,-2.5 -7.6,-5.3 v -87 c 0,-2.8 3.1,-5.4 7.6,-5.4 z m -13.9,15.2 v 67.2 h 13.9 c 8.8,0 14,-4.9 14,-15.4 V 106.4 C 207.4,96 202.2,91 193.4,91 h -13.9 z"/><path d="m 230.9,166.4 c 0,-0.3 0.1,-0.8 0.3,-1.3 l 25.8,-84 c 1.2,-4 6.1,-5.9 11.1,-5.9 5.1,0 10,1.9 11.2,5.9 l 25.8,84 c 0.1,0.5 0.3,0.9 0.3,1.3 0,4.1 -6.3,7.2 -10.9,7.2 -2.9,0 -5.2,-0.9 -5.9,-3.5 l -5.1,-17.8 h -30.6 l -5.1,17.8 c -0.7,2.5 -2.9,3.5 -5.9,3.5 -4.8,0 -11,-3 -11,-7.2 z m 48.7,-27.7 -11.6,-41 -11.6,41 z"/><path d="m 359.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 L 361,134.9 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 440.4,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 475.1,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 z"/><path d="m 554.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 618.6,91.1 c -8.9,0 -14,5 -14,15.4 v 37.3 c 0,10.4 5.1,15.4 13.9,15.4 8.7,0 14,-4.9 14,-15.4 v -7.9 h -10.8 c -3.5,0 -5.3,-3.3 -5.3,-6.8 0,-3.3 1.9,-6.8 5.3,-6.8 h 22.7 c 3.5,0 5.5,2.7 5.5,5.6 v 15.9 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.3,-8.3 -31.3,-30.6 v -37.3 c 0,-22.3 13.8,-30.6 30.7,-30.6 18.4,0 31.9,9.6 31.9,25.7 0,6.7 -2.9,8.3 -8.7,8.3 -4.7,0 -8.5,-1.3 -8.7,-5.5 -0.3,-6.3 -2.4,-13.3 -13.8,-13.3 z"/><path d="m 675.4,165.3 c 0,4.8 -4.1,9.1 -9,9.1 -5.2,0 -9.1,-4.3 -9.1,-9.1 0,-4.9 3.9,-9.1 9.1,-9.1 4.9,0 9,4.1 9,9.1 z"/><path d="m 731.5,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 763.2,143.8 v -37.3 c 0,-22.3 13.6,-30.6 31.2,-30.6 17.6,0 31.4,8.3 31.4,30.6 v 37.3 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.2,-8.3 -31.2,-30.6 z m 45.2,-37.3 c 0,-10.6 -5.3,-15.4 -14,-15.4 -8.8,0 -13.9,4.8 -13.9,15.4 v 37.3 c 0,10.6 5.1,15.4 13.9,15.4 8.7,0 14,-4.8 14,-15.4 z"/></g></svg></a>
+    <p class="slagord">Offentlig og kvalitetssikret</p>
+  </div>
+  <div class="topp-knapper">
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Min side
+    </button>
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Meny
+    </button>
+    <button type="button" class="meny-rund bare-mobil" aria-label="Åpne meny">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <h1>Søk etter yrker, utdanning og innhold</h1>
+
+  <form class="sok" role="search" onsubmit="return false">
+    <label for="sok" class="skjult">Søk etter yrker, utdanning og innhold</label>
+    <input id="sok" type="search" value="Jeg aner ikke hva jeg vil bli" readonly>
+    <button type="button" aria-label="Søk">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+    </button>
+  </form>
+
+  <div class="velger">
+    <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
+    <div class="brikker-ramme">
+      <ul class="brikker">
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(12)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="begynne" aria-pressed="false">Komme i gang <span data-antall="begynne">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="passe" aria-pressed="false">Passer for meg <span data-antall="passe">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="finne-ut" aria-pressed="false">Finne ut mer <span data-antall="finne-ut">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="andre" aria-pressed="false">Andres vei <span data-antall="andre">(4)</span></button></li>
+        <li class="vis-flere-plass bare-desktop" hidden>
+          <button type="button" class="vis-flere" aria-expanded="false">
+            <span>Vis flere</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="oppsett">
+
+    <aside class="sidekolonne bare-desktop">
+      <div>
+        <h2 class="etikett legende-tittel">
+          <span>Farger og ikoner</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </h2>
+        <ul class="legende">
+          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+        </ul>
+      </div>
+
+      <div>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+          Del søk
+        </button>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"/></svg>
+          Lagre søk
+        </button>
+      </div>
+    </aside>
+
+    <div class="resultater">
+
+      <!-- Ingressen sier hvordan søket er forstått, og bare det: at deltakeren lurer på hva som passer. Søket står i anførselstegn (data-sok-tekst). Står «aner ikke», «vet ikke» eller «usikker» i søket, kommer en setning om at det er vanlig å ikke vite, foran «Her er måter å finne ut av det på.» Andre søk som rutes hit («interessetest», «hvordan velger man …») får bare den siste. Hvilken gruppe siden starter med, står i data-tolkning, som felles.js fyller («Vi starter med …», og «som du spurte om» bare når søket traff gruppen med minst to poeng). Tallet regnes ut av felles.js. Under ingressen kommer to valg som tilpasser siden: videregående eller studier. Begge går til en samleside på karriereveiledning.no, og lenketeksten sier det. -->
+      <div class="treff">
+        <h2 class="etikett">Søkeresultat</h2>
+        <p class="avvisning avvisning--med-valg"><span data-antall-ingress>12</span> resultater. Du skrev «<span data-sok-tekst>Jeg aner ikke hva jeg vil bli</span>», og vi forstår det som at du lurer på hva som passer for deg. <span data-vis-hvis="aner ikke|vet ikke|usikker*">Det er helt vanlig å ikke vite.</span> Her er måter å finne ut av det på.<span data-tolkning hidden></span></p>
+        <ul class="sporsmal-brikker valg-ingress">
+          <li data-kort="valg-videregaende"><a data-lenke="samle-vgs">Skal du velge videregående? Se tips på karriereveiledning.no</a></li>
+          <li data-kort="valg-studier"><a data-lenke="samle-studier">Skal du velge studier? Se tips på karriereveiledning.no</a></li>
+        </ul>
+      </div>
+
+      <!-- Veilederen står øverst, rett under ingressen: den som ikke vet hva hun vil, trenger et menneske mer enn et nytt treff. Knappen går til kontaktsiden (aldri til chat-lenken, som starter en ekte chat). Teksten sier bare det kontaktsiden sier: valg av utdanning og jobb, gratis og anonymt, chat og telefon. Telefon og åpningstider er lest av kontaktsiden og åpningstidssiden 2026-10-31. Overskriften er fra skissen. Bildet er det samme som på de andre sidene (skissens veilederbilde er ikke brukt). Ingen lenke til karrieresentrene her: de gjelder voksne over 19 år, og siden er også for ungdomsskoleelever. -->
+      <section class="veileder--topp" aria-labelledby="g-veileder-topp" data-kort="veileder-topp">
+        <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+        <div class="veileder--topp-tekst">
+          <h2 id="g-veileder-topp">Usikker på hvor du skal begynne?</h2>
+          <p>Snakk med en karriereveileder om valg av utdanning og jobb, gratis og anonymt, på chat eller telefon 23&nbsp;50&nbsp;61&nbsp;95 (mandag–torsdag 09:00–15:00, fredag 09:00–12:00).</p>
+        </div>
+        <a class="pill" data-lenke="kontakt-veileder">Kontakt en veileder</a>
+      </section>
+
+      <!-- 1. Hvor skal jeg begynne? Begge artiklene er på karriereveiledning.no og handler om studievalg, så de to valgene under ingressen (videregående eller studier) står rett over. Kortteksten for «Derfor …» bruker «avgjørelser» for artikkelens «valg», så den ikke gjentar ord fra tittelen. -->
+      <section class="gruppe" data-gruppe="begynne" data-tema="hvor du kan begynne" data-ord="begynne|start*|vanskelig" aria-labelledby="g-begynne">
+        <h2 id="g-begynne" class="seksjon">Hvor skal jeg begynne?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel" data-kort="seks-trinn">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="seks-trinn">6 trinn til valg av utdanning</a></h3>
+            <p class="brodtekst">Du går fra hva som er viktig for deg, via fordeler og ulemper, mot en avgjørelse.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="vanskelig-a-velge">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="vanskelig-a-velge">Derfor kan det være vanskelig å velge utdanning</a></h3>
+            <p class="brodtekst">Hjernen er ikke laget for så kompliserte avgjørelser, og magefølelsen gir dårlige råd.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 2. Hva kan passe for meg? Kortekstene er skrevet på nytt etter verktøyene selv (skissen beskrev dem feil). KI-verktøyet stiller spørsmål, du skriver ikke fritt. Tjenesten sier selv at den bruker kunstig intelligens. Under kortene: lenke til artikkelen «Interessetester» på utdanning.no. -->
+      <section class="gruppe" data-gruppe="passe" data-tema="verktøy og tester" data-ord="interessetest*|test|passer|interesse*|liker" aria-labelledby="g-passe">
+        <h2 id="g-passe" class="seksjon">Hva kan passe for meg?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="forslag-utdanninger-yrker">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="forslag-utdanninger-yrker">Få forslag til utdanninger og yrker</a></h3>
+            <p class="brodtekst">Svar på spørsmål om interessene dine, i en tjeneste som bruker kunstig intelligens.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="jobbkompasset">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="jobbkompasset">Jobbkompasset</a></h3>
+            <p class="brodtekst">Velg et område du er interessert i, og finn yrker som passer.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="utdanningskompasset">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="utdanningskompasset">Utdanningskompasset</a></h3>
+            <p class="brodtekst">Velg et område du er interessert i, og finn utdanninger som passer.</p>
+          </li>
+        </ul>
+        <a class="pill gruppe-lenke" data-lenke="interessetester">Se flere interessetester på utdanning.no</a>
+      </section>
+
+      <!-- 3. Hvordan finner jeg ut mer om et yrke eller en utdanning? Tipsene heter det artiklene selv sier (4 tips: Les beskrivelser, Se film, Sammenlign, Snakk med andre; 3 tips: Sjekk studieplaner, Undersøk mulige jobber, Hva sier andre som har tatt utdanninga?). Filmen ligger på Vimeo, bildet på i.vimeocdn.com. Lengden står ikke på karriereveiledning.no, så ingen lengde vises. -->
+      <section class="gruppe" data-gruppe="finne-ut" data-tema="måter å sjekke yrker og utdanninger på" data-ord="velge*|velger*|finne ut|to yrker|for og imot" aria-labelledby="g-finne-ut">
+        <h2 id="g-finne-ut" class="seksjon">Hvordan finner jeg ut mer om et yrke eller en utdanning?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel" data-kort="tips-yrker">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="tips-yrker">4 tips til hvordan du kan finne ut mer om yrker</a></h3>
+            <p class="brodtekst">Les beskrivelser, se film, sammenlign og snakk med andre.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="tips-utdanninger">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="tips-utdanninger">3 tips til å bli kjent med utdanninger</a></h3>
+            <p class="brodtekst">Sjekk studieplaner, undersøk mulige jobber og finn ut hva tidligere studenter sier.</p>
+          </li>
+          <li class="kort kort--artikkel kort--video" data-kort="for-og-imot">
+            <a class="videobilde" data-lenke="for-og-imot" aria-hidden="true" tabindex="-1">
+              <img src="https://i.vimeocdn.com/video/2092126076-b6d8aa7662f107b13641bee590dd8348625650c7c9f4283d93d26f5d8b94542c-d_1280?region=us" alt="Teksten «For og imot-liste» over en kvinne som står foran bokhyller" width="1280" height="720" loading="lazy" referrerpolicy="no-referrer">
+              <span class="spill"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="#333333" aria-hidden="true"><path d="M9 6l10 6-10 6z"/></svg></span></span>
+            </a>
+            <div>
+              <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h13v12H3zM16 10l5-3v10l-5-3"/></svg><span>Video</span></p>
+              <h3 class="korttittel"><a data-lenke="for-og-imot">Slik lager du en for og imot-liste</a></h3>
+              <p class="brodtekst">Sett fordeler opp mot ulemper, så blir det lettere å se hva som betyr mest.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 4. Hvordan fant andre ut hva de ville bli? Erstatter skissens «Hvordan er hverdagen i ulike yrker». Skissens Sunniva Aas, Turid Ramberg, Ola Nyheim og videoen «en natt som banemontør» finnes ikke på utdanning.no og er ikke brukt, heller ikke bildene. Tre ekte intervjuer der personen selv sier at hun eller han var usikker, og den ekte banemontørvideoen (Rolf Anders Kristensen, 1:45). Videoen står sist, fordi den viser et yrke i praksis og ikke selv handler om valget. -->
+      <section class="gruppe" data-gruppe="andre" data-tema="hvordan andre fant ut hva de ville bli" data-ord="andre|hvordan fant" aria-labelledby="g-andre">
+        <h2 id="g-andre" class="seksjon">Hvordan fant andre ut hva de ville bli?</h2>
+        <ul class="kortliste">
+          <li class="intervju" data-kort="intervju-julianne">
+            <a data-lenke="intervju-julianne">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_header/public/laborant_elin_marie_jensen.jpeg?VersionId=5&amp;itok=qQmI5GLV" alt="Julianne Steira Jensen med lyst hår, vernebriller og hvit frakk" width="280" height="280" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Julianne Steira Jensen (21)</span>
+                  <span class="intervju-stilling">Laborant</span>
+                  <span class="intervju-arbeidsgiver">Nemko Norlab, Glomfjord</span>
+                </span>
+              </span>
+              <blockquote>– Jeg var veldig usikker på hva jeg ville etter 10. klasse, men etter et besøk hos kjemi- og prosessfag i Glomfjord visste jeg at det var det jeg ville bli.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+          <li class="intervju" data-kort="intervju-erling">
+            <a data-lenke="intervju-erling">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_header/public/DSC00636.jpg?VersionId=3&amp;h=1d3f1420&amp;itok=cd7fGcfT" alt="Erling Berge Monsen i hvit frakk smiler til kamera, foran et hvitt sylinderformet apparat" width="280" height="280" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Erling Berge Monsen (35)</span>
+                  <span class="intervju-stilling">Kjemiker</span>
+                  <span class="intervju-arbeidsgiver">Universitetet i Stavanger</span>
+                </span>
+              </span>
+              <blockquote>– Jeg var som mange andre, usikker på hva jeg skulle bli.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+          <li class="intervju" data-kort="intervju-alexandra">
+            <a data-lenke="intervju-alexandra">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_header/public/keramiker%202mb.JPG?VersionId=5&amp;itok=a1SiXziB" alt="Alexandra Visnes med lyst oppsatt hår og hvit heklet topp smiler, med keramikk i bakgrunnen" width="280" height="280" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Alexandra Visnes (46)</span>
+                  <span class="intervju-stilling">Keramiker</span>
+                  <span class="intervju-arbeidsgiver">Alexandra Visnes Keramikk</span>
+                </span>
+              </span>
+              <blockquote>– Jeg visste ikke hva jeg skulle bli, og valgte å utdanne meg til lærer.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+          <li class="kort kort--yrke kort--video" data-kort="video-banemontor">
+            <a class="videobilde" data-lenke="video-banemontor" aria-hidden="true" tabindex="-1">
+              <img src="https://i.vimeocdn.com/video/2049814397-72e510bb6de8fd96e76a49967247f0edc6d4d83bc958f9f0a2a41f4478b30303-d_1280?region=us" alt="Mann i gult arbeidstøy og blå hjelm står i døråpningen på en gul arbeidsmaskin for jernbane fra Bane NOR" width="1280" height="720" loading="lazy" referrerpolicy="no-referrer">
+              <span class="spill"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="#333333" aria-hidden="true"><path d="M9 6l10 6-10 6z"/></svg></span></span>
+              <span class="lengde">1:45</span>
+            </a>
+            <div>
+              <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h13v12H3zM16 10l5-3v10l-5-3"/></svg><span>Video</span></p>
+              <h3 class="korttittel"><a data-lenke="video-banemontor">Bli med en banemontør på jobb</a></h3>
+              <p class="brodtekst">Se noe av det Rolf gjør.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Veilederbanner nederst: hele banneret er lenken. Går til kontaktsiden, ikke til forsiden (som de andre sidene), så teksten kan nevne chat, telefon og e-post slik kontaktsiden gjør. Knappen sier «Kontakt en veileder», fordi siden lar deg velge mellom chat, telefon og e-post. -->
+      <section class="veileder" aria-labelledby="g-veileder" data-kort="veileder">
+        <a data-lenke="kontakt-veileder">
+          <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+          <span class="veileder-tekst" style="display:block">
+            <h2 id="g-veileder">Snakk med en veileder</h2>
+            <p class="brodtekst">Fikk du ikke svar på det du lurte på? Karriereveilederne svarer på chat, telefon og e-post.</p>
+          </span>
+          <span class="pill">Kontakt en veileder</span>
+        </a>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="bunn-innhold">
+    <div class="avsender"><strong>HK-dir</strong><br>Direktoratet for høyere utdanning og kompetanse</div>
+    <ul class="bunnlenker">
+      <li class="bare-desktop"><button type="button">For presse</button></li>
+      <li><button type="button">Om karriereveiledning.no</button></li>
+      <li><button type="button">Karrieresenter i ditt fylke</button></li>
+      <li><button type="button">Personvernerklæring</button></li>
+    </ul>
+    <div class="bunn-kontakt bare-desktop">
+      <div><strong>Webredaktør:</strong><br>[NAVN]</div>
+      <div><strong>Kontakt redaksjonen:</strong><br><button type="button">[E-POSTADRESSE]</button></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../ruting.js"></script>
+<script src="../felles.js"></script>
+</body>
+</html>

@@ -212,7 +212,7 @@ footer { background: var(--bunn); color: #ffffff; padding: 24px 16px; }
   <section class="topp-seksjon">
     <div class="sporsmal-omraade">
       <h1>Hva lurer du på?</h1>
-      <!-- Teksten som skrives inn, sendes ingen steder. Den lagres bare i nettleseren (sessionStorage), slik at sok/ kan finne yrket og resultatsiden kan sette det relevante spørsmålet øverst. -->
+      <!-- Teksten som skrives inn, sendes ingen steder. Den lagres bare i nettleseren (sessionStorage), slik at sok/ kan finne siden søket hører til, og resultatsiden kan sette det relevante spørsmålet øverst. -->
       <form class="sporsmal" role="search" action="sok/" novalidate>
         <label for="sporsmal" class="skjult">Hva lurer du på?</label>
         <input id="sporsmal" type="search" placeholder="Eks: Hva gjør en sosionom?" autocomplete="off" enterkeyhint="search">
@@ -220,7 +220,7 @@ footer { background: var(--bunn); color: #ffffff; padding: 24px 16px; }
       </form>
       <div class="forslag">
         <p class="forslag-tittel">Prøv for eksempel</p>
-        <!-- Ett eksempel per yrke i prototypen. Bare elektriker vises først, de andre ligger bak «Vis flere». -->
+        <!-- Ett eksempel per yrke og ett per situasjon i prototypen. Bare elektriker vises først, de andre ligger bak «Vis flere». Teksten på brikken er eksempelsøket ordrett, bortsett fra det siste, der data-sok har hele spørsmålet. -->
         <ul class="forslag-liste" id="forslag-liste">
           <li><button type="button" class="forslag-brikke" data-sok="Elektriker">Elektriker</button></li>
           <li><button type="button" class="forslag-brikke" data-sok="Hva tjener en elektriker?">Hva tjener en elektriker?</button></li>
@@ -230,6 +230,15 @@ footer { background: var(--bunn); color: #ffffff; padding: 24px 16px; }
           <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="Politi">Politi</button></li>
           <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="Jeg liker å hjelpe barn. Kan jeg bli lærer?">Jeg liker å hjelpe barn. Kan jeg bli lærer?</button></li>
           <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="Hva kan jeg spesialisere meg i som lege?">Hva kan jeg spesialisere meg i som lege?</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="sykepleie">sykepleie</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="Jeg aner ikke hva jeg vil bli">Jeg aner ikke hva jeg vil bli</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="Hva kan jeg bli med psykologi?">Hva kan jeg bli med psykologi?</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="Hva er forskjellen på yrkesfag og studieforberedende?">Hva er forskjellen på yrkesfag og studieforberedende?</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="jobbkompasset">jobbkompasset</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="Er det mulig å bli ambulansearbeider når man er over 19år">Er det mulig å bli ambulansearbeider når man er over 19år</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="sykeplier">sykeplier</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="hvordan skrive cv">hvordan skrive cv</button></li>
+          <li data-flere hidden><button type="button" class="forslag-brikke" data-sok="hvilke it-relaterte firmaer søker praktikanter til uke 44 i 2026 akkurat nå?">Hvilke IT-firmaer søker praktikanter akkurat nå?</button></li>
           <li><button type="button" class="forslag-mer" aria-expanded="false" aria-controls="forslag-liste">Vis flere</button></li>
         </ul>
       </div>
@@ -388,7 +397,7 @@ footer { background: var(--bunn); color: #ffffff; padding: 24px 16px; }
 </footer>
 
 <script>
-// Søket går til sok/, som sender det videre til resultatsiden for yrket det handler om. Teksten lagres bare i nettleseren,
+// Søket går til sok/, som sender det videre til resultatsiden som passer (et yrke, et verktøy eller en situasjon). Teksten lagres bare i nettleseren,
 // så resultatsiden kan vise den og sette det spørsmålet som passer best, øverst. Den sendes ingen steder.
 const skjema = document.querySelector('.sporsmal');
 const felt = document.getElementById('sporsmal');
@@ -398,7 +407,7 @@ skjema.addEventListener('submit', (e) => {
   if (!tekst) { felt.focus(); return; }
   try {
     sessionStorage.setItem('ki-sok:sporsmal', tekst.slice(0, 200));
-    // Nytt søk starter alltid på «Alle», for alle yrkene.
+    // Nytt søk starter alltid på «Alle», for alle sidene.
     Object.keys(sessionStorage).filter((k) => k.startsWith('ki-sok:gruppe:')).forEach((k) => sessionStorage.removeItem(k));
   } catch {}
   // Kort pause, så det ser ut som spørsmålet behandles.
@@ -414,7 +423,7 @@ document.querySelectorAll('.forslag-brikke').forEach((knapp) => {
   });
 });
 
-// «Vis flere» viser eksemplene for de andre yrkene.
+// «Vis flere» viser eksemplene for de andre yrkene og situasjonene.
 const visFlere = document.querySelector('.forslag-mer');
 visFlere.addEventListener('click', () => {
   const vis = visFlere.getAttribute('aria-expanded') !== 'true';

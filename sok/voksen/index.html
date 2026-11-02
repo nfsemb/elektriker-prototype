@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Søk | utdanning.no</title>
+<link rel="stylesheet" href="../felles.css">
+</head>
+<body data-side="voksen">
+
+<!--
+  LENKER
+  Alle adresser ligger her. Siden bygger href ut fra «side», «anker» og «tekst».
+  - side: adressen til målsiden (uten #anker), eller null hvis lenken mangler.
+  - anker: id på målsiden som det skal hoppes til, eller null.
+  - tekst: tekstfragment som utheves, { "start": "...", "slutt": "..." } (slutt er valgfri), eller null.
+  - status: "funnet" (funnet og sjekket av Claude), "manuell" (lagt inn av et menneske, skal aldri endres), "mangler".
+  Kjør `node scripts/sjekk-lenker.mjs voksen` etter endringer.
+-->
+<script type="application/json" id="lenker">
+{
+  "fullfore-vgs": {
+    "maal": "Artikkelen «Kan jeg fullføre videregående som voksen?» på utdanning.no",
+    "side": "https://utdanning.no/tema/videregaende_voksne/kan_jeg_fullfore_videregaende_som_voksen", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søk på utdanning.no (rapporten om situasjon 6), hentet på nytt", "sjekket": "2026-10-31"
+  },
+  "vgs-som-voksen": {
+    "maal": "Artikkelen «Videregående som voksen» på utdanning.no",
+    "side": "https://utdanning.no/tema/videregaende_voksne_yrkesfag/videregaende_som_voksen", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søk på utdanning.no (rapporten om situasjon 6), hentet på nytt", "sjekket": "2026-10-31"
+  },
+  "yrke-ambulansearbeider": {
+    "maal": "Yrkesbeskrivelsen for ambulansearbeider",
+    "side": "https://utdanning.no/yrker/beskrivelse/ambulansearbeider", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "yrkesbeskrivelsen på utdanning.no. Siden sier «For å jobbe som ambulansearbeider må du ha en autorisasjon fra Helsedirektoratet»", "sjekket": "2026-10-31"
+  },
+  "voksen-fylke": {
+    "maal": "Oversikten «Ta videregående som voksen» på utdanning.no, der du velger fylke og ser tilbudene for voksne",
+    "side": "https://utdanning.no/tema/utdanning/videregaende/voksen/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "lenken «Vil du ta videregående som voksen?» på yrkesbeskrivelsen for ambulansearbeider. Siden har lenker til 15 fylker, åpnet i nettleseren", "sjekket": "2026-10-31"
+  },
+  "voksen-ambulanse-trondelag": {
+    "maal": "Voksensiden «Ambulansearbeider - Trøndelag» på utdanning.no, der du svarer på hvor mye erfaring du har",
+    "side": "https://utdanning.no/tema/utdanning/videregaende/voksen/trondelag/ambulansearbeider/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap for voksensidene på utdanning.no. Bare Trøndelag har en side for ambulansearbeider. Åpnet i nettleseren", "sjekket": "2026-10-31"
+  },
+  "realkompetansevurdering": {
+    "maal": "Verktøyet «Realkompetansevurdering» på utdanning.no",
+    "side": "https://utdanning.no/realkompetansevurdering/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no", "sjekket": "2026-10-31"
+  },
+  "praksiskandidat": {
+    "maal": "Artikkelen «Praksiskandidat» på utdanning.no",
+    "side": "https://utdanning.no/tema/videregaende_voksne/praksiskandidat", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søk på utdanning.no (rapporten om situasjon 6), hentet på nytt", "sjekket": "2026-10-31"
+  },
+  "fagbrev-pa-jobb": {
+    "maal": "Artikkelen «Fagbrev på jobb» på utdanning.no",
+    "side": "https://utdanning.no/tema/fagbrev_pa_jobb_0", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søk på utdanning.no (rapporten om situasjon 6), hentet på nytt", "sjekket": "2026-10-31"
+  },
+  "intervju-kim-andre": {
+    "maal": "Yrkesintervjuet med Kim André Henriksen, gjenvinningsoperatør, ned til sitatet i kortet",
+    "side": "https://utdanning.no/tema/yrkesintervju/gjenvinningsoperator_0", "anker": null,
+    "tekst": { "start": "Hvis man allerede er i jobb, er det mulig å ta fagbrev" },
+    "status": "funnet", "kilde": "søk på utdanning.no etter «praksiskandidat» (rapporten om situasjon 6). Intervjuet er lest på nytt og sitatet kontrollert ordrett", "sjekket": "2026-10-31"
+  },
+  "okonomi-voksen-vgs": {
+    "maal": "Artikkelen «Økonomiske ordninger for deg som skal ta videregående opplæring som voksen» på utdanning.no",
+    "side": "https://utdanning.no/tema/videregaende_voksne_karriereveiledere_og_foresatte/okonomiske_ordninger_deg_som_skal_ta_videregaende_opplaering_som_voksen", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søk på utdanning.no (rapporten om situasjon 6), hentet på nytt", "sjekket": "2026-10-31"
+  },
+  "stotte-til-utdanning": {
+    "maal": "Artikkelen «3 tips til hvor du kan søke støtte til utdanning som voksen» på karriereveiledning.no",
+    "side": "https://karriereveiledning.no/karrierevalg/3-tips-til-hvor-du-kan-soke-stotte-til-utdanning-som-voksen", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "karriereveiledning.no, situasjonen «Videreutdanning for voksne» (rapporten om situasjon 6), hentet på nytt", "sjekket": "2026-10-31"
+  },
+  "paramedisin": {
+    "maal": "Utdanningsoversikten for paramedisin, universitet og høgskole",
+    "side": "https://utdanning.no/utdanningsoversikt/paramedisin", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Se utdanninger og steder» for paramedisin på yrkesbeskrivelsen for ambulansearbeider (/node/3970742)", "sjekket": "2026-10-31"
+  },
+  "inntak-realkompetanse": {
+    "maal": "Artikkelen om inntak til høyere utdanning på bakgrunn av realkompetanse",
+    "side": "https://utdanning.no/tema/inntak_til_hoyere_utdanning_pa_bakgrunn_av_realkompetanse", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søk på utdanning.no (rapporten om situasjon 6), hentet på nytt", "sjekket": "2026-10-31"
+  },
+  "regel-23-5": {
+    "maal": "Artikkelen «23/5-regelen» på utdanning.no",
+    "side": "https://utdanning.no/tema/universitet_og_hogskole/235-regelen", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søk på utdanning.no (rapporten om situasjon 6), hentet på nytt. Siden sier at regelen avvikles og erstattes av 23/6-regelen i 2027", "sjekket": "2026-10-31"
+  },
+  "godkjenning-utland": {
+    "maal": "Artikkelen «Undersøk om utdanningen din må godkjennes» på karriereveiledning.no, for deg som har utdanning fra et annet land",
+    "side": "https://karriereveiledning.no/karrierevalg/undersok-om-utdanningen-din-ma-godkjennes", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "rapporten om situasjon 6 (docs/behov/resten.md), hentet på nytt 2026-10-31: svarkode 200, tittel «Undersøk om utdanningen din må godkjennes», ingressen «Denne informasjonen er for deg som har utdanning fra et annet land»", "sjekket": "2026-10-31"
+  },
+  "karrieresentre": {
+    "maal": "Siden «Karrieresentre» på utdanning.no, som lister karrieresentrene i fylkene",
+    "side": "https://utdanning.no/tema/hjelp_og_veiledning/karrieresentre", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søk på utdanning.no (rapporten, felles om veileder). Siden sier at alle fylkene har karrieresentre som gir gratis veiledning til alle over 19 år", "sjekket": "2026-10-31"
+  },
+  "kontakt-veileder": {
+    "maal": "Kontaktsiden til Karriereveiledning.no, der du velger chat, telefon eller e-post",
+    "side": "https://karriereveiledning.no/kontakt-karriereveileder", "anker": null, "tekst": null,
+    "status": "manuell", "kilde": "bestemt av Niels 2026-10-31", "sjekket": "2026-10-31"
+  }
+}
+</script>
+
+<header class="topp">
+  <div>
+    <a href="../../" class="logolenke"><svg class="logo" viewBox="0 0 812.9 99.2" role="img" aria-label="Utdanning.no"><g transform="translate(-12.9,-75.2)" fill="#EE7B1A"><path d="m 59.7,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,22.3 -14.2,30.6 -32.1,30.6 -18,0 -32.1,-8.3 -32.1,-30.6 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,10.4 5.5,15.4 14.7,15.4 9.2,0 14.7,-4.9 14.7,-15.4 z"/><path d="m 148.2,75.9 c 3.7,0 5.5,4 5.5,7.8 0,4.1 -2,7.9 -5.5,7.9 h -19.5 v 76.5 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 91.6 H 91.7 c -3.5,0 -5.5,-3.6 -5.5,-7.9 0,-3.7 1.7,-7.8 5.5,-7.8 z"/><path d="m 193.4,75.9 c 17.6,0 31.4,8.3 31.4,30.6 V 143 c 0,22.3 -13.8,30.6 -31.4,30.6 h -23.6 c -4.5,0 -7.6,-2.5 -7.6,-5.3 v -87 c 0,-2.8 3.1,-5.4 7.6,-5.4 z m -13.9,15.2 v 67.2 h 13.9 c 8.8,0 14,-4.9 14,-15.4 V 106.4 C 207.4,96 202.2,91 193.4,91 h -13.9 z"/><path d="m 230.9,166.4 c 0,-0.3 0.1,-0.8 0.3,-1.3 l 25.8,-84 c 1.2,-4 6.1,-5.9 11.1,-5.9 5.1,0 10,1.9 11.2,5.9 l 25.8,84 c 0.1,0.5 0.3,0.9 0.3,1.3 0,4.1 -6.3,7.2 -10.9,7.2 -2.9,0 -5.2,-0.9 -5.9,-3.5 l -5.1,-17.8 h -30.6 l -5.1,17.8 c -0.7,2.5 -2.9,3.5 -5.9,3.5 -4.8,0 -11,-3 -11,-7.2 z m 48.7,-27.7 -11.6,-41 -11.6,41 z"/><path d="m 359.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 L 361,134.9 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 440.4,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 475.1,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 z"/><path d="m 554.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 618.6,91.1 c -8.9,0 -14,5 -14,15.4 v 37.3 c 0,10.4 5.1,15.4 13.9,15.4 8.7,0 14,-4.9 14,-15.4 v -7.9 h -10.8 c -3.5,0 -5.3,-3.3 -5.3,-6.8 0,-3.3 1.9,-6.8 5.3,-6.8 h 22.7 c 3.5,0 5.5,2.7 5.5,5.6 v 15.9 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.3,-8.3 -31.3,-30.6 v -37.3 c 0,-22.3 13.8,-30.6 30.7,-30.6 18.4,0 31.9,9.6 31.9,25.7 0,6.7 -2.9,8.3 -8.7,8.3 -4.7,0 -8.5,-1.3 -8.7,-5.5 -0.3,-6.3 -2.4,-13.3 -13.8,-13.3 z"/><path d="m 675.4,165.3 c 0,4.8 -4.1,9.1 -9,9.1 -5.2,0 -9.1,-4.3 -9.1,-9.1 0,-4.9 3.9,-9.1 9.1,-9.1 4.9,0 9,4.1 9,9.1 z"/><path d="m 731.5,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 763.2,143.8 v -37.3 c 0,-22.3 13.6,-30.6 31.2,-30.6 17.6,0 31.4,8.3 31.4,30.6 v 37.3 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.2,-8.3 -31.2,-30.6 z m 45.2,-37.3 c 0,-10.6 -5.3,-15.4 -14,-15.4 -8.8,0 -13.9,4.8 -13.9,15.4 v 37.3 c 0,10.6 5.1,15.4 13.9,15.4 8.7,0 14,-4.8 14,-15.4 z"/></g></svg></a>
+    <p class="slagord">Offentlig og kvalitetssikret</p>
+  </div>
+  <div class="topp-knapper">
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Min side
+    </button>
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Meny
+    </button>
+    <button type="button" class="meny-rund bare-mobil" aria-label="Åpne meny">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <h1>Søk etter yrker, utdanning og innhold</h1>
+
+  <form class="sok" role="search" onsubmit="return false">
+    <label for="sok" class="skjult">Søk etter yrker, utdanning og innhold</label>
+    <input id="sok" type="search" value="Er det mulig å bli ambulansearbeider når man er over 19år" readonly>
+    <button type="button" aria-label="Søk">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+    </button>
+  </form>
+
+  <div class="velger">
+    <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
+    <div class="brikker-ramme">
+      <ul class="brikker">
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(14)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="vgs" aria-pressed="false">Videregående <span data-antall="vgs">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="ambulanse" aria-pressed="false">Ambulansearbeider <span data-antall="ambulanse">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="erfaring" aria-pressed="false">Erfaring <span data-antall="erfaring">(4)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="okonomi" aria-pressed="false">Økonomi <span data-antall="okonomi">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="studere" aria-pressed="false">Studere <span data-antall="studere">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="godkjenning" aria-pressed="false">Godkjenning <span data-antall="godkjenning">(1)</span></button></li>
+        <li class="vis-flere-plass bare-desktop" hidden>
+          <button type="button" class="vis-flere" aria-expanded="false">
+            <span>Vis flere</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="oppsett">
+
+    <aside class="sidekolonne bare-desktop">
+      <div>
+        <h2 class="etikett legende-tittel">
+          <span>Farger og ikoner</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </h2>
+        <ul class="legende">
+          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+        </ul>
+      </div>
+
+      <div>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+          Del søk
+        </button>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"/></svg>
+          Lagre søk
+        </button>
+      </div>
+    </aside>
+
+    <div class="resultater">
+
+      <!-- Ingressen sier bare det søket faktisk fant. Nevner søket ambulanse, får det en setning om yrket, og følger gruppen om yrket med (felles.js: data-vis-hvis). Står «over 19» også i søket (også «over 19år»), nevnes alderen. Ellers står bare yrket. Spennene er nøstet fordi data-vis-hvis bare har «eller» (to krav samtidig er ikke mulig). Nevner søket godkjenning eller utenlandsk, kommer en setning om godkjenning av utdanning fra utlandet (og gruppen om det vises). Andre søk som rutes hit («Kan jeg ta fagbrev som voksen?») får den generelle setningen. Hvilken gruppe siden starter med, står i data-tolkning (felles.js). -->
+      <div class="treff">
+        <h2 class="etikett">Søkeresultat</h2>
+        <p class="avvisning">
+          <span data-vis-hvis="ambulanse*">
+            <span data-vis-hvis="over 19*">Du spør om du kan bli ambulansearbeider når du er over 19 år.</span>
+            <span data-vis-ikke-hvis="over 19*" hidden>Du spør om å bli ambulansearbeider.</span>
+          </span>
+          <span data-vis-hvis="godkjenning*|utenlandsk*" hidden>Vi tror du lurer på godkjenning av utdanning fra utlandet.</span>
+          <span data-vis-ikke-hvis="ambulanse*|godkjenning*|utenlandsk*" hidden>Vi tror du lurer på noe om voksne som vil ta utdanning.</span>
+          <span data-tolkning hidden></span>
+        </p>
+      </div>
+
+      <!-- Situasjonen er personlig: hva som gjelder for deg (rettigheter, penger, godkjenning), avgjør fylkeskommunen, Lånekassen eller HK-dir. Derfor står veilederen øverst, rett etter ingressen, og siden later ikke som den vet det. Knappen går til kontaktsiden (aldri til chat-lenken, som starter en ekte chat). Telefon og åpningstider er lest av kontaktsiden og åpningstidssiden 2026-10-31. Setningen om karrieresentre står på utdanning.no-siden «Karrieresentre» (kontaktsiden på karriereveiledning.no nevner ikke alderen), derfor har den en egen lenke dit. -->
+      <section class="veileder--topp" aria-labelledby="g-veileder" data-kort="veileder">
+        <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+        <div class="veileder--topp-tekst">
+          <h2 id="g-veileder">Snakk med en karriereveileder</h2>
+          <p>Gratis veiledning, anonymt på chat eller telefon 23&nbsp;50&nbsp;61&nbsp;95 (mandag–torsdag 09:00–15:00, fredag 09:00–12:00), eller hos <a data-lenke="karrieresentre">karrieresentrene i fylkene</a> for alle over 19 år.</p>
+        </div>
+        <a class="pill" data-lenke="kontakt-veileder">Kontakt en veileder</a>
+      </section>
+
+      <!-- 1. Kan jeg ta videregående når jeg er over 19? -->
+      <section class="gruppe" data-gruppe="vgs" data-tema="videregående som voksen" data-ord="videregående|vgs|fullføre|over 19*" aria-labelledby="g-vgs">
+        <h2 id="g-vgs" class="seksjon">Kan jeg ta videregående når jeg er over 19?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel" data-kort="fullfore-vgs">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="fullfore-vgs">Kan jeg fullføre videregående som voksen?</a></h3>
+            <p class="brodtekst">Uansett alder har du rett til opplæring til du har oppnådd studie- eller yrkeskompetanse.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="vgs-som-voksen">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="vgs-som-voksen">Videregående som voksen</a></h3>
+            <p class="brodtekst">Er du mellom 19 og 24 år, kan du følge undervisningen sammen med ungdom eller velge et tilbud tilrettelagt for livssituasjonen din.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 2. Hvordan blir jeg ambulansearbeider som voksen? Vises bare når søket nevner ambulanse. Utdanning.no har bare en voksenside for ambulansearbeider, for Trøndelag. Oversikten «Ta videregående som voksen» har fylkesvalg (15 fylker, kontrollert i nettleseren), så knappen kan love «i ditt fylke». -->
+      <section class="gruppe" data-gruppe="ambulanse" data-vis-hvis="ambulanse*" data-tema="veien til ambulansearbeider som voksen" data-ord="ambulanse*" aria-labelledby="g-ambulanse">
+        <h2 id="g-ambulanse" class="seksjon">Hvordan blir jeg ambulansearbeider som voksen?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke" data-kort="yrke-ambulansearbeider">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="yrke-ambulansearbeider">Ambulansearbeider</a></h3>
+            <p class="brodtekst">Du må ha autorisasjon fra Helsedirektoratet for å jobbe i yrket.</p>
+          </li>
+          <li class="kort kort--utdanning" data-kort="voksen-fylke">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="voksen-fylke">Ta videregående som voksen</a></h3>
+            <p class="brodtekst">Se hvilke fag du trenger, og hvilke skoler og bedrifter som tilbyr opplæring.</p>
+            <div class="handlinger">
+              <a class="pill" data-lenke="voksen-fylke">Finn tilbud for voksne i ditt fylke</a>
+            </div>
+          </li>
+          <li class="kort kort--utdanning" data-kort="voksen-ambulanse-trondelag">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="voksen-ambulanse-trondelag">Ambulansearbeider – Trøndelag</a></h3>
+            <p class="brodtekst">Svar på hvor mye erfaring du har, og se hvilken vei til fagbrev som passer deg.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 3. Kan erfaringen min telle? -->
+      <section class="gruppe" data-gruppe="erfaring" data-tema="hvordan erfaringen din kan telle" data-ord="erfaring|realkompetanse|praksiskandidat*|fagbrev*" aria-labelledby="g-erfaring">
+        <h2 id="g-erfaring" class="seksjon">Kan erfaringen min telle?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--verktoy" data-kort="realkompetansevurdering">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="realkompetansevurdering">Realkompetansevurdering</a></h3>
+            <p class="brodtekst">Det du har lært gjennom livet, kan erstatte noe av det du vanligvis lærer på skolen.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="praksiskandidat">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="praksiskandidat">Praksiskandidat</a></h3>
+            <p class="brodtekst">Har du jobbet i fem år eller mer, kan du ta fag- eller svennebrev uten å være elev eller lærling.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="fagbrev-pa-jobb">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="fagbrev-pa-jobb">Fagbrev på jobb</a></h3>
+            <p class="brodtekst">Du kan få lønn og opplæring på arbeidsplassen i stedet for å gå på skole, hvis fylkeskommunen tilbyr ordningen.</p>
+          </li>
+          <li class="intervju" data-kort="intervju-kim-andre">
+            <a data-lenke="intervju-kim-andre">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/artikkelbilde_medium/public/Gjenvinningsoperat%C3%B8r_eline.nesje_.JPG?VersionId=1&amp;itok=R5YsGct2" alt="Kim André Henriksen i gul refleksuniform og caps flytter en brukt hvitevare foran en container full av hvitevarer" width="600" height="387" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Kim André Henriksen (34)</span>
+                  <span class="intervju-stilling">Gjenvinningsoperatør</span>
+                  <span class="intervju-arbeidsgiver">Rødmyr gjenvinningsstasjon i Skien</span>
+                </span>
+              </span>
+              <blockquote>– Hvis man allerede er i jobb, er det mulig å ta fagbrev som praksiskandidat.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 4. Hvordan klarer jeg meg økonomisk? Kortene bruker ikke årstallene og alderskravene fra Lånekassen-avsnittet, fordi artikkelen fortsatt har 2024-regler. -->
+      <section class="gruppe" data-gruppe="okonomi" data-tema="økonomi og støtte" data-ord="økonomi*|penger|lån|stipend|råd" aria-labelledby="g-okonomi">
+        <h2 id="g-okonomi" class="seksjon">Hvordan klarer jeg meg økonomisk?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel" data-kort="okonomi-voksen-vgs">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="okonomi-voksen-vgs">Økonomiske ordninger for deg som skal ta videregående opplæring som voksen</a></h3>
+            <p class="brodtekst">Det offentlige tilbudet er gratis hvis du ikke har fullført og bestått før, og du kan få lån og stipend fra Lånekassen.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="stotte-til-utdanning">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="stotte-til-utdanning">3 tips til hvor du kan søke støtte til utdanning som voksen</a></h3>
+            <p class="brodtekst">Snakk med arbeidsgiveren din, og sjekk Lånekassen og fagforeningen.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 5. Vil du heller studere? Paramedisin er veien via høyere utdanning til ambulansearbeider, så kortet vises bare når søket nevner ambulanse. Om 23/5 og 23/6 sier utdanning.no ulikt, se docs/avvik.md. Kortet følger det artikkelen selv sier. -->
+      <section class="gruppe" data-gruppe="studere" data-tema="studier for voksne" data-ord="studere|høgskole|høyskole|universitet*|23/5" aria-labelledby="g-studere">
+        <h2 id="g-studere" class="seksjon">Vil du heller studere?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--utdanning" data-kort="paramedisin" data-vis-hvis="ambulanse*">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="paramedisin">Paramedisin</a></h3>
+            <div class="beskrivelse">
+              <p class="brodtekst">Du lærer å gi den første livreddende behandlingen til akutt syke eller sårede mennesker utenfor sykehus.</p>
+            </div>
+            <dl class="fakta">
+              <div><dt class="meta">Nivå</dt><dd class="faktaverdi">Universitet og høgskole</dd></div>
+              <div><dt class="meta">Opptakskrav</dt><dd class="faktaverdi">Spesielle krav</dd></div>
+            </dl>
+          </li>
+          <li class="kort kort--artikkel" data-kort="inntak-realkompetanse">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="inntak-realkompetanse">Inntak til høyere utdanning på bakgrunn av realkompetanse</a></h3>
+            <p class="brodtekst">Er du 25 år eller eldre i opptaksåret, kan du søke universitet eller høgskole uten generell studiekompetanse.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="regel-23-5">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="regel-23-5">23/5-regelen</a></h3>
+            <p class="brodtekst">Fra 23 år kan du få generell studiekompetanse med fem års praksis eller utdanning og seks fag, men i 2027 erstattes 23/5 av 23/6.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 6. Må utdanningen min fra utlandet godkjennes? Vises bare når søket nevner godkjenning eller utenlandsk (de samme ordene ruter søket hit). Ett kort: artikkelen på karriereveiledning.no som er skrevet for deg med utdanning fra et annet land og viser stegene (sjekk om yrket har krav, finn hvor du søker, og hvem som kan hjelpe). Kortteksten er artikkelens egen ingress, skrevet om uten ordene fra tittelen. Hva som gjelder for deg, avgjør HK-dir eller arbeidsgiveren, derfor står veilederen øverst. -->
+      <section class="gruppe" data-gruppe="godkjenning" data-vis-hvis="godkjenning*|utenlandsk*" data-tema="godkjenning av utdanning fra utlandet" data-ord="godkjenning*|utenlandsk*" aria-labelledby="g-godkjenning">
+        <h2 id="g-godkjenning" class="seksjon">Må utdanningen min fra utlandet godkjennes?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel" data-kort="godkjenning-utland">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="godkjenning-utland">Undersøk om utdanningen din må godkjennes</a></h3>
+            <p class="brodtekst">Tips til å sjekke om yrket du vil jobbe i har krav, hvor du søker, og hvem som kan hjelpe deg.</p>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="bunn-innhold">
+    <div class="avsender"><strong>HK-dir</strong><br>Direktoratet for høyere utdanning og kompetanse</div>
+    <ul class="bunnlenker">
+      <li class="bare-desktop"><button type="button">For presse</button></li>
+      <li><button type="button">Om karriereveiledning.no</button></li>
+      <li><button type="button">Karrieresenter i ditt fylke</button></li>
+      <li><button type="button">Personvernerklæring</button></li>
+    </ul>
+    <div class="bunn-kontakt bare-desktop">
+      <div><strong>Webredaktør:</strong><br>[NAVN]</div>
+      <div><strong>Kontakt redaksjonen:</strong><br><button type="button">[E-POSTADRESSE]</button></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../ruting.js"></script>
+<script src="../felles.js"></script>
+</body>
+</html>

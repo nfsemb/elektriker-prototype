@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Søk | utdanning.no</title>
+<link rel="stylesheet" href="../felles.css">
+</head>
+<body data-side="sykepleie">
+
+
+<!--
+  LENKER
+  Alle adresser ligger her. Siden bygger href ut fra «side», «anker» og «tekst».
+  - side: adressen til målsiden (uten #anker), eller null hvis lenken mangler.
+  - anker: id på målsiden som det skal hoppes til, eller null.
+  - tekst: tekstfragment som utheves, { "start": "...", "slutt": "..." } (slutt er valgfri), eller null.
+  - status: "funnet" (funnet og sjekket av Claude), "manuell" (lagt inn av et menneske, skal aldri endres), "mangler".
+  Kjør `node scripts/sjekk-lenker.mjs sykepleie` etter endringer.
+-->
+<script type="application/json" id="lenker">
+{
+  "side-sykepleier": {
+    "maal": "Resultatsiden for yrket sykepleier i prototypen",
+    "side": "../sykepleier/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen", "sjekket": "2026-10-31"
+  },
+  "sykepleie": {
+    "maal": "Utdanningsoversikten for sykepleie, universitet og høgskole",
+    "side": "https://utdanning.no/utdanningsoversikt/sykepleie", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "første treff på søket «sykepleie» på utdanning.no og «Se utdanninger og steder» på yrkesbeskrivelsen (rapporten docs/behov/utdanning.md)", "sjekket": "2026-10-31"
+  },
+  "veier-studiesteder": {
+    "maal": "Utdanningsoversikten for sykepleie, ned til listen over utdanninger, der du kan velge fylke, studietype og studieform",
+    "side": "https://utdanning.no/utdanningsoversikt/sykepleie", "anker": "nus", "tekst": null,
+    "status": "funnet", "kilde": "«Se utdanninger og steder» på yrkesbeskrivelsen (rapporten). id på siden. Fylkesfilteret har alle 15 fylker", "sjekket": "2026-10-31"
+  },
+  "studiesteder-vestland": {
+    "maal": "Utdanningsoversikten for sykepleie, filtrert på fylket Vestland (tre utdanninger)",
+    "side": "https://utdanning.no/utdanningsoversikt/sykepleie?f%5B0%5D=fylke_gs%3AVestland", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "fylkesfilteret på utdanningsoversikten (rapporten). Sjekket i nettleseren: «Viser 3 utdanninger», og avkrysningen «Vestland (3)» er valgt", "sjekket": "2026-10-31"
+  },
+  "sykepleie-deltid": {
+    "maal": "Utdanningsoversikten for sykepleie, filtrert på deltid",
+    "side": "https://utdanning.no/utdanningsoversikt/sykepleie?f%5B0%5D=studieform_gs%3Adeltid", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "filteret «deltid» på utdanningsoversikten for sykepleie. «Viser 13 utdanninger»", "sjekket": "2026-10-31"
+  },
+  "sykepleie-nett": {
+    "maal": "Utdanningsoversikten for sykepleie, filtrert på nett- og samlingsbasert",
+    "side": "https://utdanning.no/utdanningsoversikt/sykepleie?f%5B0%5D=studieform_gs%3ANett-%20og%20samlingsbasert", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "filteret «Nett- og samlingsbasert» på utdanningsoversikten for sykepleie. «Viser 3 utdanninger»", "sjekket": "2026-10-31"
+  },
+  "praksis-hvl": {
+    "maal": "Delen «Praksis for sykepleiestudenter» på lærestedssiden til Høgskulen på Vestlandet (HVL)",
+    "side": "https://utdanning.no/utdanning/hvl.no/sykepleie", "anker": "praksis-for-sykepleiestudenter", "tekst": null,
+    "status": "funnet", "kilde": "lærestedssiden på utdanning.no. id på siden", "sjekket": "2026-10-31"
+  },
+  "innhold-hvl": {
+    "maal": "Delen «Innhold i studiet» på lærestedssiden til Høgskulen på Vestlandet (HVL)",
+    "side": "https://utdanning.no/utdanning/hvl.no/sykepleie", "anker": "innhold-i-studiet", "tekst": null,
+    "status": "funnet", "kilde": "lærestedssiden på utdanning.no. id på siden", "sjekket": "2026-10-31"
+  },
+  "kostnad-hvl": {
+    "maal": "Delen «Hva koster det å studere sykepleie?» på lærestedssiden til Høgskulen på Vestlandet (HVL)",
+    "side": "https://utdanning.no/utdanning/hvl.no/sykepleie", "anker": "hva-koster-det-a-studere-sykepleie", "tekst": null,
+    "status": "funnet", "kilde": "lærestedssiden på utdanning.no. id på siden", "sjekket": "2026-10-31"
+  },
+  "utveksling-hvl": {
+    "maal": "Delen «Utveksling» på lærestedssiden til Høgskulen på Vestlandet (HVL)",
+    "side": "https://utdanning.no/utdanning/hvl.no/sykepleie", "anker": "utveksling", "tekst": null,
+    "status": "funnet", "kilde": "lærestedssiden på utdanning.no. id på siden", "sjekket": "2026-10-31"
+  },
+  "poeng-hvl": {
+    "maal": "Lærestedssiden til Høgskulen på Vestlandet (HVL) for sykepleie, med «Poenggrenser 2026»",
+    "side": "https://utdanning.no/utdanning/hvl.no/sykepleie", "anker": null, "tekst": { "start": "Poenggrenser 2026" },
+    "status": "funnet", "kilde": "lenke i utdanningsoversikten for sykepleie. Tallene står i faktaboksen", "sjekket": "2026-10-31"
+  },
+  "poeng-vid": {
+    "maal": "Lærestedssiden til VID vitenskapelige høgskole for sykepleie, med «Poenggrenser 2026»",
+    "side": "https://utdanning.no/utdanning/vid.no/bachelor_i_sykepleie", "anker": null, "tekst": { "start": "Poenggrenser 2026" },
+    "status": "funnet", "kilde": "lenke i utdanningsoversikten for sykepleie. Tallene står i faktaboksen", "sjekket": "2026-10-31"
+  },
+  "poeng-ntnu": {
+    "maal": "Lærestedssiden til NTNU for sykepleie, med «Poenggrenser 2026»",
+    "side": "https://utdanning.no/utdanning/ntnu.no/sykepleie_-_bachelor", "anker": null, "tekst": { "start": "Poenggrenser 2026" },
+    "status": "funnet", "kilde": "lenke i utdanningsoversikten for sykepleie. Tallene står i faktaboksen", "sjekket": "2026-10-31"
+  },
+  "poeng-uit": {
+    "maal": "Lærestedssiden til UiT Norges arktiske universitet for sykepleie, med «Poenggrenser 2026»",
+    "side": "https://utdanning.no/utdanning/uit.no/sykepleie_-_bachelor", "anker": null, "tekst": { "start": "Poenggrenser 2026" },
+    "status": "funnet", "kilde": "lenke i utdanningsoversikten for sykepleie. Tallene står i faktaboksen", "sjekket": "2026-10-31"
+  },
+  "karakterkalkulator": {
+    "maal": "Karakterkalkulatoren på utdanning.no, der du regner ut poengene dine",
+    "side": "https://utdanning.no/karakterkalkulator/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Tittel og overskrift «Karakterkalkulatoren» (rendres i nettleseren)", "sjekket": "2026-10-31"
+  },
+  "slik-beregner-du-poeng": {
+    "maal": "Artikkelen «Slik beregner du poeng» på utdanning.no",
+    "side": "https://utdanning.no/tema/universitet_og_hogskole/slik_beregner_du_poeng", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap.xml og søket «alderspoeng» på utdanning.no (rapporten)", "sjekket": "2026-10-31"
+  },
+  "realkompetanse": {
+    "maal": "Artikkelen om inntak til høyere utdanning på bakgrunn av realkompetanse",
+    "side": "https://utdanning.no/tema/inntak_til_hoyere_utdanning_pa_bakgrunn_av_realkompetanse", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap (yrkesbeskrivelsen nevner realkompetanse, men lenker ikke)", "sjekket": "2026-10-31"
+  },
+  "intervju-juni": {
+    "maal": "Yrkesintervjuet med Juni Engeberg, ned til sitatet om dem som begynner på sykepleierstudiet uten å være sikre",
+    "side": "https://utdanning.no/tema/yrkesintervju/sykepleier", "anker": null, "tekst": { "start": "Jeg kjenner mange som har begynt", "slutt": "mange ulike plasser" },
+    "status": "funnet", "kilde": "lenke fra yrkesbeskrivelsen (samme intervju som på sok/sykepleier, med et annet sitat)", "sjekket": "2026-10-31"
+  },
+  "studiestart": {
+    "maal": "Artikkelen «Hva må jeg tenke på når jeg skal starte på universitet og høgskole?» på utdanning.no",
+    "side": "https://utdanning.no/tema/hva_ma_jeg_tenke_pa_nar_jeg_skal_starte_pa_universitet_og_hogskole", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap.xml og søket «studentliv» på utdanning.no (rapporten)", "sjekket": "2026-10-31"
+  },
+  "soknadsfrister-hoyere": {
+    "maal": "Artikkelen «Søknadsfrister til høyere utdanning» på utdanning.no",
+    "side": "https://utdanning.no/tema/universitet_og_hogskole_fagskole/soknadsfrister_til_hoyere_utdanning", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap.xml (rapporten)", "sjekket": "2026-10-31"
+  },
+  "slik-soker-du": {
+    "maal": "Artikkelen «Slik søker du høyere utdanning» på utdanning.no",
+    "side": "https://utdanning.no/tema/universitet_og_hogskole_fagskole/slik_soker_du_hoyere_utdanning", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap.xml (rapporten)", "sjekket": "2026-10-31"
+  },
+  "lan-stipend": {
+    "maal": "Artikkelen «Lån, stipend og kostnader i høyere utdanning» på utdanning.no",
+    "side": "https://utdanning.no/tema/universitet_og_hogskole/lan_stipend_og_kostnader_i_hoyere_utdanning", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap.xml (rapporten)", "sjekket": "2026-10-31"
+  },
+  "intervju-niri": {
+    "maal": "Studentintervjuet med Niri Johan Lunde Slinning om sykepleiepraksis i Danmark, ned til setningen om utvekslingen",
+    "side": "https://utdanning.no/tema/studentintervju/sykepleiepraksis_i_danmark", "anker": null, "tekst": { "start": "Jeg var på utveksling via en utvekslingsavtale", "slutt": "av bachelorstudiet" },
+    "status": "funnet", "kilde": "sitemap (/tema/studentintervju/) og søket «sykepleierstudent» på utdanning.no (rapporten). Publisert 23.06.2025", "sjekket": "2026-10-31"
+  },
+  "hvordan-utveksling": {
+    "maal": "Artikkelen «Hvordan kan jeg dra på utveksling som student?» på utdanning.no",
+    "side": "https://utdanning.no/tema/utdanning_i_utlandet/hvordan_kan_jeg_dra_pa_utveksling_som_student", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "sitemap.xml og søket «utveksling» på utdanning.no (rapporten)", "sjekket": "2026-10-31"
+  },
+  "veien-til-utveksling": {
+    "maal": "Veien til utveksling på utdanning.no, der du bygger ditt eget utvekslingspass",
+    "side": "https://utdanning.no/veien-til-utveksling/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy). Overskrift «Veien til utveksling», fanetittelen er «Utdanning i utlandet»", "sjekket": "2026-10-31"
+  },
+  "videreutdanning-sykepleiere": {
+    "maal": "Utdanningsoversikten for videreutdanning for sykepleiere",
+    "side": "https://utdanning.no/utdanningsoversikt/videreutdanning_sykepleiere", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "«Se utdanninger og steder» på yrkesbeskrivelsen (/node/413996)", "sjekket": "2026-10-31"
+  },
+  "chat-veileder": {
+    "maal": "Forsiden til Karriereveiledning.no",
+    "side": "https://karriereveiledning.no/", "anker": null, "tekst": null,
+    "status": "manuell", "kilde": "bestemt av Niels", "sjekket": "2026-10-27"
+  }
+}
+</script>
+
+<header class="topp">
+  <div>
+    <a href="../../" class="logolenke"><svg class="logo" viewBox="0 0 812.9 99.2" role="img" aria-label="Utdanning.no"><g transform="translate(-12.9,-75.2)" fill="#EE7B1A"><path d="m 59.7,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,22.3 -14.2,30.6 -32.1,30.6 -18,0 -32.1,-8.3 -32.1,-30.6 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,10.4 5.5,15.4 14.7,15.4 9.2,0 14.7,-4.9 14.7,-15.4 z"/><path d="m 148.2,75.9 c 3.7,0 5.5,4 5.5,7.8 0,4.1 -2,7.9 -5.5,7.9 h -19.5 v 76.5 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 91.6 H 91.7 c -3.5,0 -5.5,-3.6 -5.5,-7.9 0,-3.7 1.7,-7.8 5.5,-7.8 z"/><path d="m 193.4,75.9 c 17.6,0 31.4,8.3 31.4,30.6 V 143 c 0,22.3 -13.8,30.6 -31.4,30.6 h -23.6 c -4.5,0 -7.6,-2.5 -7.6,-5.3 v -87 c 0,-2.8 3.1,-5.4 7.6,-5.4 z m -13.9,15.2 v 67.2 h 13.9 c 8.8,0 14,-4.9 14,-15.4 V 106.4 C 207.4,96 202.2,91 193.4,91 h -13.9 z"/><path d="m 230.9,166.4 c 0,-0.3 0.1,-0.8 0.3,-1.3 l 25.8,-84 c 1.2,-4 6.1,-5.9 11.1,-5.9 5.1,0 10,1.9 11.2,5.9 l 25.8,84 c 0.1,0.5 0.3,0.9 0.3,1.3 0,4.1 -6.3,7.2 -10.9,7.2 -2.9,0 -5.2,-0.9 -5.9,-3.5 l -5.1,-17.8 h -30.6 l -5.1,17.8 c -0.7,2.5 -2.9,3.5 -5.9,3.5 -4.8,0 -11,-3 -11,-7.2 z m 48.7,-27.7 -11.6,-41 -11.6,41 z"/><path d="m 359.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 L 361,134.9 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 440.4,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 475.1,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 z"/><path d="m 554.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 618.6,91.1 c -8.9,0 -14,5 -14,15.4 v 37.3 c 0,10.4 5.1,15.4 13.9,15.4 8.7,0 14,-4.9 14,-15.4 v -7.9 h -10.8 c -3.5,0 -5.3,-3.3 -5.3,-6.8 0,-3.3 1.9,-6.8 5.3,-6.8 h 22.7 c 3.5,0 5.5,2.7 5.5,5.6 v 15.9 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.3,-8.3 -31.3,-30.6 v -37.3 c 0,-22.3 13.8,-30.6 30.7,-30.6 18.4,0 31.9,9.6 31.9,25.7 0,6.7 -2.9,8.3 -8.7,8.3 -4.7,0 -8.5,-1.3 -8.7,-5.5 -0.3,-6.3 -2.4,-13.3 -13.8,-13.3 z"/><path d="m 675.4,165.3 c 0,4.8 -4.1,9.1 -9,9.1 -5.2,0 -9.1,-4.3 -9.1,-9.1 0,-4.9 3.9,-9.1 9.1,-9.1 4.9,0 9,4.1 9,9.1 z"/><path d="m 731.5,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 763.2,143.8 v -37.3 c 0,-22.3 13.6,-30.6 31.2,-30.6 17.6,0 31.4,8.3 31.4,30.6 v 37.3 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.2,-8.3 -31.2,-30.6 z m 45.2,-37.3 c 0,-10.6 -5.3,-15.4 -14,-15.4 -8.8,0 -13.9,4.8 -13.9,15.4 v 37.3 c 0,10.6 5.1,15.4 13.9,15.4 8.7,0 14,-4.8 14,-15.4 z"/></g></svg></a>
+    <p class="slagord">Offentlig og kvalitetssikret</p>
+  </div>
+  <div class="topp-knapper">
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Min side
+    </button>
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Meny
+    </button>
+    <button type="button" class="meny-rund bare-mobil" aria-label="Åpne meny">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <h1>Søk etter yrker, utdanning og innhold</h1>
+
+  <form class="sok" role="search" onsubmit="return false">
+    <label for="sok" class="skjult">Søk etter yrker, utdanning og innhold</label>
+    <input id="sok" type="search" value="sykepleie" readonly>
+    <button type="button" aria-label="Søk">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+    </button>
+  </form>
+
+
+  <div class="velger">
+    <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
+    <div class="brikker-ramme">
+      <ul class="brikker">
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(22)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="laere" aria-pressed="false">Hva du lærer <span data-antall="laere">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="hvor" aria-pressed="false">Studiesteder <span data-antall="hvor">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="poeng" aria-pressed="false">Poeng <span data-antall="poeng">(4)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="studere" aria-pressed="false">Å studere <span data-antall="studere">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="soke" aria-pressed="false">Søknad <span data-antall="soke">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="utland" aria-pressed="false">Utlandet <span data-antall="utland">(4)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="jobb" aria-pressed="false">Etterpå <span data-antall="jobb">(3)</span></button></li>
+        <li class="vis-flere-plass bare-desktop" hidden>
+          <button type="button" class="vis-flere" aria-expanded="false">
+            <span>Vis flere</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="oppsett">
+
+    <aside class="sidekolonne bare-desktop">
+      <div>
+        <h2 class="etikett legende-tittel">
+          <span>Farger og ikoner</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </h2>
+        <ul class="legende">
+          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+        </ul>
+      </div>
+
+      <div>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+          Del søk
+        </button>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"/></svg>
+          Lagre søk
+        </button>
+      </div>
+    </aside>
+
+    <div class="resultater">
+
+      <!-- Ingressen følger søket: det deltakeren skrev står i anførselstegn (data-sok-tekst), og siden sier at den forstår det som utdanningen, ikke yrket. Antallet utdanninger er det oversikten på utdanning.no oppgir («Viser 31 utdanninger»). Søker du «sykepleie bergen», kommer en linje om at Bergen ligger i Vestland (felles.js: data-vis-hvis). -->
+      <div class="treff">
+        <h2 class="etikett">Søkeresultat</h2>
+        <p class="meta">Du skrev «<span data-sok-tekst>sykepleie</span>», og vi forstår det som utdanningen sykepleie. Oversikten på utdanning.no viser 31 utdanninger i sykepleie.<span data-tolkning hidden></span></p>
+        <p class="avvisning">Lette du etter yrket? <a data-lenke="side-sykepleier">Se sykepleier.</a></p>
+        <p class="avvisning" data-vis-hvis="bergen" hidden>Bergen ligger i Vestland, så vi viser studiestedene i Vestland.</p>
+      </div>
+
+      <!-- 1. Hva lærer du på sykepleiestudiet? Utdanningskortet har tallene fra utdanningsoversikten, praksis står med lærestedene som kilde. -->
+      <section class="gruppe" data-gruppe="laere" data-tema="hva du lærer på studiet" data-ord="lære*|fag|praksis|innhold" aria-labelledby="g-laere">
+        <h2 id="g-laere" class="seksjon">Hva lærer du på sykepleiestudiet?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--utdanning" data-kort="utdanning-sykepleie">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="sykepleie">Sykepleie</a></h3>
+            <p class="brodtekst">Du lærer å pleie, støtte og veilede mennesker som er syke og skadde, eller som av andre grunner trenger det.</p>
+            <dl class="fakta">
+              <div><dt class="meta">Nivå</dt><dd class="faktaverdi">Universitet og høgskole</dd></div>
+              <div><dt class="meta">Varighet</dt><dd class="faktaverdi">3 år, bachelorgrad</dd></div>
+              <div><dt class="meta">Studiepoeng</dt><dd class="faktaverdi">180</dd></div>
+              <div><dt class="meta">Opptakskrav</dt><dd class="faktaverdi">Generell studiekompetanse</dd></div>
+            </dl>
+            <p class="meta kilde">Kilde: utdanning.no, utdanningsoversikten for sykepleie, oppdatert 22. oktober 2026. Studiepoengene står på lærestedssidene.</p>
+          </li>
+          <li class="kort kort--utdanning" data-kort="praksis">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="praksis-hvl">Praksisstudier</a></h3>
+            <p class="brodtekst">Halvparten av studiet er praksis i ulike deler av helsesektoren, ifølge NTNU og HVL.</p>
+            <p class="meta kilde">Kilde: utdanning.no, lærestedssidene. HVL oppgir om lag 50 prosent.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 2. Hvor kan du studere sykepleie? Oversikten har fylkesvalg (alle 15 fylker, sjekket). Søker du «sykepleie bergen», går knappen til Vestland-filteret (sjekket i nettleseren: tre utdanninger). -->
+      <section class="gruppe" data-gruppe="hvor" data-tema="hvor du kan studere" data-ord="hvor kan|hvor studere|studiested*|fylke|bergen|oslo|trondheim|tromsø|deltid|nett*" aria-labelledby="g-hvor">
+        <h2 id="g-hvor" class="seksjon">Hvor kan du studere sykepleie?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--utdanning" data-kort="studiesteder">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel" data-vis-ikke-hvis="bergen"><a data-lenke="veier-studiesteder">Sykepleie i hele landet</a></h3>
+            <h3 class="korttittel" data-vis-hvis="bergen" hidden><a data-lenke="studiesteder-vestland">Sykepleie i Vestland</a></h3>
+            <p class="brodtekst" data-vis-ikke-hvis="bergen">Du kan filtrere de 31 utdanningene på studietype og studieform.</p>
+            <p class="brodtekst" data-vis-hvis="bergen" hidden>Du finner tre utdanninger i fylket, fra VID og Høgskulen på Vestlandet.</p>
+            <p class="meta kilde">Kilde: utdanning.no, utdanningsoversikten for sykepleie, oppdatert 22. oktober 2026.</p>
+            <div class="handlinger">
+              <a class="pill" data-lenke="veier-studiesteder" data-vis-ikke-hvis="bergen">Finn studiesteder i ditt fylke</a>
+              <a class="pill" data-lenke="studiesteder-vestland" data-vis-hvis="bergen" hidden>Se studiestedene</a>
+            </div>
+          </li>
+          <li class="kort kort--utdanning" data-kort="deltid">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="sykepleie-deltid">Sykepleie på deltid</a></h3>
+            <p class="brodtekst">Du kan velge mellom 13 utdanninger.</p>
+            <p class="meta kilde">Kilde: utdanning.no, utdanningsoversikten for sykepleie.</p>
+          </li>
+          <li class="kort kort--utdanning" data-kort="nett">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="sykepleie-nett">Nett- og samlingsbasert sykepleie</a></h3>
+            <p class="brodtekst">Du kan velge mellom 3 utdanninger.</p>
+            <p class="meta kilde">Kilde: utdanning.no, utdanningsoversikten for sykepleie.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 3. Hvor mange poeng trenger du? Datatreffet har poenggrensene som lærestedene oppgir for 2026, med årstall, kvote og kilde. Søker du «sykepleie bergen», vises radene for Bergen i stedet. -->
+      <section class="gruppe" data-gruppe="poeng" data-tema="hvor mange poeng du trenger" data-ord="poeng*|karakter*|snitt|komme inn|opptak*|krav|alderspoeng" aria-labelledby="g-poeng">
+        <h2 id="g-poeng" class="seksjon">Hvor mange poeng trenger du?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--utdanning" data-kort="poenggrenser" data-vis-ikke-hvis="bergen">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel" id="t-poenggrenser">Poenggrenser 2026</h3>
+            <p class="brodtekst">Grensene ved fem av studiestedene som tilbyr sykepleie.</p>
+            <table class="datatabell" aria-labelledby="t-poenggrenser">
+              <thead>
+                <tr>
+                  <th scope="col">Studiested</th>
+                  <th scope="col">Første&shy;gangs&shy;vitnemål</th>
+                  <th scope="col">Ordinær kvote</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row"><a data-lenke="poeng-uit">UiT, Narvik</a></th>
+                  <td>Alle kom inn</td>
+                  <td>Alle kom inn</td>
+                </tr>
+                <tr>
+                  <th scope="row"><a data-lenke="poeng-hvl">HVL, Haugesund</a></th>
+                  <td>32,00</td>
+                  <td>38,30</td>
+                </tr>
+                <tr>
+                  <th scope="row"><a data-lenke="poeng-hvl">HVL, Bergen</a></th>
+                  <td>48,00</td>
+                  <td>51,90</td>
+                </tr>
+                <tr>
+                  <th scope="row"><a data-lenke="poeng-ntnu">NTNU, Trondheim</a></th>
+                  <td>48,40</td>
+                  <td>52,70</td>
+                </tr>
+                <tr>
+                  <th scope="row"><a data-lenke="poeng-uit">UiT, Tromsø</a></th>
+                  <td>46,30</td>
+                  <td>53,50</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="meta kilde">Kilde: utdanning.no, «Poenggrenser 2026» på lærestedssidene til HVL, NTNU og UiT. Tallene er fra opptaket i 2026, slik lærestedene oppgir dem, og grensene endrer seg fra år til år.</p>
+            <div class="handlinger">
+              <a class="pill" data-lenke="veier-studiesteder">Se alle poenggrensene i oversikten</a>
+            </div>
+          </li>
+          <li class="kort kort--utdanning" data-kort="poenggrenser-bergen" data-vis-hvis="bergen" hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel" id="t-poenggrenser-bergen">Poenggrenser 2026 i Bergen</h3>
+            <p class="brodtekst">Grensene ved HVL og VID.</p>
+            <table class="datatabell" aria-labelledby="t-poenggrenser-bergen">
+              <thead>
+                <tr>
+                  <th scope="col">Studiested</th>
+                  <th scope="col">Første&shy;gangs&shy;vitnemål</th>
+                  <th scope="col">Ordinær kvote</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row"><a data-lenke="poeng-hvl">HVL, Bergen</a></th>
+                  <td>48,00</td>
+                  <td>51,90</td>
+                </tr>
+                <tr>
+                  <th scope="row"><a data-lenke="poeng-vid">VID, Bergen</a></th>
+                  <td>45,00</td>
+                  <td>47,90</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="meta kilde">Kilde: utdanning.no, «Poenggrenser 2026» på lærestedssidene til HVL og VID. Tallene er fra opptaket i 2026, slik lærestedene oppgir dem, og grensene endrer seg fra år til år.</p>
+            <div class="handlinger">
+              <a class="pill" data-lenke="studiesteder-vestland">Se poenggrensene i Vestland</a>
+            </div>
+          </li>
+          <li class="kort kort--verktoy" data-kort="karakterkalkulator">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="karakterkalkulator">Karakterkalkulatoren</a></h3>
+            <p class="brodtekst">Regn ut skole- og konkurransepoengene dine, og se hvilke studier du kan komme inn på.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="slik-beregner-du-poeng">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="slik-beregner-du-poeng">Slik beregner du poeng</a></h3>
+            <p class="brodtekst">Forklarer skolepoeng, konkurransepoeng og de to kvotene, men utdanning.no varsler at poengberegningen blir annerledes.</p>
+            <p class="meta kilde">Kilde: utdanning.no, oppdatert 4. mars 2026.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="realkompetanse">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="realkompetanse">Inntak til høyere utdanning på bakgrunn av realkompetanse</a></h3>
+            <p class="brodtekst">Er du 25 år eller eldre i opptaksåret, kan du søke uten generell studiekompetanse.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 4. Hvordan er det å studere sykepleie? Tekster fra HVL og utdanning.no. Utdanning.no har ingen intervjuer om å studere sykepleie i Norge: Niri står under utlandet og Juni under jobb, der sitatene deres passer. -->
+      <section class="gruppe" data-gruppe="studere" data-tema="hvordan det er å studere" data-ord="hvordan er det|studieliv|student*" aria-labelledby="g-studere">
+        <h2 id="g-studere" class="seksjon">Hvordan er det å studere sykepleie?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--utdanning" data-kort="innhold-hvl">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="innhold-hvl">Innhold i studiet ved HVL</a></h3>
+            <p class="brodtekst">Undervisningen består blant annet av forelesninger, arbeid i grupper, ferdighetstrening, simulering og selvstudium.</p>
+          </li>
+          <li class="kort kort--utdanning" data-kort="kostnad-hvl">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="kostnad-hvl">Hva koster det å studere sykepleie?</a></h3>
+            <p class="brodtekst">Ifølge HVL er semesteravgiften 850 kroner hvert semester, og pensumbøker og annet utstyr kommer i tillegg.</p>
+            <p class="meta kilde">Kilde: utdanning.no, HVL. Lovisenberg diakonale høgskole oppgir 1830 kroner per semester.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="studiestart">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="studiestart">Hva må jeg tenke på når jeg skal starte på universitet og høgskole?</a></h3>
+            <p class="brodtekst">Råd om forskjellen fra videregående, fadderuke, økonomi og studieteknikk.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 5. Når og hvordan søker du? Fristene står slik artikkelen sier dem. Lån og stipend ligger bak «Se mer». -->
+      <section class="gruppe" data-gruppe="soke" data-tema="når og hvordan du søker" data-ord="søke|søknad*|frist*|samordna" aria-labelledby="g-soke">
+        <h2 id="g-soke" class="seksjon">Når og hvordan søker du?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--artikkel" data-kort="soknadsfrister-hoyere">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="soknadsfrister-hoyere">Søknadsfrister til høyere utdanning</a></h3>
+            <dl class="fakta">
+              <div><dt class="meta">Ordinær søknadsfrist</dt><dd class="faktaverdi">15. april</dd></div>
+              <div><dt class="meta">Frist med realkompetanse</dt><dd class="faktaverdi">1. mars</dd></div>
+              <div><dt class="meta">Svar på hovedopptaket</dt><dd class="faktaverdi">20. juli</dd></div>
+            </dl>
+            <p class="meta kilde">Kilde: utdanning.no, «Søknadsfrister til høyere utdanning», oppdatert 23. februar 2026. Lærestedssidene for sykepleie oppgir også 15. april.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="slik-soker-du">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="slik-soker-du">Slik søker du høyere utdanning</a></h3>
+            <p class="brodtekst">Søknaden går via Samordna opptak til de fleste utdanninger, men noen sender du direkte til lærestedet.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="lan-stipend" data-ekstra hidden>
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="lan-stipend">Lån, stipend og kostnader i høyere utdanning</a></h3>
+            <p class="brodtekst">Fristen for utdanningsstøtte fra Lånekassen er 15. november for høstsemesteret og 15. mars for vårsemesteret.</p>
+          </li>
+        </ul>
+        <button type="button" class="pill se-mer" aria-expanded="false">Se mer</button>
+      </section>
+
+      <!-- 6. Kan du ta deler av studiet i utlandet? Niri (sitatet om utvekslingen), HVL og to sider om utveksling på utdanning.no. Hele graden i utlandet er ikke med: utdanning.no lenker bare til ansa.no. -->
+      <section class="gruppe" data-gruppe="utland" data-tema="utveksling i utlandet" data-ord="utland*|utveksling" aria-labelledby="g-utland">
+        <h2 id="g-utland" class="seksjon">Kan du ta deler av studiet i utlandet?</h2>
+        <ul class="kortliste">
+          <li class="intervju" data-kort="intervju-niri">
+            <a data-lenke="intervju-niri">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_header/public/Niri_%20Kaija%20Alexandra%20Halvei-Larsen.jpg?VersionId=3&amp;h=21d4f062&amp;itok=UPye1hCR" alt="Niri Johan Lunde Slinning i mørk genser med teksten «UiT Norges arktiske universitet»" width="280" height="280" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Niri Johan Lunde Slinning</span>
+                  <span class="intervju-stilling">Sykepleierstudent</span>
+                  <span class="intervju-arbeidsgiver">UiT i Narvik og Professionshøjskolen UCN i Aalborg</span>
+                </span>
+              </span>
+              <blockquote>– Jeg var på utveksling via en utvekslingsavtale hos UiT under mitt sjette og siste semester av bachelorstudiet.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+          <li class="kort kort--utdanning" data-kort="utveksling-hvl">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="utveksling-hvl">Utveksling ved HVL</a></h3>
+            <p class="brodtekst">Du kan reise i andre eller tredje studieår, og oppholdet blir godkjent som del av studiet.</p>
+          </li>
+          <li class="kort kort--artikkel" data-kort="hvordan-utveksling">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
+            <h3 class="korttittel"><a data-lenke="hvordan-utveksling">Hvordan kan jeg dra på utveksling som student?</a></h3>
+            <p class="brodtekst">Det vanlige er å ta ett semester ute, og oppholdet blir en del av den norske graden din.</p>
+          </li>
+          <li class="kort kort--verktoy" data-kort="veien-til-utveksling">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="veien-til-utveksling">Veien til utveksling</a></h3>
+            <p class="brodtekst">Spill deg gjennom, og bygg ditt eget utvekslingspass underveis.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 7. Hva kan du jobbe med etterpå? Vår side for yrket, Juni (et annet sitat enn på sok/sykepleier) og videreutdanning. HVL sitt lønnstall brukes ikke (gjennomsnitt, ikke median som på yrkessiden). -->
+      <section class="gruppe" data-gruppe="jobb" data-tema="hva du kan jobbe med etterpå" data-ord="jobbe|jobb|etterpå|lønn" aria-labelledby="g-jobb">
+        <h2 id="g-jobb" class="seksjon">Hva kan du jobbe med etterpå?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke" data-kort="yrke-sykepleier">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
+            <h3 class="korttittel"><a data-lenke="side-sykepleier">Sykepleier</a></h3>
+            <p class="brodtekst">Arbeidsoppgaver, lønn og arbeidssteder for yrket utdanningen fører til.</p>
+          </li>
+          <li class="intervju" data-kort="intervju-juni">
+            <a data-lenke="intervju-juni">
+              <span class="intervju-topp">
+                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/Sykepleier_Anna_Caroline_Fladby.jpg?VersionId=1&amp;itok=c2aENiYc" alt="Juni Engeberg i mørkeblå sykepleieruniform, foran et vindu med utsikt til skog og fjell" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <span>
+                  <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
+                  <span class="intervju-navn">Juni Engeberg (28)</span>
+                  <span class="intervju-stilling">Sykepleier</span>
+                  <span class="intervju-arbeidsgiver">Trainee hos Haukeland universitetssjukehus</span>
+                </span>
+              </span>
+              <blockquote>– Jeg kjenner mange som har begynt på sykepleierstudiet uten å være helt sikre på om det er det de vil, men så fullfører de og har endt opp på mange ulike plasser.</blockquote>
+              <span class="pill">Les intervjuet</span>
+            </a>
+          </li>
+          <li class="kort kort--utdanning" data-kort="videreutdanning-sykepleiere">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
+            <h3 class="korttittel"><a data-lenke="videreutdanning-sykepleiere">Videreutdanning for sykepleiere</a></h3>
+            <p class="brodtekst">Med bachelor og vanligvis ett til to års erfaring kan du bli jordmor, helsesykepleier eller spesialisere deg, for eksempel i intensivsykepleie.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Veilederbanner: hele banneret er lenken. Lenken går til forsiden på karriereveiledning.no, så teksten lover ikke chat eller telefon. -->
+      <section class="veileder" aria-labelledby="g-veileder" data-kort="veileder">
+        <a data-lenke="chat-veileder">
+          <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+          <span class="veileder-tekst" style="display:block">
+            <h2 id="g-veileder">Snakk med en veileder</h2>
+            <p class="brodtekst">Lurer du på om du kommer inn, eller hva du gjør hvis du ikke gjør det? Karriereveiledning.no gir gratis veiledning om utdanning og jobb.</p>
+          </span>
+          <span class="pill">Gå til Karriereveiledning.no</span>
+        </a>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="bunn-innhold">
+    <div class="avsender"><strong>HK-dir</strong><br>Direktoratet for høyere utdanning og kompetanse</div>
+    <ul class="bunnlenker">
+      <li class="bare-desktop"><button type="button">For presse</button></li>
+      <li><button type="button">Om karriereveiledning.no</button></li>
+      <li><button type="button">Karrieresenter i ditt fylke</button></li>
+      <li><button type="button">Personvernerklæring</button></li>
+    </ul>
+    <div class="bunn-kontakt bare-desktop">
+      <div><strong>Webredaktør:</strong><br>[NAVN]</div>
+      <div><strong>Kontakt redaksjonen:</strong><br><button type="button">[E-POSTADRESSE]</button></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../ruting.js"></script>
+<script src="../felles.js"></script>
+</body>
