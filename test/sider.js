@@ -44,6 +44,9 @@ var SAKER = [
   { sok: 'yrkesfaglærer', side: 'laerer' },
   { sok: 'sykepleie', side: 'sykepleie', forste: 'laere' },
   { sok: 'sykepleie bergen', side: 'sykepleie', forste: 'hvor', synlig: ['[data-vis-hvis="bergen"]'] },
+  // «Se snitt» på utdanningskortet går til Vestland-filteret når søket nevner Bergen
+  { sok: 'sykepleie bergen', side: 'sykepleie', skjult: ['[data-kort="utdanning-sykepleie"] [data-vis-ikke-hvis="bergen"]'],
+    href: { '[data-kort="utdanning-sykepleie"] .handlinger [data-vis-hvis="bergen"]': 'https://utdanning.no/utdanningsoversikt/sykepleie?f%5B0%5D=fylke_gs%3AVestland' } },
   { sok: 'Hvor mange poeng trenger jeg for sykepleie?', side: 'sykepleie', forste: 'poeng' },
   // Ingressen på utforsk: «aner ikke» gir en setning om at det er vanlig å ikke vite. «Vi starter med …» kommer bare når søket traff en gruppe,
   // og «som du spurte om» bare når den fikk minst to poeng (et uttrykk med flere ord, eller to ord).
