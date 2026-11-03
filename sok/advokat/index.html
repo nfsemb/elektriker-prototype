@@ -120,25 +120,25 @@
     "side": "https://utdanning.no/utdanningskompasset/", "anker": null, "tekst": null,
     "status": "funnet", "kilde": "verktøysiden på utdanning.no", "sjekket": "2026-10-30"
   },
-  "sok-jurist": {
-    "maal": "Søkeresultatsiden på utdanning.no for «jurist»",
-    "side": "https://utdanning.no/sok/#query_value=jurist", "anker": null, "tekst": null,
-    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (search_autocomplete.js: /sok/#query_value=)", "sjekket": "2026-10-30"
+  "ki-sok-jurist": {
+    "maal": "Nytt KI-søk på «Jurist». Søkeresultatet er ikke laget, så lenken går til siden som sier det, med det vanlige søket på utdanning.no",
+    "side": "../ikke-klar/?yrke=jurist", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen (sok/ikke-klar/)", "sjekket": "2026-11-03"
   },
-  "sok-advokatassistent": {
-    "maal": "Søkeresultatsiden på utdanning.no for «advokatassistent»",
-    "side": "https://utdanning.no/sok/#query_value=advokatassistent", "anker": null, "tekst": null,
-    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (search_autocomplete.js: /sok/#query_value=)", "sjekket": "2026-10-30"
+  "ki-sok-advokatassistent": {
+    "maal": "Nytt KI-søk på «Advokatassistent». Søkeresultatet er ikke laget, så lenken går til siden som sier det, med det vanlige søket på utdanning.no",
+    "side": "../ikke-klar/?yrke=advokatassistent", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen (sok/ikke-klar/)", "sjekket": "2026-11-03"
   },
   "side-politi": {
     "maal": "Resultatsiden for politi i prototypen",
     "side": "../politi/", "anker": null, "tekst": null,
     "status": "funnet", "kilde": "egen side i prototypen", "sjekket": "2026-10-30"
   },
-  "sok-kriminolog": {
-    "maal": "Søkeresultatsiden på utdanning.no for «kriminolog»",
-    "side": "https://utdanning.no/sok/#query_value=kriminolog", "anker": null, "tekst": null,
-    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (search_autocomplete.js: /sok/#query_value=)", "sjekket": "2026-10-30"
+  "ki-sok-kriminolog": {
+    "maal": "Nytt KI-søk på «Kriminolog». Søkeresultatet er ikke laget, så lenken går til siden som sier det, med det vanlige søket på utdanning.no",
+    "side": "../ikke-klar/?yrke=kriminolog", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen (sok/ikke-klar/)", "sjekket": "2026-11-03"
   },
   "chat-veileder": {
     "maal": "Forsiden til Karriereveiledning.no",
@@ -183,14 +183,14 @@
     <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
     <div class="brikker-ramme">
       <ul class="brikker">
-        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(14)</span></button></li>
-        <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(15)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(4)</span></button></li>
         <li><button type="button" class="brikke" data-velg="lonn" aria-pressed="false">Lønn <span data-antall="lonn">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="jobben" aria-pressed="false">Arbeidsoppgaver <span data-antall="jobben">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="hvem" aria-pressed="false">Arbeidsmarked <span data-antall="hvem">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="hvor" aria-pressed="false">Arbeidsplasser <span data-antall="hvor">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="etterpa" aria-pressed="false">Videre muligheter <span data-antall="etterpa">(3)</span></button></li>
-        <li><button type="button" class="brikke" data-velg="utforsk" aria-pressed="false">Utforsk <span data-antall="utforsk">(4)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="utforsk" aria-pressed="false">Utforsk <span data-antall="utforsk">(3)</span></button></li>
         <li><button type="button" class="brikke" data-velg="lignende" aria-pressed="false">Lignende yrker <span data-antall="lignende">(4)</span></button></li>
         <li class="vis-flere-plass bare-desktop" hidden>
           <button type="button" class="vis-flere" aria-expanded="false">
@@ -235,7 +235,7 @@
 
       <div class="treff">
         <h2 class="etikett">Søkeresultat</h2>
-        <p class="meta"><span data-antall-ingress>14</span> resultater om advokat.<span data-tolkning hidden></span></p>
+        <p class="meta"><span data-antall-ingress>15</span> resultater om advokat.<span data-tolkning hidden></span></p>
       </div>
 
       <!-- 1. Hvordan blir du advokat? -->
@@ -273,8 +273,19 @@
               <div><dt class="meta">Fører til</dt><dd class="faktaverdi">Jurist</dd></div>
             </dl>
             <div class="handlinger">
-              <a class="pill" data-lenke="juss-poenggrenser">Se snitt</a>
+              <a class="pill" data-lenke="juss-poenggrenser">Se poenggrense</a>
             </div>
+            <p class="meta kilde">Poenggrenser er hentet fra Samordnas forrige opptak sommeren 2026.</p>
+            <div class="forklaring" data-ekstra hidden>
+              <p class="brodtekst"><strong>Førstegang:</strong> Kvoten for deg som er 21 år eller yngre i opptaksåret og har vitnemål fra videregående. Har du forbedret karakterer etterpå, søker du i ordinær kvote.</p>
+              <p class="brodtekst"><strong>Ordinær:</strong> Her konkurrerer du med konkurransepoeng, det vil si karakterpoeng og tilleggspoeng.</p>
+            </div>
+            <button type="button" class="se-mer" aria-expanded="false" data-apen-tekst="Skjul forklaringen">Hva betyr førstegang og ordinær?</button>
+          </li>
+          <li class="kort kort--verktoy" data-kort="karakterkalkulatoren">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="karakterkalkulatoren">Karakterkalkulatoren</a></h3>
+            <p class="brodtekst">Regn ut poengene dine, og se hvilke studier du kan komme inn på.</p>
           </li>
           <li class="intervju" data-kort="intervju-marit">
             <a data-lenke="intervju-marit">
@@ -442,15 +453,10 @@
       </section>
 
       <!-- 7. Vil du utforske andre muligheter? (telles ikke med i «Alle», verktøyene handler ikke om advokat)
-           «Muligheter med yrkesfag» er byttet med Karakterkalkulatoren, fordi advokat ikke er et yrkesfag og jusstudiet har høye karakterkrav. -->
+           «Muligheter med yrkesfag» er tatt ut, fordi advokat ikke er et yrkesfag. Karakterkalkulatoren sto her før, men står nå rett etter utdanningskortet for juss (2026-11-03). -->
       <section class="gruppe" data-gruppe="utforsk" data-tema="andre muligheter" aria-labelledby="g-utforsk">
         <h2 id="g-utforsk" class="seksjon">Vil du utforske andre muligheter?</h2>
         <ul class="kortliste">
-          <li class="kort kort--verktoy" data-kort="karakterkalkulatoren">
-            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
-            <h3 class="korttittel"><a data-lenke="karakterkalkulatoren">Karakterkalkulatoren</a></h3>
-            <p class="brodtekst">Regn ut snittet ditt, og se hvilke studier du kan komme inn på.</p>
-          </li>
           <li class="kort kort--verktoy" data-kort="forslag-utdanninger-yrker">
             <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
             <h3 class="korttittel"><a data-lenke="forslag-utdanninger-yrker">Få forslag til utdanninger og yrker</a></h3>
@@ -474,12 +480,12 @@
       <section class="gruppe" id="lignende" data-gruppe="lignende" data-tema="lignende yrker" aria-labelledby="g-lignende">
         <h2 id="g-lignende" class="seksjon">Hvilke yrker ligner?</h2>
         <ul class="lignende-liste">
-          <li data-yrke="jurist"><a data-lenke="sok-jurist">
+          <li data-yrke="jurist"><a data-lenke="ki-sok-jurist">
             <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/jurist_2.jpg?VersionId=1&amp;h=5797a656&amp;itok=RQVkZDrN" alt="Jurist i lyseblå skjorte og briller som holder et oppslått hefte og snakker med en kollega" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Jurist</span></span>
             <span class="lignende-linje">Samme utdanning, men uten krav om advokatbevilling.</span>
           </a></li>
-          <li data-yrke="advokatassistent"><a data-lenke="sok-advokatassistent">
+          <li data-yrke="advokatassistent"><a data-lenke="ki-sok-advokatassistent">
             <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/2026-03/advokatassistent.jpg?VersionId=1&amp;itok=thl-YBYP" alt="Smilende ung kvinne med lyst hår som sitter med papirer og en bærbar PC, med en lovbok på bordet" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Advokatassistent</span></span>
             <span class="lignende-linje">Kortere juridisk utdanning, og du hjelper advokater med papirer og frister.</span>
@@ -489,7 +495,7 @@
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Politibetjent</span></span>
             <span class="lignende-linje">Treårig utdanning på Politihøgskolen, med patruljering og etterforskning.</span>
           </a></li>
-          <li data-yrke="kriminolog"><a data-lenke="sok-kriminolog">
+          <li data-yrke="kriminolog"><a data-lenke="ki-sok-kriminolog">
             <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/kriminolog.jpg?VersionId=1&amp;h=fcfbfced&amp;itok=Enx71RPb" alt="Mann sett bakfra foran skiltet «Kriminalomsorgen – Oslo fengsel»" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Kriminolog</span></span>
             <span class="lignende-linje">Studerer kriminalitet og samfunn, ofte som rådgiver eller saksbehandler.</span>

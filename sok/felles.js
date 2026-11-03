@@ -255,14 +255,16 @@
 
   // ---------- Se mer ----------
   // Viser resten av kortene i en gruppe eller et kort, og skjuler dem igjen.
+  // Når den er åpen, sier knappen «Se færre», eller teksten i data-apen-tekst (for eksempel «Skjul forklaringen»).
   document.querySelectorAll('.se-mer').forEach(function (knapp) {
     var ekstraKort = knapp.closest('.kort, .gruppe').querySelectorAll('[data-ekstra]');
     var tekst = knapp.textContent;
+    var apenTekst = knapp.getAttribute('data-apen-tekst') || 'Se færre';
     knapp.addEventListener('click', function () {
       var apne = knapp.getAttribute('aria-expanded') !== 'true';
       ekstraKort.forEach(function (k) { k.hidden = !apne; });
       knapp.setAttribute('aria-expanded', String(apne));
-      knapp.textContent = apne ? 'Se færre' : tekst;
+      knapp.textContent = apne ? apenTekst : tekst;
     });
   });
 

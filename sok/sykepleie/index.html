@@ -268,9 +268,15 @@
             </dl>
             <p class="meta kilde">Kilde: utdanning.no, utdanningsoversikten for sykepleie, oppdatert 22. oktober 2026. Studiepoengene står på lærestedssidene.</p>
             <div class="handlinger">
-              <a class="pill" data-lenke="veier-studiesteder" data-vis-ikke-hvis="bergen">Se snitt</a>
-              <a class="pill" data-lenke="studiesteder-vestland" data-vis-hvis="bergen" hidden>Se snitt</a>
+              <a class="pill" data-lenke="veier-studiesteder" data-vis-ikke-hvis="bergen">Se poenggrense</a>
+              <a class="pill" data-lenke="studiesteder-vestland" data-vis-hvis="bergen" hidden>Se poenggrense</a>
             </div>
+            <p class="meta kilde">Poenggrenser er hentet fra Samordnas forrige opptak sommeren 2026.</p>
+            <div class="forklaring" data-ekstra hidden>
+              <p class="brodtekst"><strong>Førstegang:</strong> Kvoten for deg som er 21 år eller yngre i opptaksåret og har vitnemål fra videregående. Har du forbedret karakterer etterpå, søker du i ordinær kvote.</p>
+              <p class="brodtekst"><strong>Ordinær:</strong> Her konkurrerer du med konkurransepoeng, det vil si karakterpoeng og tilleggspoeng.</p>
+            </div>
+            <button type="button" class="se-mer" aria-expanded="false" data-apen-tekst="Skjul forklaringen">Hva betyr førstegang og ordinær?</button>
           </li>
           <li class="kort kort--utdanning" data-kort="praksis">
             <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg><span>Utdanning</span></p>
@@ -312,7 +318,7 @@
         </ul>
       </section>
 
-      <!-- 3. Hvor mange poeng trenger du? Datatreffet har poenggrensene som lærestedene oppgir for 2026, med årstall, kvote og kilde. Søker du «sykepleie bergen», vises radene for Bergen i stedet. -->
+      <!-- 3. Hvor mange poeng trenger du? Datatreffet har poenggrensene for 2026 fra lærestedssidene på utdanning.no (tallene kommer fra Samordna opptak), med årstall, kvote og kilde. Søker du «sykepleie bergen», vises radene for Bergen i stedet. -->
       <section class="gruppe" data-gruppe="poeng" data-tema="hvor mange poeng du trenger" data-ord="poeng*|karakter*|snitt|komme inn|opptak*|krav|alderspoeng" aria-labelledby="g-poeng">
         <h2 id="g-poeng" class="seksjon">Hvor mange poeng trenger du?</h2>
         <ul class="kortliste">
@@ -356,7 +362,7 @@
                 </tr>
               </tbody>
             </table>
-            <p class="meta kilde">Kilde: utdanning.no, «Poenggrenser 2026» på lærestedssidene til HVL, NTNU og UiT. Tallene er fra opptaket i 2026, slik lærestedene oppgir dem, og grensene endrer seg fra år til år.</p>
+            <p class="meta kilde">Kilde: utdanning.no, «Poenggrenser 2026» på lærestedssidene til HVL, NTNU og UiT. Poenggrensene kommer fra Samordna opptak. Tallene er fra opptaket i 2026, og grensene endrer seg fra år til år.</p>
             <div class="handlinger">
               <a class="pill" data-lenke="veier-studiesteder">Se alle poenggrensene i oversikten</a>
             </div>
@@ -386,7 +392,7 @@
                 </tr>
               </tbody>
             </table>
-            <p class="meta kilde">Kilde: utdanning.no, «Poenggrenser 2026» på lærestedssidene til HVL og VID. Tallene er fra opptaket i 2026, slik lærestedene oppgir dem, og grensene endrer seg fra år til år.</p>
+            <p class="meta kilde">Kilde: utdanning.no, «Poenggrenser 2026» på lærestedssidene til HVL og VID. Poenggrensene kommer fra Samordna opptak. Tallene er fra opptaket i 2026, og grensene endrer seg fra år til år.</p>
             <div class="handlinger">
               <a class="pill" data-lenke="studiesteder-vestland">Se poenggrensene i Vestland</a>
             </div>
@@ -394,7 +400,7 @@
           <li class="kort kort--verktoy" data-kort="karakterkalkulator">
             <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
             <h3 class="korttittel"><a data-lenke="karakterkalkulator">Karakterkalkulatoren</a></h3>
-            <p class="brodtekst">Regn ut skole- og konkurransepoengene dine, og se hvilke studier du kan komme inn på.</p>
+            <p class="brodtekst">Regn ut poengene dine, og se hvilke studier du kan komme inn på.</p>
           </li>
           <li class="kort kort--artikkel" data-kort="slik-beregner-du-poeng">
             <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>

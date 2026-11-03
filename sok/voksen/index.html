@@ -86,6 +86,11 @@
     "side": "https://utdanning.no/utdanningsoversikt/paramedisin", "anker": "nus", "tekst": null,
     "status": "funnet", "kilde": "utdanningsoversikten («Viser 7 utdanninger»), id på siden", "sjekket": "2026-11-03"
   },
+  "karakterkalkulatoren": {
+    "maal": "Karakterkalkulatoren på utdanning.no, der du regner ut poengene dine",
+    "side": "https://utdanning.no/karakterkalkulator/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy), som på sok/verktoy/", "sjekket": "2026-11-03"
+  },
   "inntak-realkompetanse": {
     "maal": "Artikkelen om inntak til høyere utdanning på bakgrunn av realkompetanse",
     "side": "https://utdanning.no/tema/inntak_til_hoyere_utdanning_pa_bakgrunn_av_realkompetanse", "anker": null, "tekst": null,
@@ -149,12 +154,12 @@
     <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
     <div class="brikker-ramme">
       <ul class="brikker">
-        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(14)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(15)</span></button></li>
         <li><button type="button" class="brikke" data-velg="vgs" aria-pressed="false">Videregående <span data-antall="vgs">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="ambulanse" aria-pressed="false">Ambulansearbeider <span data-antall="ambulanse">(3)</span></button></li>
         <li><button type="button" class="brikke" data-velg="erfaring" aria-pressed="false">Erfaring <span data-antall="erfaring">(4)</span></button></li>
         <li><button type="button" class="brikke" data-velg="okonomi" aria-pressed="false">Økonomi <span data-antall="okonomi">(2)</span></button></li>
-        <li><button type="button" class="brikke" data-velg="studere" aria-pressed="false">Studere <span data-antall="studere">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="studere" aria-pressed="false">Studere <span data-antall="studere">(4)</span></button></li>
         <li><button type="button" class="brikke" data-velg="godkjenning" aria-pressed="false">Godkjenning <span data-antall="godkjenning">(1)</span></button></li>
         <li class="vis-flere-plass bare-desktop" hidden>
           <button type="button" class="vis-flere" aria-expanded="false">
@@ -332,8 +337,19 @@
               <div><dt class="meta">Opptakskrav</dt><dd class="faktaverdi">Spesielle krav</dd></div>
             </dl>
             <div class="handlinger">
-              <a class="pill" data-lenke="paramedisin-poenggrenser">Se snitt</a>
+              <a class="pill" data-lenke="paramedisin-poenggrenser">Se poenggrense</a>
             </div>
+            <p class="meta kilde">Poenggrenser er hentet fra Samordnas forrige opptak sommeren 2026.</p>
+            <div class="forklaring" data-ekstra hidden>
+              <p class="brodtekst"><strong>Førstegang:</strong> Kvoten for deg som er 21 år eller yngre i opptaksåret og har vitnemål fra videregående. Har du forbedret karakterer etterpå, søker du i ordinær kvote.</p>
+              <p class="brodtekst"><strong>Ordinær:</strong> Her konkurrerer du med konkurransepoeng, det vil si karakterpoeng og tilleggspoeng.</p>
+            </div>
+            <button type="button" class="se-mer" aria-expanded="false" data-apen-tekst="Skjul forklaringen">Hva betyr førstegang og ordinær?</button>
+          </li>
+          <li class="kort kort--verktoy" data-kort="karakterkalkulatoren" data-vis-hvis="ambulanse*">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="karakterkalkulatoren">Karakterkalkulatoren</a></h3>
+            <p class="brodtekst">Regn ut poengene dine, og se hvilke studier du kan komme inn på.</p>
           </li>
           <li class="kort kort--artikkel" data-kort="inntak-realkompetanse">
             <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>

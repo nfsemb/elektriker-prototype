@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Søk | utdanning.no</title>
+<link rel="stylesheet" href="../felles.css">
+</head>
+<body data-side="ikke-klar">
+
+<!--
+  SØKERESULTATET ER IKKE KLART
+  Lenkene under «Hvilke yrker ligner?» på yrkessidene starter et nytt KI-søk på yrket. Vi har ikke laget søkeresultatene
+  for disse yrkene, så alle havner her: ../ikke-klar/?yrke=<id>, der id er data-yrke på yrkessiden. Søket står i adressen
+  og ikke i sessionStorage, så søket deltakeren kom fra, er det samme når hen går tilbake.
+  Yrker med egen side i prototypen (Politibetjent på advokat-siden) lenker rett til den siden.
+  Uten yrke i adressen vises eksempelet (Automatiker). Et ukjent yrke gir en generell tekst uten søkeord.
+
+  LENKER
+  Alle adresser ligger her. Siden bygger href ut fra «side», «anker» og «tekst».
+  - side: adressen til målsiden (uten #anker), eller null hvis lenken mangler.
+  - status: "funnet" (funnet og sjekket av Claude), "manuell" (lagt inn av et menneske, skal aldri endres), "mangler".
+  Søkelenkene (sok-*) er flyttet hit fra yrkessidene, uendret.
+  Kjør `node scripts/sjekk-lenker.mjs ikke-klar` etter endringer.
+-->
+<script type="application/json" id="lenker">
+{
+  "sok-advokatassistent": {
+    "maal": "Søkeresultatsiden på utdanning.no for «advokatassistent»",
+    "side": "https://utdanning.no/sok/#query_value=advokatassistent", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (search_autocomplete.js: /sok/#query_value=)", "sjekket": "2026-10-30"
+  },
+  "sok-automatiker": {
+    "maal": "Søkeresultatsiden på utdanning.no for «automatiker»",
+    "side": "https://utdanning.no/sok/#query_value=automatiker", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no", "sjekket": "2026-10-27"
+  },
+  "sok-bioingenior": {
+    "maal": "Søkeresultatsiden på utdanning.no for «bioingeniør»",
+    "side": "https://utdanning.no/sok/#query_value=bioingeni%C3%B8r", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søket leser query_value fra adressen)", "sjekket": "2026-10-30"
+  },
+  "sok-elektroingenior-y-veien": {
+    "maal": "Søkeresultatsiden på utdanning.no for «elektroingeniør y-veien»",
+    "side": "https://utdanning.no/sok/#query_value=elektroingeni%C3%B8r%20y-veien", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no", "sjekket": "2026-10-27"
+  },
+  "sok-energimontor": {
+    "maal": "Søkeresultatsiden på utdanning.no for «energimontør»",
+    "side": "https://utdanning.no/sok/#query_value=energimont%C3%B8r", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no", "sjekket": "2026-10-27"
+  },
+  "sok-familieradgiver": {
+    "maal": "Søkeresultatsiden på utdanning.no for «familierådgiver»",
+    "side": "https://utdanning.no/sok/#query_value=familier%C3%A5dgiver", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no, treff kontrollert i søke-API-et", "sjekket": "2026-10-30"
+  },
+  "sok-fengselsbetjent": {
+    "maal": "Søkeresultatsiden på utdanning.no for «fengselsbetjent»",
+    "side": "https://utdanning.no/sok/#query_value=fengselsbetjent", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søke-API-et gir yrket blant de første treffene)", "sjekket": "2026-10-30"
+  },
+  "sok-heismontor": {
+    "maal": "Søkeresultatsiden på utdanning.no for «heismontør»",
+    "side": "https://utdanning.no/sok/#query_value=heismont%C3%B8r", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no", "sjekket": "2026-10-27"
+  },
+  "sok-jordmor": {
+    "maal": "Søkeresultatsiden på utdanning.no for «jordmor»",
+    "side": "https://utdanning.no/sok/#query_value=jordmor", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søket leser query_value fra adressen)", "sjekket": "2026-10-30"
+  },
+  "sok-jurist": {
+    "maal": "Søkeresultatsiden på utdanning.no for «jurist»",
+    "side": "https://utdanning.no/sok/#query_value=jurist", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søke-API-et gir yrket som første treff)", "sjekket": "2026-10-30"
+  },
+  "sok-kjeveortoped": {
+    "maal": "Søkeresultatsiden på utdanning.no for «kjeveortoped»",
+    "side": "https://utdanning.no/sok/#query_value=kjeveortoped", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no, treff kontrollert i søke-API-et", "sjekket": "2026-10-30"
+  },
+  "sok-klinisk-ernaeringsfysiolog": {
+    "maal": "Søkeresultatsiden på utdanning.no for «klinisk ernæringsfysiolog»",
+    "side": "https://utdanning.no/sok/#query_value=klinisk%20ern%C3%A6ringsfysiolog", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no, treff kontrollert i søke-API-et", "sjekket": "2026-10-30"
+  },
+  "sok-klinisk-sosionom": {
+    "maal": "Søkeresultatsiden på utdanning.no for «klinisk sosionom»",
+    "side": "https://utdanning.no/sok/#query_value=klinisk%20sosionom", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no, treff kontrollert i søke-API-et", "sjekket": "2026-10-30"
+  },
+  "sok-kriminolog": {
+    "maal": "Søkeresultatsiden på utdanning.no for «kriminolog»",
+    "side": "https://utdanning.no/sok/#query_value=kriminolog", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søke-API-et gir yrket som første treff)", "sjekket": "2026-10-30"
+  },
+  "sok-kulturskolelaerer": {
+    "maal": "Søkeresultatsiden på utdanning.no for «kulturskolelærer»",
+    "side": "https://utdanning.no/sok/#query_value=kulturskolel%C3%A6rer", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (første treff er yrket, kontrollert i søke-API-et)", "sjekket": "2026-10-30"
+  },
+  "sok-logoped": {
+    "maal": "Søkeresultatsiden på utdanning.no for «logoped»",
+    "side": "https://utdanning.no/sok/#query_value=logoped", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no, treff kontrollert i søke-API-et", "sjekket": "2026-10-30"
+  },
+  "sok-menighetspedagog": {
+    "maal": "Søkeresultatsiden på utdanning.no for «menighetspedagog»",
+    "side": "https://utdanning.no/sok/#query_value=menighetspedagog", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (første treff er yrket, kontrollert i søke-API-et)", "sjekket": "2026-10-30"
+  },
+  "sok-perfusjonist": {
+    "maal": "Søkeresultatsiden på utdanning.no for «perfusjonist»",
+    "side": "https://utdanning.no/sok/#query_value=perfusjonist", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no, treff kontrollert i søke-API-et", "sjekket": "2026-10-30"
+  },
+  "sok-pp-radgiver": {
+    "maal": "Søkeresultatsiden på utdanning.no for «PP-rådgiver»",
+    "side": "https://utdanning.no/sok/#query_value=PP-r%C3%A5dgiver", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no, treff kontrollert i søke-API-et", "sjekket": "2026-10-30"
+  },
+  "sok-radiograf": {
+    "maal": "Søkeresultatsiden på utdanning.no for «radiograf»",
+    "side": "https://utdanning.no/sok/#query_value=radiograf", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søket leser query_value fra adressen)", "sjekket": "2026-10-30"
+  },
+  "sok-ridelaerer": {
+    "maal": "Søkeresultatsiden på utdanning.no for «ridelærer»",
+    "side": "https://utdanning.no/sok/#query_value=ridel%C3%A6rer", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (første treff er yrket, kontrollert i søke-API-et)", "sjekket": "2026-10-30"
+  },
+  "sok-tannhelsesekretaer": {
+    "maal": "Søkeresultatsiden på utdanning.no for «tannhelsesekretær»",
+    "side": "https://utdanning.no/sok/#query_value=tannhelsesekret%C3%A6r", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søket leser query_value fra adressen)", "sjekket": "2026-10-30"
+  },
+  "sok-vekter": {
+    "maal": "Søkeresultatsiden på utdanning.no for «vekter»",
+    "side": "https://utdanning.no/sok/#query_value=vekter", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søke-API-et gir yrket som første treff)", "sjekket": "2026-10-30"
+  },
+  "side-sykepleier": {
+    "maal": "Resultatsiden for sykepleier i prototypen",
+    "side": "../sykepleier/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen", "sjekket": "2026-10-31"
+  },
+  "side-elektriker": {
+    "maal": "Resultatsiden for elektriker i prototypen",
+    "side": "../elektriker/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen", "sjekket": "2026-10-31"
+  },
+  "side-advokat": {
+    "maal": "Resultatsiden for advokat i prototypen",
+    "side": "../advokat/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen", "sjekket": "2026-10-31"
+  },
+  "side-politi": {
+    "maal": "Resultatsiden for politi i prototypen",
+    "side": "../politi/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen", "sjekket": "2026-10-31"
+  },
+  "side-lege": {
+    "maal": "Resultatsiden for lege i prototypen",
+    "side": "../lege/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen", "sjekket": "2026-10-31"
+  },
+  "side-laerer": {
+    "maal": "Resultatsiden for lærer i prototypen",
+    "side": "../laerer/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen", "sjekket": "2026-10-31"
+  },
+  "side-psykolog": {
+    "maal": "Resultatsiden for psykolog i prototypen",
+    "side": "../psykolog/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen", "sjekket": "2026-10-31"
+  },
+  "chat-veileder": {
+    "maal": "Forsiden til Karriereveiledning.no",
+    "side": "https://karriereveiledning.no/", "anker": null, "tekst": null,
+    "status": "manuell", "kilde": "bestemt av Niels", "sjekket": "2026-10-27"
+  }
+}
+</script>
+
+<!-- YRKENE: id (data-yrke på yrkessiden) → navnet som står på kortet, og lenken til det vanlige søket på utdanning.no -->
+<script type="application/json" id="yrker">
+{
+  "advokatassistent": {"navn": "Advokatassistent", "lenke": "sok-advokatassistent"},
+  "automatiker": {"navn": "Automatiker", "lenke": "sok-automatiker"},
+  "bioingenior": {"navn": "Bioingeniør", "lenke": "sok-bioingenior"},
+  "elektroingenior": {"navn": "Elektroingeniør via y-veien", "lenke": "sok-elektroingenior-y-veien"},
+  "energimontor": {"navn": "Energimontør", "lenke": "sok-energimontor"},
+  "familieradgiver": {"navn": "Familierådgiver", "lenke": "sok-familieradgiver"},
+  "fengselsbetjent": {"navn": "Fengselsbetjent", "lenke": "sok-fengselsbetjent"},
+  "heismontor": {"navn": "Heismontør", "lenke": "sok-heismontor"},
+  "jordmor": {"navn": "Jordmor", "lenke": "sok-jordmor"},
+  "jurist": {"navn": "Jurist", "lenke": "sok-jurist"},
+  "kjeveortoped": {"navn": "Kjeveortoped", "lenke": "sok-kjeveortoped"},
+  "klinisk-ernaeringsfysiolog": {"navn": "Klinisk ernæringsfysiolog", "lenke": "sok-klinisk-ernaeringsfysiolog"},
+  "klinisk-sosionom": {"navn": "Klinisk sosionom", "lenke": "sok-klinisk-sosionom"},
+  "kriminolog": {"navn": "Kriminolog", "lenke": "sok-kriminolog"},
+  "kulturskolelaerer": {"navn": "Kulturskolelærer", "lenke": "sok-kulturskolelaerer"},
+  "logoped": {"navn": "Logoped", "lenke": "sok-logoped"},
+  "menighetspedagog": {"navn": "Menighetspedagog", "lenke": "sok-menighetspedagog"},
+  "perfusjonist": {"navn": "Perfusjonist", "lenke": "sok-perfusjonist"},
+  "pp-radgiver": {"navn": "PP-rådgiver", "lenke": "sok-pp-radgiver"},
+  "radiograf": {"navn": "Radiograf", "lenke": "sok-radiograf"},
+  "ridelaerer": {"navn": "Ridelærer", "lenke": "sok-ridelaerer"},
+  "tannhelsesekretaer": {"navn": "Tannhelsesekretær", "lenke": "sok-tannhelsesekretaer"},
+  "vekter": {"navn": "Vekter", "lenke": "sok-vekter"}
+}
+</script>
+
+<header class="topp">
+  <div>
+    <a href="../../" class="logolenke"><svg class="logo" viewBox="0 0 812.9 99.2" role="img" aria-label="Utdanning.no"><g transform="translate(-12.9,-75.2)" fill="#EE7B1A"><path d="m 59.7,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,22.3 -14.2,30.6 -32.1,30.6 -18,0 -32.1,-8.3 -32.1,-30.6 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 62.5 c 0,10.4 5.5,15.4 14.7,15.4 9.2,0 14.7,-4.9 14.7,-15.4 z"/><path d="m 148.2,75.9 c 3.7,0 5.5,4 5.5,7.8 0,4.1 -2,7.9 -5.5,7.9 h -19.5 v 76.5 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 91.6 H 91.7 c -3.5,0 -5.5,-3.6 -5.5,-7.9 0,-3.7 1.7,-7.8 5.5,-7.8 z"/><path d="m 193.4,75.9 c 17.6,0 31.4,8.3 31.4,30.6 V 143 c 0,22.3 -13.8,30.6 -31.4,30.6 h -23.6 c -4.5,0 -7.6,-2.5 -7.6,-5.3 v -87 c 0,-2.8 3.1,-5.4 7.6,-5.4 z m -13.9,15.2 v 67.2 h 13.9 c 8.8,0 14,-4.9 14,-15.4 V 106.4 C 207.4,96 202.2,91 193.4,91 h -13.9 z"/><path d="m 230.9,166.4 c 0,-0.3 0.1,-0.8 0.3,-1.3 l 25.8,-84 c 1.2,-4 6.1,-5.9 11.1,-5.9 5.1,0 10,1.9 11.2,5.9 l 25.8,84 c 0.1,0.5 0.3,0.9 0.3,1.3 0,4.1 -6.3,7.2 -10.9,7.2 -2.9,0 -5.2,-0.9 -5.9,-3.5 l -5.1,-17.8 h -30.6 l -5.1,17.8 c -0.7,2.5 -2.9,3.5 -5.9,3.5 -4.8,0 -11,-3 -11,-7.2 z m 48.7,-27.7 -11.6,-41 -11.6,41 z"/><path d="m 359.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 L 361,134.9 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 440.4,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 475.1,81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 z"/><path d="m 554.6,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 12.9,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.2,0 -7.8,-1.4 -10,-5.5 z"/><path d="m 618.6,91.1 c -8.9,0 -14,5 -14,15.4 v 37.3 c 0,10.4 5.1,15.4 13.9,15.4 8.7,0 14,-4.9 14,-15.4 v -7.9 h -10.8 c -3.5,0 -5.3,-3.3 -5.3,-6.8 0,-3.3 1.9,-6.8 5.3,-6.8 h 22.7 c 3.5,0 5.5,2.7 5.5,5.6 v 15.9 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.3,-8.3 -31.3,-30.6 v -37.3 c 0,-22.3 13.8,-30.6 30.7,-30.6 18.4,0 31.9,9.6 31.9,25.7 0,6.7 -2.9,8.3 -8.7,8.3 -4.7,0 -8.5,-1.3 -8.7,-5.5 -0.3,-6.3 -2.4,-13.3 -13.8,-13.3 z"/><path d="m 675.4,165.3 c 0,4.8 -4.1,9.1 -9,9.1 -5.2,0 -9.1,-4.3 -9.1,-9.1 0,-4.9 3.9,-9.1 9.1,-9.1 4.9,0 9,4.1 9,9.1 z"/><path d="m 731.5,168.1 -28.7,-53.7 v 53.7 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.4,0 -8.7,-1.9 -8.7,-5.5 V 81.4 c 0,-3.7 4.3,-5.5 8.7,-5.5 6.3,0 8.8,1.3 13,9.2 l 25.8,49.8 V 81.3 c 0,-3.7 4.3,-5.4 8.7,-5.4 4.3,0 8.7,1.6 8.7,5.4 v 86.8 c 0,3.6 -4.4,5.5 -8.7,5.5 -4.3,0 -7.9,-1.4 -10.1,-5.5 z"/><path d="m 763.2,143.8 v -37.3 c 0,-22.3 13.6,-30.6 31.2,-30.6 17.6,0 31.4,8.3 31.4,30.6 v 37.3 c 0,22.3 -13.8,30.6 -31.4,30.6 -17.6,0 -31.2,-8.3 -31.2,-30.6 z m 45.2,-37.3 c 0,-10.6 -5.3,-15.4 -14,-15.4 -8.8,0 -13.9,4.8 -13.9,15.4 v 37.3 c 0,10.6 5.1,15.4 13.9,15.4 8.7,0 14,-4.8 14,-15.4 z"/></g></svg></a>
+    <p class="slagord">Offentlig og kvalitetssikret</p>
+  </div>
+  <div class="topp-knapper">
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Min side
+    </button>
+    <button type="button" class="pill bare-desktop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Meny
+    </button>
+    <button type="button" class="meny-rund bare-mobil" aria-label="Åpne meny">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <h1>Spør om yrke og utdanning</h1>
+
+  <form class="sok" role="search" onsubmit="return false">
+    <label for="sok" class="skjult">Spør om yrke og utdanning</label>
+    <input id="sok" type="search" value="Automatiker" readonly>
+    <button type="button" aria-label="Søk">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+    </button>
+  </form>
+
+  <div class="oppsett">
+
+    <aside class="sidekolonne bare-desktop">
+      <div>
+        <h2 class="etikett legende-tittel">
+          <span>Farger og ikoner</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </h2>
+        <ul class="legende">
+          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+        </ul>
+      </div>
+
+      <div>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+          Del søk
+        </button>
+        <button type="button" class="sidelenke">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"/></svg>
+          Lagre søk
+        </button>
+      </div>
+    </aside>
+
+    <div class="resultater">
+
+      <!-- Ingressen sier bare det vi vet: søket gjelder et yrke, men søkeresultatet er ikke laget. -->
+      <div class="treff">
+        <h2 class="etikett">Søkeresultat</h2>
+        <p class="avvisning avvisning--med-valg">
+          <span data-med-yrke>Søkeresultatet for «<span data-sok-tekst>Automatiker</span>» er ikke klart ennå.</span>
+          <span data-uten-yrke hidden>Dette søkeresultatet er ikke klart ennå.</span>
+          Vi har bare laget noen få søk så langt.
+        </p>
+        <div class="handlinger valg-ingress" data-tilbake-plass>
+          <button type="button" class="pill" data-tilbake>Tilbake til søkeresultatet</button>
+        </div>
+      </div>
+
+      <!-- 1. Det vanlige søket på utdanning.no for yrket. Lenken er den samme som kortet under «Hvilke yrker ligner?» hadde før. -->
+      <section class="gruppe" data-gruppe="utdanning-no" data-med-yrke aria-labelledby="g-utdanning-no">
+        <h2 id="g-utdanning-no" class="seksjon">Vil du se hva utdanning.no har om yrket?</h2>
+        <ul class="kortliste">
+          <li class="kort kort--yrke" data-kort="vanlig-sok">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Søk på utdanning.no</span></p>
+            <h3 class="korttittel"><a data-lenke="sok-automatiker" data-vanlig-sok><span data-sok-tekst>Automatiker</span></a></h3>
+            <p class="brodtekst">Se treffene i det vanlige søket på utdanning.no.</p>
+            <div class="handlinger">
+              <a class="pill" data-lenke="sok-automatiker" data-vanlig-sok>Se treffene på utdanning.no</a>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 2. Søkene som er klare: de sju yrkessidene, som «Mange søker etter» på «Uklart» -->
+      <section class="gruppe" data-gruppe="klare" aria-labelledby="g-klare">
+        <h2 id="g-klare" class="seksjon">Vil du prøve et søk som er klart?</h2>
+        <ul class="sporsmal-brikker">
+          <li data-kort="yrke-sykepleier"><a data-lenke="side-sykepleier">Sykepleier</a></li>
+          <li data-kort="yrke-elektriker"><a data-lenke="side-elektriker">Elektriker</a></li>
+          <li data-kort="yrke-advokat"><a data-lenke="side-advokat">Advokat</a></li>
+          <li data-kort="yrke-politi"><a data-lenke="side-politi">Politi</a></li>
+          <li data-kort="yrke-lege"><a data-lenke="side-lege">Lege</a></li>
+          <li data-kort="yrke-laerer"><a data-lenke="side-laerer">Lærer</a></li>
+          <li data-kort="yrke-psykolog"><a data-lenke="side-psykolog">Psykolog</a></li>
+        </ul>
+      </section>
+
+      <!-- Veilederbanner: hele banneret er lenken. Lenken går til forsiden på karriereveiledning.no, så teksten lover ikke chat eller telefon. -->
+      <section class="veileder" aria-labelledby="g-veileder" data-kort="veileder">
+        <a data-lenke="chat-veileder">
+          <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+          <span class="veileder-tekst" style="display:block">
+            <h2 id="g-veileder">Snakk med en veileder</h2>
+            <p class="brodtekst">Usikker på hva du skal spørre om? Karriereveiledning.no gir gratis veiledning om utdanning og jobb.</p>
+          </span>
+          <span class="pill">Gå til Karriereveiledning.no</span>
+        </a>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="bunn-innhold">
+    <div class="avsender"><strong>HK-dir</strong><br>Direktoratet for høyere utdanning og kompetanse</div>
+    <ul class="bunnlenker">
+      <li class="bare-desktop"><button type="button">For presse</button></li>
+      <li><button type="button">Om karriereveiledning.no</button></li>
+      <li><button type="button">Karrieresenter i ditt fylke</button></li>
+      <li><button type="button">Personvernerklæring</button></li>
+    </ul>
+    <div class="bunn-kontakt bare-desktop">
+      <div><strong>Webredaktør:</strong><br>[NAVN]</div>
+      <div><strong>Kontakt redaksjonen:</strong><br><button type="button">[E-POSTADRESSE]</button></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Leser yrket fra ?yrke= før felles.js kjører, så søkefeltet, teksten og lenken til det vanlige søket gjelder yrket.
+(function () {
+  'use strict';
+  var yrker = {};
+  try { yrker = JSON.parse(document.getElementById('yrker').textContent); } catch (e) { console.error('Kunne ikke lese yrkene', e); }
+  var id = new URLSearchParams(location.search).get('yrke') || 'automatiker';
+  var yrke = Object.prototype.hasOwnProperty.call(yrker, id) ? yrker[id] : null;
+  var felt = document.getElementById('sok');
+  felt.value = yrke ? yrke.navn : '';
+  // Som vis() i felles.js: det som skjules, får data-irrelevant, så det ikke telles.
+  function vis(el, skalVises) {
+    el.hidden = !skalVises;
+    if (skalVises) el.removeAttribute('data-irrelevant'); else el.setAttribute('data-irrelevant', '');
+  }
+  document.querySelectorAll('[data-med-yrke]').forEach(function (el) { vis(el, !!yrke); });
+  document.querySelectorAll('[data-uten-yrke]').forEach(function (el) { vis(el, !yrke); });
+  if (yrke) document.querySelectorAll('[data-vanlig-sok]').forEach(function (a) { a.setAttribute('data-lenke', yrke.lenke); });
+  // «Tilbake» går ett steg tilbake, så søket deltakeren kom fra, vises som før. Uten noe å gå tilbake til skjules knappen.
+  var tilbake = document.querySelector('[data-tilbake]');
+  if (history.length > 1) tilbake.addEventListener('click', function () { history.back(); });
+  else document.querySelector('[data-tilbake-plass]').hidden = true;
+})();
+</script>
+<script src="../ruting.js"></script>
+<script src="../felles.js"></script>
+</body>
+</html>

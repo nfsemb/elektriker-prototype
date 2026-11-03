@@ -7,7 +7,8 @@
 //   tekst   { selektor: tekst }: alle treff inneholder teksten (minst ett treff)
 //   klikk   liste med selektorer som trykkes én etter én før sjekkene kjøres (for eksempel et valg på «Hva kan jeg bli med psykologi?»)
 //   direkte true: siden åpnes uten søk, som en delt lenke
-//   ingress     liste med tekster som alle står i det som vises i ingressen (.treff, bare synlig tekst, mellomrom slått sammen)
+//   adresse     tillegg til adressen når siden åpnes direkte, for eksempel 'yrke=automatiker' (sok/ikke-klar/)
+//   ingress    liste med tekster som alle står i det som vises i ingressen (.treff, bare synlig tekst, mellomrom slått sammen)
 //   ikkeIngress liste med tekster som ikke står i den synlige ingressen
 //   href        { selektor: href }: alle treff har akkurat denne href-en (minst ett treff)
 //   bredde      bredden på iframen i px (mobil: 390). Da sjekkes det også at siden ikke ruller vannrett.
@@ -162,6 +163,16 @@ var SAKER = [
     ingress: ['Vi har ikke oversikt over alle ledige jobber og praksisplasser'], ikkeIngress: ['praktikanter'] },
   { sok: 'lærlingplass akkurat nå', side: 'utenfor', synlig: ['[data-kort="finn-laerebedrift"]'], skjult: ['[data-gruppe="it"]'] },
   { side: 'utenfor', direkte: true, synlig: ['[data-gruppe="it"]'], skjult: ['[data-kort="finn-laerebedrift"]'] },
+  // «Hvilke yrker ligner?»: yrkene uten egen side går til sok/ikke-klar/ med yrket i adressen. Politibetjent på advokat-siden går til politisiden.
+  { sok: 'Elektriker', side: 'elektriker', href: { '#lignende [data-yrke="automatiker"] a': '../ikke-klar/?yrke=automatiker', '#lignende [data-yrke="elektroingenior"] a': '../ikke-klar/?yrke=elektroingenior' } },
+  { sok: 'Advokat', side: 'advokat', href: { '#lignende [data-yrke="jurist"] a': '../ikke-klar/?yrke=jurist', '#lignende [data-yrke="politi"] a': '../politi/' } },
+  // Siden sier at søkeresultatet ikke er klart, med yrket i søkefeltet og i teksten, og lenker til det vanlige søket for yrket.
+  { side: 'ikke-klar', direkte: true, adresse: 'yrke=energimontor', bredde: 390, synlig: ['[data-med-yrke]', '[data-gruppe="klare"]'], skjult: ['[data-uten-yrke]'],
+    ingress: ['Søkeresultatet for «Energimontør» er ikke klart ennå.'], tekst: { '[data-kort="vanlig-sok"] .korttittel': 'Energimontør' },
+    href: { '[data-kort="vanlig-sok"] .pill': 'https://utdanning.no/sok/#query_value=energimont%C3%B8r' } },
+  // Uten yrke i adressen vises eksempelet. Et ukjent yrke gir den generelle teksten og ingen lenke til det vanlige søket.
+  { side: 'ikke-klar', direkte: true, ingress: ['Søkeresultatet for «Automatiker» er ikke klart ennå.'] },
+  { side: 'ikke-klar', direkte: true, adresse: 'yrke=finnesikke', synlig: ['[data-uten-yrke]'], skjult: ['[data-med-yrke]'], ikkeIngress: ['«'] },
   // Lange ord uten mellomrom i søket skal ikke gi vannrett rulling på mobil. Yrkessidene er med for å vise at de ikke endres.
   { sok: 'sykepleie ' + LANGT_ORD, side: 'sykepleie', bredde: 390 },
   { sok: 'jobbkompasset ' + LANGT_ORD, side: 'verktoy', bredde: 390 },
@@ -314,7 +325,7 @@ var SAKER = [
     nullstill(sak);
     // ?t=…: nettleseren har egne hurtigminneoppføringer for sider som lastes i en iframe, og de oppdateres ikke av fetch() i oppfrisk().
     // Uten et nytt søkeargument kan iframen vise en HTML-fil fra før siste endring. /sok/ sender søkeargumentet videre til siden.
-    var adresse = (sak.direkte ? '../sok/' + sak.side + '/' : '../sok/') + '?t=' + Date.now();
+    var adresse = (sak.direkte ? '../sok/' + sak.side + '/' : '../sok/') + '?t=' + Date.now() + (sak.adresse ? '&' + sak.adresse : '');
     return oppfrisk(['../sok/', '../sok/' + sak.side + '/']).then(function () {
       ramme.textContent = '';
       var iframe = document.createElement('iframe');

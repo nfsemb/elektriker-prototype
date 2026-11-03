@@ -40,6 +40,11 @@
     "side": "https://utdanning.no/utdanningsoversikt/sykepleie", "anker": null, "tekst": null,
     "status": "funnet", "kilde": "«Se utdanninger og steder» på yrkesbeskrivelsen (/node/398485)", "sjekket": "2026-10-30"
   },
+  "karakterkalkulatoren": {
+    "maal": "Karakterkalkulatoren på utdanning.no, der du regner ut poengene dine",
+    "side": "https://utdanning.no/karakterkalkulator/", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "verktøysiden på utdanning.no (utdanning.no/verktoy), som på sok/verktoy/", "sjekket": "2026-11-03"
+  },
   "intervju-juni": {
     "maal": "Yrkesintervjuet med Juni Engeberg, ned til sitatet i kortet",
     "side": "https://utdanning.no/tema/yrkesintervju/sykepleier", "anker": null,
@@ -118,25 +123,25 @@
     "side": "https://utdanning.no/utdanningskompasset/", "anker": null, "tekst": null,
     "status": "funnet", "kilde": "verktøysiden på utdanning.no", "sjekket": "2026-10-30"
   },
-  "sok-radiograf": {
-    "maal": "Søkeresultatsiden på utdanning.no for «radiograf»",
-    "side": "https://utdanning.no/sok/#query_value=radiograf", "anker": null, "tekst": null,
-    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søket leser query_value fra adressen)", "sjekket": "2026-10-30"
+  "ki-sok-radiograf": {
+    "maal": "Nytt KI-søk på «Radiograf». Søkeresultatet er ikke laget, så lenken går til siden som sier det, med det vanlige søket på utdanning.no",
+    "side": "../ikke-klar/?yrke=radiograf", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen (sok/ikke-klar/)", "sjekket": "2026-11-03"
   },
-  "sok-bioingenior": {
-    "maal": "Søkeresultatsiden på utdanning.no for «bioingeniør»",
-    "side": "https://utdanning.no/sok/#query_value=bioingeni%C3%B8r", "anker": null, "tekst": null,
-    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søket leser query_value fra adressen)", "sjekket": "2026-10-30"
+  "ki-sok-bioingenior": {
+    "maal": "Nytt KI-søk på «Bioingeniør». Søkeresultatet er ikke laget, så lenken går til siden som sier det, med det vanlige søket på utdanning.no",
+    "side": "../ikke-klar/?yrke=bioingenior", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen (sok/ikke-klar/)", "sjekket": "2026-11-03"
   },
-  "sok-jordmor": {
-    "maal": "Søkeresultatsiden på utdanning.no for «jordmor»",
-    "side": "https://utdanning.no/sok/#query_value=jordmor", "anker": null, "tekst": null,
-    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søket leser query_value fra adressen)", "sjekket": "2026-10-30"
+  "ki-sok-jordmor": {
+    "maal": "Nytt KI-søk på «Jordmor». Søkeresultatet er ikke laget, så lenken går til siden som sier det, med det vanlige søket på utdanning.no",
+    "side": "../ikke-klar/?yrke=jordmor", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen (sok/ikke-klar/)", "sjekket": "2026-11-03"
   },
-  "sok-tannhelsesekretaer": {
-    "maal": "Søkeresultatsiden på utdanning.no for «tannhelsesekretær»",
-    "side": "https://utdanning.no/sok/#query_value=tannhelsesekret%C3%A6r", "anker": null, "tekst": null,
-    "status": "funnet", "kilde": "søkeskjemaet på utdanning.no (søket leser query_value fra adressen)", "sjekket": "2026-10-30"
+  "ki-sok-tannhelsesekretaer": {
+    "maal": "Nytt KI-søk på «Tannhelsesekretær». Søkeresultatet er ikke laget, så lenken går til siden som sier det, med det vanlige søket på utdanning.no",
+    "side": "../ikke-klar/?yrke=tannhelsesekretaer", "anker": null, "tekst": null,
+    "status": "funnet", "kilde": "egen side i prototypen (sok/ikke-klar/)", "sjekket": "2026-11-03"
   },
   "chat-veileder": {
     "maal": "Forsiden til Karriereveiledning.no",
@@ -181,8 +186,8 @@
     <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
     <div class="brikker-ramme">
       <ul class="brikker">
-        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(13)</span></button></li>
-        <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(14)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(4)</span></button></li>
         <li><button type="button" class="brikke" data-velg="lonn" aria-pressed="false">Lønn <span data-antall="lonn">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="jobben" aria-pressed="false">Arbeidsoppgaver <span data-antall="jobben">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="hvem" aria-pressed="false">Arbeidsmarked <span data-antall="hvem">(2)</span></button></li>
@@ -233,7 +238,7 @@
 
       <div class="treff">
         <h2 class="etikett">Søkeresultat</h2>
-        <p class="meta"><span data-antall-ingress>13</span> resultater om sykepleier.<span data-tolkning hidden></span></p>
+        <p class="meta"><span data-antall-ingress>14</span> resultater om sykepleier.<span data-tolkning hidden></span></p>
       </div>
 
       <!-- 1. Hvordan blir du sykepleier? -->
@@ -275,8 +280,19 @@
               <div><dt class="meta">Fører til</dt><dd class="faktaverdi">Bachelorgrad</dd></div>
             </dl>
             <div class="handlinger">
-              <a class="pill" data-lenke="veier-studiesteder">Se snitt</a>
+              <a class="pill" data-lenke="veier-studiesteder">Se poenggrense</a>
             </div>
+            <p class="meta kilde">Poenggrenser er hentet fra Samordnas forrige opptak sommeren 2026.</p>
+            <div class="forklaring" data-ekstra hidden>
+              <p class="brodtekst"><strong>Førstegang:</strong> Kvoten for deg som er 21 år eller yngre i opptaksåret og har vitnemål fra videregående. Har du forbedret karakterer etterpå, søker du i ordinær kvote.</p>
+              <p class="brodtekst"><strong>Ordinær:</strong> Her konkurrerer du med konkurransepoeng, det vil si karakterpoeng og tilleggspoeng.</p>
+            </div>
+            <button type="button" class="se-mer" aria-expanded="false" data-apen-tekst="Skjul forklaringen">Hva betyr førstegang og ordinær?</button>
+          </li>
+          <li class="kort kort--verktoy" data-kort="karakterkalkulatoren">
+            <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
+            <h3 class="korttittel"><a data-lenke="karakterkalkulatoren">Karakterkalkulatoren</a></h3>
+            <p class="brodtekst">Regn ut poengene dine, og se hvilke studier du kan komme inn på.</p>
           </li>
           <li class="intervju" data-kort="intervju-juni">
             <a data-lenke="intervju-juni">
@@ -476,22 +492,22 @@
       <section class="gruppe" id="lignende" data-gruppe="lignende" data-tema="lignende yrker" aria-labelledby="g-lignende">
         <h2 id="g-lignende" class="seksjon">Hvilke yrker ligner?</h2>
         <ul class="lignende-liste">
-          <li data-yrke="radiograf"><a data-lenke="sok-radiograf">
+          <li data-yrke="radiograf"><a data-lenke="ki-sok-radiograf">
             <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/radiograf_0.jpg?VersionId=1&amp;h=02ce9656&amp;itok=C1DV1j42" alt="Radiograf i blå uniform ved en CT-maskin der en pasient ligger på benken" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Radiograf</span></span>
             <span class="lignende-linje">Tar medisinske bilder med røntgen, MR og CT, som brukes til å stille diagnoser.</span>
           </a></li>
-          <li data-yrke="bioingenior"><a data-lenke="sok-bioingenior">
+          <li data-yrke="bioingenior"><a data-lenke="ki-sok-bioingenior">
             <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/bioingenior_1.jpg?VersionId=1&amp;h=197483aa&amp;itok=va-4K4b5" alt="Hender som holder blodprøverør med strekkoder over et skjema på et laboratorium" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Bioingeniør</span></span>
             <span class="lignende-linje">Jobber på laboratoriet og analyserer prøver av blod, vev og kroppsvæsker.</span>
           </a></li>
-          <li data-yrke="jordmor"><a data-lenke="sok-jordmor">
+          <li data-yrke="jordmor"><a data-lenke="ki-sok-jordmor">
             <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/sza73e28.jpg?VersionId=1&amp;h=9eb0d413&amp;itok=JV9Q4nr3" alt="Jordmor i hvit uniform smiler til en mor som holder sin nyfødte baby" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Jordmor</span></span>
             <span class="lignende-linje">Toårig spesialisering etter sykepleie, der du følger gravide gjennom fødsel og barseltid.</span>
           </a></li>
-          <li data-yrke="tannhelsesekretaer"><a data-lenke="sok-tannhelsesekretaer">
+          <li data-yrke="tannhelsesekretaer"><a data-lenke="ki-sok-tannhelsesekretaer">
             <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/tannhelsesekretaer1.jpg?VersionId=1&amp;h=6a57c949&amp;itok=Z9zyod_b" alt="Tannlege og tannhelsesekretær med munnbind som behandler en pasient i tannlegestolen" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Tannhelse&shy;sekretær</span></span>
             <span class="lignende-linje">Treårig yrkesfaglig løp på videregående, og du assisterer tannlegen.</span>

@@ -59,6 +59,9 @@ for (const yrke of yrker) {
   if (!json) { console.error(`Fant ikke lenketabellen i sok/${yrke}/index.html`); process.exitCode = 1; continue; }
   const lenker = JSON.parse(json[1]);
   const brukteIder = new Set([...html.matchAll(/data-lenke="([^"]+)"/g)].map((m) => m[1]));
+  // sok/ikke-klar/ velger lenken ut fra ?yrke= i nettleseren. Lenkene i yrkestabellen der regnes som brukt.
+  const yrkerJson = html.match(/<script type="application\/json" id="yrker">([\s\S]*?)<\/script>/);
+  if (yrkerJson) for (const y of Object.values(JSON.parse(yrkerJson[1]))) brukteIder.add(y.lenke);
 
   console.log(`LENKER sok/${yrke}/`);
   for (const [id, l] of Object.entries(lenker)) {
@@ -68,8 +71,9 @@ for (const yrke of yrker) {
     const advarsler = [];
     let svar = {};
     if (!/^https?:/.test(l.side)) {
-      // Lenke til en annen side i prototypen
-      try { await access(new URL(l.side.replace(/\/?$/, '/') + 'index.html', new URL(`${yrke}/`, sokMappe))); svar = { status: 'fil', endelig: l.side }; }
+      // Lenke til en annen side i prototypen. ?yrke=… og #… hører til siden, ikke til filnavnet.
+      const fil = l.side.split(/[?#]/)[0];
+      try { await access(new URL(fil.replace(/\/?$/, '/') + 'index.html', new URL(`${yrke}/`, sokMappe))); svar = { status: 'fil', endelig: l.side }; }
       catch { grunner.push(`finnes ikke i prototypen: ${l.side}`); }
     } else {
       if (!erTillatt(l.side, TILLATTE_DOMENER)) grunner.push('ikke tillatt domene');
