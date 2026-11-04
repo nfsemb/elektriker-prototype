@@ -7,6 +7,15 @@
   var side = document.body.getAttribute('data-yrke') || document.body.getAttribute('data-side');
   if (!side) return; // felles.js brukes bare på resultatsidene
 
+  // ---------- Andre kilder ----------
+  // BRYTER: false fjerner alt innhold som ikke er fra utdanning.no, det vil si alt med data-annen-kilde. I dag er det bare ung.no:
+  // kortene, listen under valgkortene på «Hva kan jeg bli med psykologi?» og raden «Fra ung.no» i «Farger og ikoner».
+  // Tallene i markupen gjelder med innholdet, så de regnes om uten advarsel (se «Antall»).
+  var VIS_ANDRE_KILDER = false; // true viser alt, false fjerner alt som ikke er fra utdanning.no
+  if (!VIS_ANDRE_KILDER) {
+    document.querySelectorAll('[data-annen-kilde]').forEach(function (el) { el.parentNode.removeChild(el); });
+  }
+
   // ---------- Lenker ----------
   var lenker = {};
   try { lenker = JSON.parse(document.getElementById('lenker').textContent); } catch (e) { console.error('Kunne ikke lese lenketabellen', e); }
@@ -200,7 +209,7 @@
   var grupper = Array.prototype.slice.call(document.querySelectorAll('[data-gruppe]'));
   var antall = { alle: 0 };
   // Tallene i markupen gjelder eksempelsøket. Har siden elementer som ikke passer søket, kan de med rette avvike.
-  var avviker = !document.querySelector('[data-irrelevant]');
+  var avviker = VIS_ANDRE_KILDER && !document.querySelector('[data-irrelevant]');
 
   function tell(advar) {
     antall = { alle: 0 };
