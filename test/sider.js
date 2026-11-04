@@ -37,6 +37,44 @@ var SAKER = [
   { sok: 'Hvordan blir jeg sykepleier?', side: 'sykepleier', forste: 'bli' },
   { sok: 'Hvordan blir man psykolog?', side: 'psykolog', forste: 'bli', ingress: ['Vi starter med hvordan du blir psykolog, som du spurte om.'] },
   { sok: 'Hva gjør en psykolog?', side: 'psykolog' },
+  // «Farger og ikoner» som filter (desktop): ett trykk viser bare den typen, grupper uten typen skjules, tallene følger med.
+  { sok: 'Psykolog', side: 'psykolog', klikk: ['.legende-knapp[data-type="intervju"]'],
+    synlig: ['[data-kort="intervju-kaja"]', '[data-gruppe="etterpa"] .intervju', '.legende-knapp[data-type="intervju"][aria-pressed="true"]', '[data-velg="lonn"]:disabled'],
+    skjult: ['[data-gruppe="lonn"]', '[data-gruppe="jobben"]', '[data-gruppe="bli"] .kort--utdanning', '[data-kort="ung-psykolog-linje"]'],
+    ingress: ['Viser bare intervjuer.'] },
+  // Trykk igjen: alt er tilbake
+  { sok: 'Psykolog', side: 'psykolog', klikk: ['.legende-knapp[data-type="intervju"]', '.legende-knapp[data-type="intervju"]'],
+    synlig: ['[data-gruppe="lonn"]', '[data-kort="ung-psykolog-linje"]', '.legende-knapp[data-type="intervju"][aria-pressed="false"]'], skjult: ['[data-velg="lonn"]:disabled'], ikkeIngress: ['Viser bare'] },
+  // En annen type bytter filteret
+  { sok: 'Psykolog', side: 'psykolog', klikk: ['.legende-knapp[data-type="intervju"]', '.legende-knapp[data-type="ung"]'],
+    synlig: ['[data-kort="ung-psykolog-linje"]'], skjult: ['[data-kort="intervju-kaja"]'], ingress: ['Viser bare innhold fra ung.no.'] },
+  // Kort bak «Se mer» som passer, vises med en gang, og «Se mer» skjules mens filteret er på
+  { sok: 'Psykolog', side: 'psykolog', klikk: ['.legende-knapp[data-type="verktoy"]'],
+    synlig: ['[data-kort="jobbkompasset"]', '[data-kort="karakterkalkulatoren"]'], skjult: ['[data-gruppe="utforsk"] .pill.se-mer', '[data-gruppe="etterpa"]'] },
+  // Et tema uten typen går tilbake til «Alle»
+  { sok: 'Psykolog', side: 'psykolog', klikk: ['[data-velg="lonn"]', '.legende-knapp[data-type="intervju"]'],
+    synlig: ['[data-velg="alle"][aria-pressed="true"]', '[data-kort="intervju-kaja"]'] },
+  // Typer uten kort får ingen rad. Psykologsiden har ingen artikler.
+  { sok: 'Psykolog', side: 'psykolog', synlig: ['.legende-knapp[data-type="intervju"]'], skjult: ['.legende [data-type="artikkel"]'] },
+  // Kortene i ingressen på «Hva kan jeg bli med psykologi?» gir raden «Fra ung.no», og filteret rører dem ikke
+  { sok: 'Hva kan jeg bli med psykologi?', side: 'bli-med-psykologi', klikk: ['.legende-knapp[data-type="verktoy"]'],
+    synlig: ['.legende-knapp[data-type="ung"]', '.treff [data-kort="ung-psykologi-forskjell"]', '.treff [data-kort="valg-fag"]', '[data-kort="forslag-utdanninger-yrker"]'], skjult: ['.legende [data-type="artikkel"]'] },
+  // ung.no-kortet står i gruppen der spørsmålet hører hjemme, og fargeforklaringen har raden «Fra ung.no».
+  { sok: 'Hvordan blir man psykolog?', side: 'psykolog', forste: 'bli',
+    synlig: ['[data-gruppe="bli"] [data-kort="ung-psykolog-linje"]'],
+    tekst: { '[data-kort="ung-psykolog-linje"] .ung-svarer': 'Svar fra Karriereveiledning.no, 30.3.2026', '.legende-ung': 'Fra ung.no' } },
+  { sok: 'Hvordan blir jeg elektriker?', side: 'elektriker', synlig: ['[data-gruppe="bli"] [data-kort="ung-elektriker-matte"]'],
+    tekst: { '[data-kort="ung-elektriker-matte"] .ung-svarer': 'Svar fra rådgiver og karriereveileder vgs, 6.8.2024', '.legende-ung': 'Fra ung.no' } },
+  { sok: 'Hvordan blir jeg lege?', side: 'lege', synlig: ['[data-gruppe="bli"] [data-kort="ung-lege-karakterer"]'],
+    tekst: { '[data-kort="ung-lege-karakterer"] .ung-svarer': 'Svar fra Karriereveiledning.no, 4.8.2025', '.legende-ung': 'Fra ung.no' } },
+  { sok: 'Hvordan blir jeg sykepleier?', side: 'sykepleier', synlig: ['[data-gruppe="bli"] [data-kort="ung-sykepleier-yrkesfag"]'],
+    tekst: { '[data-kort="ung-sykepleier-yrkesfag"] .ung-svarer': 'Svar fra rådgiver og karriereveileder, 21.4.2026', '.legende-ung': 'Fra ung.no' } },
+  { sok: 'Hva gjør en lærer?', side: 'laerer', synlig: ['[data-gruppe="jobben"] [data-kort="ung-laerer-gjor"]'],
+    tekst: { '[data-kort="ung-laerer-gjor"] .ung-svarer': 'Svar fra rådgiver og karriereveileder, 4.9.2026', '.legende-ung': 'Fra ung.no' } },
+  { sok: 'Hvordan blir jeg politi?', side: 'politi', synlig: ['[data-gruppe="bli"] [data-kort="ung-politi-krav"]'],
+    tekst: { '[data-kort="ung-politi-krav"] .ung-svarer': 'Svar fra Karriereveiledning.no, 1.6.2026', '.legende-ung': 'Fra ung.no' } },
+  { sok: 'Hvordan blir jeg advokat?', side: 'advokat', synlig: ['[data-gruppe="bli"] [data-kort="ung-advokat-snitt"]'],
+    tekst: { '[data-kort="ung-advokat-snitt"] .ung-svarer': 'Svar fra Karriereveiledning.no, 27.3.2026', '.legende-ung': 'Fra ung.no' } },
   { sok: 'Hvor kan jeg jobbe som advokat?', side: 'advokat', forste: 'hvor' },
   { sok: 'Politi', side: 'politi' },
   { sok: 'Jeg liker å hjelpe barn. Kan jeg bli lærer?', side: 'laerer' },
@@ -83,6 +121,10 @@ var SAKER = [
   // Andre formuleringer, store bokstaver og tegnsetting gir samme side, og søket står i ingressen
   { sok: 'hvis jeg studerer psykologi, hva kan jeg jobbe med?', side: 'bli-med-psykologi', skjult: ['[data-valg]'], tekst: { '[data-sok-tekst]': 'hvis jeg studerer psykologi' } },
   { sok: '  HVA KAN JEG BLI MED PSYKOLOGI!! ', side: 'bli-med-psykologi', skjult: ['[data-valg]'] },
+  // ung.no-kortet står under de to valgkortene, før og etter valget, og telles ikke
+  { sok: 'Hva kan jeg bli med psykologi?', side: 'bli-med-psykologi', synlig: ['.treff [data-kort="ung-psykologi-forskjell"]'] },
+  { sok: 'Hva kan jeg bli med psykologi?', side: 'bli-med-psykologi', klikk: ['[data-valg-knapp="fag"]'], synlig: ['.treff [data-kort="ung-psykologi-forskjell"]'] },
+  { sok: 'Hva kan jeg bli med psykologi?', side: 'bli-med-psykologi', klikk: ['[data-valg-knapp="profesjon"]'], synlig: ['.treff [data-kort="ung-psykologi-forskjell"]'] },
   { side: 'bli-med-psykologi', direkte: true, forste: 'utforske', skjult: ['[data-valg]'], tekst: { '[data-sok-tekst]': 'Hva kan jeg bli med psykologi?' } },
   { sok: 'Hva er forskjellen på yrkesfag og studieforberedende?', side: 'videregaende', forste: 'forskjell', skjult: ['[data-vis-hvis-lik="yrkesfag"]'],
     ingress: ['Vi starter med forskjellen på yrkesfag og studieforberedende, som du spurte om.'] },
@@ -184,6 +226,19 @@ var SAKER = [
   { sok: 'advokat ' + LANGT_ORD, side: 'advokat', bredde: 390 },
   { sok: 'lege ' + LANGT_ORD, side: 'lege', bredde: 390 },
   { sok: 'psykolog ' + LANGT_ORD, side: 'psykolog', bredde: 390 },
+  // ung.no-kortene på situasjonssidene, i gruppen der spørsmålet hører hjemme
+  { sok: 'Hvor mange poeng trenger jeg for sykepleie?', side: 'sykepleie', forste: 'poeng', synlig: ['[data-gruppe="poeng"] [data-kort="ung-sykepleie-matte"]', '[data-gruppe="soke"] [data-kort="ung-sykepleie-studieplass"]'],
+    // Sitatet stopper etter opptakskravet. Setningen etter («Det betyr at du kan komme inn med karakter 2 …») gir et feil bilde i en gruppe om poeng.
+    tekst: { '[data-kort="ung-sykepleie-matte"] .ung-sitat': 'uten bestemte krav til karakterer eller fag.»' } },
+  { sok: 'Jeg aner ikke hva jeg vil bli', side: 'utforsk', forste: 'begynne', synlig: ['[data-gruppe="begynne"] [data-kort="ung-utforsk-stressa"]', '[data-gruppe="begynne"] [data-kort="ung-utforsk-hva-bli"]'] },
+  { sok: 'Kan jeg gå påbygg etter yrkesfag?', side: 'videregaende', forste: 'fast', synlig: ['[data-gruppe="fast"] [data-kort="ung-videregaende-pabygg"]'] },
+  { sok: 'Hvordan blir jeg ambulansearbeider som voksen?', side: 'voksen', forste: 'ambulanse', synlig: ['[data-gruppe="ambulanse"] [data-kort="ung-voksen-vernepleier"]'] },
+  { sok: 'hvordan skrive cv', side: 'jobbsoking', forste: 'cv', synlig: ['[data-gruppe="cv"] [data-kort="ung-jobbsoking-cv"]'] },
+  { sok: 'hvilke it-relaterte firmaer søker praktikanter til uke 44 i 2026 akkurat nå?', side: 'utenfor', synlig: ['[data-gruppe="lete"] [data-kort="ung-utenfor-ledige-jobber"]'] },
+  { sok: 'Jeg aner ikke hva jeg vil bli ' + LANGT_ORD, side: 'utforsk', bredde: 390 },
+  { sok: 'Er det mulig å bli ambulansearbeider når man er over 19år ' + LANGT_ORD, side: 'voksen', bredde: 390 },
+  { sok: 'hvordan skrive cv ' + LANGT_ORD, side: 'jobbsoking', bredde: 390 },
+  { sok: 'hvilke it-relaterte firmaer søker praktikanter til uke 44 i 2026 akkurat nå? ' + LANGT_ORD, side: 'utenfor', bredde: 390 },
   { sok: 'bli lærer ' + LANGT_ORD, side: 'laerer', bredde: 390 }
 ];
 
@@ -296,6 +351,8 @@ var SAKER = [
       // Kort bak «Se mer» (data-ekstra) er resultater som vises når knappen trykkes, så de teller med så lenge gruppen vises.
       var kort = alle(doc, '[data-gruppe] [data-kort]').filter(function (k) {
         if (yrkesside && k.closest('[data-gruppe="lignende"], [data-gruppe="utforsk"]')) return false;
+        // Kort som filteret på innholdstype skjuler («Farger og ikoner»), er ikke resultater så lenge filteret er på
+        if (k.closest('[data-filtrert]')) return false;
         if (k.hasAttribute('data-ekstra') && !k.closest('[data-irrelevant]')) return erSynlig(k.closest('[data-gruppe]'));
         return erSynlig(k);
       });

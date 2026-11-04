@@ -25,6 +25,8 @@
   --utdanning: #ebf8f5; --utdanning-kant: #d0eee6;
   --verktoy: #f3eefb;   --verktoy-kant: #e2d8f3;
   --artikkel: #eef6f8; --artikkel-kant: #d3e6ea;
+  /* Innhold fra ung.no: bakgrunnsfargen til ung.no (brown-50), så kortet skiller seg fra utdanning.no */
+  --ung: #f5f3ef;       --ung-kant: #e6dfd3;
 }
 
 * { box-sizing: border-box; }
@@ -94,6 +96,27 @@ h1 { font-size: 30px; line-height: 38px; letter-spacing: -0.01em; }
 .kort--utdanning { background: var(--utdanning); border-color: var(--utdanning-kant); }
 .kort--verktoy { background: var(--verktoy); border-color: var(--verktoy-kant); }
 .kort--artikkel { background: var(--artikkel); border-color: var(--artikkel-kant); }
+/* Fra ung.no: spørsmål og svar (spørsmålet i en boble) og artikler, med ung.no-logoen øverst til høyre */
+.kort--ung { background: var(--ung); border-color: var(--ung-kant); }
+.ung-topp { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.ung-topp .typelinje { margin: 0; }
+.ung-logo { height: 30px; width: auto; }
+.ung-boble { background: #ffffff; border-radius: 12px 12px 12px 2px; padding: 12px 14px; margin-bottom: 14px; }
+.kort .ung-boble .korttittel { margin: 0 0 4px; }
+.ung-sitat, .ung-ingress { max-width: 65ch; }
+.ung-svarer { margin-top: 6px; }
+.legende-ung img { border-radius: 3px; }
+/* «Farger og ikoner» som filter (felles.js lager knappene): raden er en knapp, og valgt rad har samme mørke fyll som en valgt chip.
+   Kort og grupper som filteret skjuler, får data-filtrert. Chips uten treff kan ikke trykkes mens filteret er på. */
+[data-filtrert] { display: none !important; }
+.legende-hjelp { font-size: 14px; line-height: 20px; color: var(--tekst-dempet); margin: -4px 0 12px; }
+.legende li.legende-rad { display: block; padding: 0; border: 0; background: none; }
+.legende-knapp { display: flex; width: 100%; align-items: center; gap: 8px; border-radius: 8px; padding: 8px 12px; border: 1px solid; font-family: inherit; font-size: 15px; line-height: 22px; color: var(--tekst); text-align: left; cursor: pointer; }
+.legende-knapp > span:first-child { margin-right: auto; }
+.legende-hake { display: none; }
+.legende-knapp[aria-pressed="true"] { background: var(--tekst) !important; border-color: var(--tekst) !important; color: #ffffff; }
+.legende-knapp[aria-pressed="true"] .legende-hake { display: inline; }
+.brikke:disabled { opacity: .45; cursor: default; }
 .kort .korttittel { margin: 4px 0 8px; }
 .kortbilde { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; margin-bottom: 12px; background: var(--grå-10); color: var(--tekst-dempet); font-size: 15px; }
 .beskrivelse { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; max-width: 65ch; }
@@ -108,8 +131,7 @@ h1 { font-size: 30px; line-height: 38px; letter-spacing: -0.01em; }
 /* Knapper ved siden av hverandre, og under hverandre når det ikke er plass */
 .handlinger--rad { flex-direction: row; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
 .kort .handlinger--rad .pill { margin-top: 0; }
-/* «Se poenggrense» på utdanningskortene: forklaringen av kvotene bak «Se mer» */
-.forklaring { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 16px; max-width: 65ch; }.fordelinger { display: flex; flex-direction: column; gap: 14px; margin-top: 14px; }
+.fordelinger { display: flex; flex-direction: column; gap: 14px; margin-top: 14px; }
 .fordelinger .etikett { margin-bottom: 2px; }
 .fordeling-tekst { font-size: 15px; line-height: 22px; margin-bottom: 6px; }
 .stolpe { display: flex; height: 10px; border-radius: 8px; overflow: hidden; border: 1px solid #d6d6d6; }
@@ -368,8 +390,11 @@ a.pill:not([href]) { display: none !important; }
 .valg .kort { display: flex; flex-direction: column; }
 .valg .handlinger { margin-top: auto; }
 .valg .pill[aria-pressed="true"], .valg .pill[aria-pressed="true"]:hover { background: var(--tekst); border-color: var(--tekst); color: #ffffff; }
+/* ung.no-kortet under valgkortene: samme avstand til valgkortene som mellom dem, og samme bunnmarg som .valg */
+.treff .valg + .ung-under-valg { margin: -4px 0 16px; }
 @media screen and (min-width: 768px) {
   .treff .valg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin: 16px 0 40px; }
+  .treff .valg + .ung-under-valg { margin: -16px 0 40px; }
 }
 @media print {
   .valg .kort { break-inside: avoid; }

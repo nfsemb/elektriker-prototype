@@ -144,6 +144,12 @@
     "maal": "Forsiden til Karriereveiledning.no",
     "side": "https://karriereveiledning.no/", "anker": null, "tekst": null,
     "status": "manuell", "kilde": "bestemt av Niels", "sjekket": "2026-10-27"
+  },
+  "ung-advokat-snitt": {
+    "maal": "Spørsmål og svar på ung.no: «Hvilket karaktersnitt trenger jeg for å bli advokat?», svar fra Karriereveiledning.no",
+    "side": "https://www.ung.no/oss/ZGZ4rnl6Gf3tDW6sphBv8K", "anker": null,
+    "tekst": { "start": "Snittet forandrer seg fra år til år" },
+    "status": "funnet", "kilde": "ung.no-søket (sok/oss)", "sjekket": "2026-11-04"
   }
 }
 </script>
@@ -183,8 +189,8 @@
     <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
     <div class="brikker-ramme">
       <ul class="brikker">
-        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(15)</span></button></li>
-        <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(4)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(16)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(5)</span></button></li>
         <li><button type="button" class="brikke" data-velg="lonn" aria-pressed="false">Lønn <span data-antall="lonn">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="jobben" aria-pressed="false">Arbeidsoppgaver <span data-antall="jobben">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="hvem" aria-pressed="false">Arbeidsmarked <span data-antall="hvem">(2)</span></button></li>
@@ -211,11 +217,12 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
         </h2>
         <ul class="legende">
-          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
-          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
-          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
-          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
-          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+          <li data-type="yrke" style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li data-type="utdanning" style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li data-type="artikkel" style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li data-type="verktoy" style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li data-type="intervju" style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+          <li data-type="ung" class="legende-ung" style="background:#ebe5da;border-color:#dcd3c3"><span>Fra ung.no</span><img src="../bilder/ung-no-ikon.svg" alt="" width="18" height="18"></li>
         </ul>
       </div>
 
@@ -235,7 +242,7 @@
 
       <div class="treff">
         <h2 class="etikett">Søkeresultat</h2>
-        <p class="meta"><span data-antall-ingress>15</span> resultater om advokat.<span data-tolkning hidden></span></p>
+        <p class="meta"><span data-antall-ingress>16</span> resultater om advokat.<span data-tolkning hidden></span></p>
       </div>
 
       <!-- 1. Hvordan blir du advokat? -->
@@ -276,21 +283,26 @@
               <a class="pill" data-lenke="juss-poenggrenser">Se poenggrense</a>
             </div>
             <p class="meta kilde">Poenggrenser er hentet fra Samordnas forrige opptak sommeren 2026.</p>
-            <div class="forklaring" data-ekstra hidden>
-              <p class="brodtekst"><strong>Førstegang:</strong> Kvoten for deg som er 21 år eller yngre i opptaksåret og har vitnemål fra videregående. Har du forbedret karakterer etterpå, søker du i ordinær kvote.</p>
-              <p class="brodtekst"><strong>Ordinær:</strong> Her konkurrerer du med konkurransepoeng, det vil si karakterpoeng og tilleggspoeng.</p>
-            </div>
-            <button type="button" class="se-mer" aria-expanded="false" data-apen-tekst="Skjul forklaringen">Hva betyr førstegang og ordinær?</button>
           </li>
           <li class="kort kort--verktoy" data-kort="karakterkalkulatoren">
             <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>
             <h3 class="korttittel"><a data-lenke="karakterkalkulatoren">Karakterkalkulatoren</a></h3>
             <p class="brodtekst">Regn ut poengene dine, og se hvilke studier du kan komme inn på.</p>
           </li>
+          <li class="kort kort--ung" data-kort="ung-advokat-snitt">
+            <div class="ung-topp"><span class="typelinje">Spørsmål og svar</span><img class="ung-logo" src="../bilder/ung-no-logo.png" alt="ung.no" width="41" height="30"></div>
+            <div class="ung-boble">
+              <h3 class="korttittel"><a data-lenke="ung-advokat-snitt">Hvilket karaktersnitt trenger jeg for å bli advokat?</a></h3>
+              <p class="meta ung-spurt">Jente, 15</p>
+            </div>
+            <p class="brodtekst ung-sitat">«Snittet forandrer seg fra år til år, så ingen vet hva det blir i fremtiden. Men juss pleier å være en populær utdanning med høyt snitt.»</p>
+            <p class="meta ung-svarer">Svar fra Karriereveiledning.no, 27.3.2026</p>
+            <a class="pill" data-lenke="ung-advokat-snitt">Les hele svaret på ung.no</a>
+          </li>
           <li class="intervju" data-kort="intervju-marit">
             <a data-lenke="intervju-marit">
               <span class="intervju-topp">
-                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/Advokat_Marit_Opsahl_Jukvam_0.jpg?VersionId=5&amp;h=a6c4a55d&amp;itok=bMBKnh2i" alt="Marit Opsahl Juvkam med langt blondt hår og rutete blazer, fotografert ute foran et bygg med gule vinduskarmer" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/intervju_personinfo/public/Advokat_Marit_Opsahl_Jukvam_0.jpg?VersionId=5&amp;h=a6c4a55d&amp;itok=bMBKnh2i" alt="Marit Opsahl Juvkam med langt blondt hår og rutete blazer, fotografert ute foran et bygg med gule vinduskarmer" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
                 <span>
                   <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
                   <span class="intervju-navn">Marit Opsahl Juvkam (29)</span>
@@ -331,7 +343,7 @@
         <h2 id="g-jobben" class="seksjon">Hva er arbeidsoppgavene?</h2>
         <ul class="kortliste">
           <li class="kort kort--yrke kort--bilde" data-kort="yrke-advokat">
-            <a data-lenke="yrke-advokat" aria-hidden="true" tabindex="-1"><img class="kortbilde" src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/advokat_1.jpg?VersionId=1&amp;h=8dd1c6aa&amp;itok=OhVp1moj" alt="Advokat i mørk dress og briller med en dokumentmappe, i resepsjonen på et advokatkontor" width="738" height="484" loading="lazy" referrerpolicy="no-referrer"></a>
+            <a data-lenke="yrke-advokat" aria-hidden="true" tabindex="-1"><img class="kortbilde" src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/full_width_mobil/public/yrker/advokat_1.jpg?VersionId=1&amp;h=8dd1c6aa&amp;itok=OhVp1moj" alt="Advokat i mørk dress og briller med en dokumentmappe, i resepsjonen på et advokatkontor" width="738" height="484" loading="lazy" referrerpolicy="no-referrer"></a>
             <div>
             <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
             <h3 class="korttittel"><a data-lenke="yrke-advokat">Advokat</a></h3>
@@ -427,7 +439,7 @@
           <li class="intervju" data-kort="intervju-brynjar">
             <a data-lenke="intervju-brynjar">
               <span class="intervju-topp">
-                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/Advokat_Str%C3%B8msvik_Brynjar.jpg?VersionId=1&amp;itok=aXHrtz9W" alt="Brynjar M. Aas Strømsvik i mørk dress, hvit skjorte og slips foran en lys bakgrunn" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/intervju_personinfo/public/Advokat_Str%C3%B8msvik_Brynjar.jpg?VersionId=1&amp;itok=aXHrtz9W" alt="Brynjar M. Aas Strømsvik i mørk dress, hvit skjorte og slips foran en lys bakgrunn" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
                 <span>
                   <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
                   <span class="intervju-navn">Brynjar M. Aas Strømsvik (32)</span>
@@ -481,22 +493,22 @@
         <h2 id="g-lignende" class="seksjon">Hvilke yrker ligner?</h2>
         <ul class="lignende-liste">
           <li data-yrke="jurist"><a data-lenke="ki-sok-jurist">
-            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/jurist_2.jpg?VersionId=1&amp;h=5797a656&amp;itok=RQVkZDrN" alt="Jurist i lyseblå skjorte og briller som holder et oppslått hefte og snakker med en kollega" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/full_width_mobil/public/yrker/jurist_2.jpg?VersionId=1&amp;h=5797a656&amp;itok=RQVkZDrN" alt="Jurist i lyseblå skjorte og briller som holder et oppslått hefte og snakker med en kollega" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Jurist</span></span>
             <span class="lignende-linje">Samme utdanning, men uten krav om advokatbevilling.</span>
           </a></li>
           <li data-yrke="advokatassistent"><a data-lenke="ki-sok-advokatassistent">
-            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/2026-03/advokatassistent.jpg?VersionId=1&amp;itok=thl-YBYP" alt="Smilende ung kvinne med lyst hår som sitter med papirer og en bærbar PC, med en lovbok på bordet" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/full_width_mobil/public/2026-03/advokatassistent.jpg?VersionId=1&amp;itok=thl-YBYP" alt="Smilende ung kvinne med lyst hår som sitter med papirer og en bærbar PC, med en lovbok på bordet" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Advokatassistent</span></span>
             <span class="lignende-linje">Kortere juridisk utdanning, og du hjelper advokater med papirer og frister.</span>
           </a></li>
           <li data-yrke="politi"><a data-lenke="side-politi">
-            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/politi_3.png?VersionId=1&amp;h=ab502919&amp;itok=IkYtCynx" alt="Politibetjent i uniform med politihund foran en politibil" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/full_width_mobil/public/yrker/politi_3.png?VersionId=1&amp;h=ab502919&amp;itok=IkYtCynx" alt="Politibetjent i uniform med politihund foran en politibil" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Politibetjent</span></span>
             <span class="lignende-linje">Treårig utdanning på Politihøgskolen, med patruljering og etterforskning.</span>
           </a></li>
           <li data-yrke="kriminolog"><a data-lenke="ki-sok-kriminolog">
-            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/kriminolog.jpg?VersionId=1&amp;h=fcfbfced&amp;itok=Enx71RPb" alt="Mann sett bakfra foran skiltet «Kriminalomsorgen – Oslo fengsel»" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/full_width_mobil/public/yrker/kriminolog.jpg?VersionId=1&amp;h=fcfbfced&amp;itok=Enx71RPb" alt="Mann sett bakfra foran skiltet «Kriminalomsorgen – Oslo fengsel»" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Kriminolog</span></span>
             <span class="lignende-linje">Studerer kriminalitet og samfunn, ofte som rådgiver eller saksbehandler.</span>
           </a></li>
@@ -506,7 +518,7 @@
       <!-- Veilederbanner: hele banneret er lenken -->
       <section class="veileder" aria-labelledby="g-veileder" data-kort="veileder">
         <a data-lenke="chat-veileder">
-          <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+          <img src="https://s3.hkdir-production.openstack.itpartner.no/utdanning-no-production/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
           <span class="veileder-tekst" style="display:block">
             <h2 id="g-veileder">Snakk med en veileder</h2>
             <p class="brodtekst">Gratis og anonymt på chat og telefon, eller sett opp et møte på et karrieresenter.</p>

@@ -208,7 +208,7 @@
       var id = g.getAttribute('data-gruppe');
       var iAlle = !(erYrkesside && (id === 'lignende' || id === 'utforsk'));
       var kort = g.querySelectorAll(erYrkesside && id === 'lignende' ? '[data-yrke]' : '[data-kort]');
-      antall[id] = Array.prototype.filter.call(kort, function (k) { return !k.closest('[data-irrelevant], [data-verktoy-pool], [data-valg][hidden]'); }).length;
+      antall[id] = Array.prototype.filter.call(kort, function (k) { return !k.closest('[data-irrelevant], [data-verktoy-pool], [data-valg][hidden], [data-filtrert]'); }).length;
       if (iAlle) antall.alle += antall[id];
     });
     document.querySelectorAll('[data-antall]').forEach(function (el) {
@@ -250,21 +250,20 @@
     knapp.addEventListener('click', function () {
       settValg(knapp.getAttribute('data-valg-knapp'));
       tell(false);
+      filtrer(aktivType); // gruppene for valget skal også følge filteret på innholdstype
     });
   });
 
   // ---------- Se mer ----------
   // Viser resten av kortene i en gruppe eller et kort, og skjuler dem igjen.
-  // Når den er åpen, sier knappen «Se færre», eller teksten i data-apen-tekst (for eksempel «Skjul forklaringen»).
   document.querySelectorAll('.se-mer').forEach(function (knapp) {
     var ekstraKort = knapp.closest('.kort, .gruppe').querySelectorAll('[data-ekstra]');
     var tekst = knapp.textContent;
-    var apenTekst = knapp.getAttribute('data-apen-tekst') || 'Se færre';
     knapp.addEventListener('click', function () {
       var apne = knapp.getAttribute('aria-expanded') !== 'true';
       ekstraKort.forEach(function (k) { k.hidden = !apne; });
       knapp.setAttribute('aria-expanded', String(apne));
-      knapp.textContent = apne ? apenTekst : tekst;
+      knapp.textContent = apne ? 'Se færre' : tekst;
     });
   });
 
@@ -280,6 +279,99 @@
       location.href = '../';
     });
   });
+
+  // ---------- Innholdstype ----------
+  // Radene i «Farger og ikoner» (li[data-type], bare på desktop) er også filter. Et trykk viser bare kortene av den typen i gruppene,
+  // og grupper uten slike kort skjules. Trykk igjen for å se alt, eller på en annen type for å bytte. Filteret lagres ikke.
+  // En type får knapp bare hvis siden har kort av den typen. Ellers skjules raden.
+  // Kort i ingressen (valgkortene og ung.no-kortet på «Hva kan jeg bli med psykologi?») og veilederbanneret påvirkes ikke.
+  // Det filteret skjuler, får data-filtrert (display: none i felles.css), så hidden fra de andre delene får stå i fred.
+  // Kort bak «Se mer» som passer, vises mens filteret er på, og «Se mer» i gruppen skjules.
+  var TYPER = { ung: 'kort--ung', yrke: 'kort--yrke', utdanning: 'kort--utdanning', artikkel: 'kort--artikkel', verktoy: 'kort--verktoy', intervju: 'intervju' };
+  var TYPENAVN = { yrke: 'yrker og yrkesvideoer', utdanning: 'utdanninger', artikkel: 'artikler', verktoy: 'verktøy', intervju: 'intervjuer', ung: 'innhold fra ung.no' };
+  var aktivType = null;
+  var typeKnapper = [];
+  var filterTekst = null;
+  var gruppeSeMer = Array.prototype.filter.call(document.querySelectorAll('[data-gruppe] .se-mer'), function (b) { return !b.closest('.kort, .intervju'); });
+
+  function typeAv(k) {
+    for (var t in TYPER) if (k.classList.contains(TYPER[t])) return t;
+    return k.hasAttribute('data-yrke') ? 'yrke' : null; // «Lignende yrker» er li[data-yrke] uten kortklasse
+  }
+  function kortIGruppe(g) { return g.querySelectorAll('[data-kort], li[data-yrke]'); }
+
+  function filtrer(t) {
+    aktivType = t;
+    grupper.forEach(function (g) {
+      var treff = 0;
+      Array.prototype.forEach.call(kortIGruppe(g), function (k) {
+        var passer = !t || typeAv(k) === t;
+        if (passer) k.removeAttribute('data-filtrert'); else k.setAttribute('data-filtrert', '');
+        // Kort bak «Se mer»: vises mens de passer filteret, og får tilbake tilstanden fra «Se mer» når filteret slås av eller byttes
+        if (k.hasAttribute('data-ekstra')) {
+          if (t && passer && k.hidden) { k.hidden = false; k.setAttribute('data-filter-viste', ''); }
+          else if (k.hasAttribute('data-filter-viste') && !(t && passer)) { k.hidden = true; k.removeAttribute('data-filter-viste'); }
+        }
+        if (passer && !k.hidden && !k.closest('[data-irrelevant], [data-verktoy-pool], [data-valg][hidden]')) treff++;
+      });
+      if (!t || treff) g.removeAttribute('data-filtrert'); else g.setAttribute('data-filtrert', '');
+    });
+    gruppeSeMer.forEach(function (b) { if (t) b.setAttribute('data-filtrert', ''); else b.removeAttribute('data-filtrert'); });
+    typeKnapper.forEach(function (k) { k.setAttribute('aria-pressed', String(k.getAttribute('data-type') === t)); });
+    if (filterTekst) { filterTekst.hidden = !t; filterTekst.textContent = t ? 'Viser bare ' + TYPENAVN[t] + '.' : ''; }
+    tell(false);
+    // Et valgt tema uten kort av typen går tilbake til «Alle» (et trykk på valgt chip slår den av). Chips med 0 kan ikke trykkes.
+    var valgt = document.querySelector('[data-velg][aria-pressed="true"]');
+    if (t && valgt && valgt.getAttribute('data-velg') !== 'alle' && !antall[valgt.getAttribute('data-velg')]) valgt.click();
+    document.querySelectorAll('[data-velg]').forEach(function (b) {
+      var id = b.getAttribute('data-velg');
+      b.disabled = !!t && id !== 'alle' && !antall[id];
+    });
+  }
+
+  (function lagTypeKnapper() {
+    var rader = document.querySelectorAll('.legende li[data-type]');
+    if (!rader.length) return;
+    var paSiden = {};
+    document.querySelectorAll('.resultater [data-kort], [data-gruppe] li[data-yrke]').forEach(function (k) { var t = typeAv(k); if (t) paSiden[t] = true; });
+    rader.forEach(function (li) {
+      var t = li.getAttribute('data-type');
+      if (!paSiden[t]) { li.hidden = true; return; }
+      var knapp = document.createElement('button');
+      knapp.type = 'button';
+      knapp.className = 'legende-knapp';
+      knapp.setAttribute('data-type', t);
+      knapp.setAttribute('aria-pressed', 'false');
+      knapp.setAttribute('style', li.getAttribute('style') || '');
+      li.removeAttribute('style');
+      while (li.firstChild) knapp.appendChild(li.firstChild);
+      var hake = document.createElement('span');
+      hake.className = 'legende-hake';
+      hake.setAttribute('aria-hidden', 'true');
+      hake.textContent = '✓';
+      knapp.insertBefore(hake, knapp.lastElementChild); // foran ikonet
+      li.classList.add('legende-rad');
+      li.appendChild(knapp);
+      knapp.addEventListener('click', function () { filtrer(aktivType === t ? null : t); });
+      typeKnapper.push(knapp);
+    });
+    var tittel = document.querySelector('.legende-tittel');
+    if (tittel && typeKnapper.length) {
+      var hjelp = document.createElement('p');
+      hjelp.className = 'legende-hjelp';
+      hjelp.textContent = 'Trykk på en type for å vise bare den. Trykk igjen for å se alle.';
+      tittel.parentNode.insertBefore(hjelp, tittel.nextSibling);
+    }
+    // «Viser bare …» står under første avsnitt i ingressen (p.meta eller p.avvisning), og leses opp av skjermlesere når filteret endres
+    var forste = document.querySelector('.treff > p');
+    if (forste) {
+      filterTekst = document.createElement('p');
+      filterTekst.className = 'meta filter-tekst';
+      filterTekst.setAttribute('role', 'status');
+      filterTekst.hidden = true;
+      forste.parentNode.insertBefore(filterTekst, forste.nextSibling);
+    }
+  })();
 
   // ---------- Velg tema ----------
   // Sider uten «Velg tema» (bli-med-psykologi) har ingen chips å styre, og alt under her gjelder bare chipsene. Denne delen må stå sist.

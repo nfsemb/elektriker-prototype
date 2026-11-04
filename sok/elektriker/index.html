@@ -149,6 +149,12 @@
     "maal": "Forsiden til Karriereveiledning.no",
     "side": "https://karriereveiledning.no/", "anker": null, "tekst": null,
     "status": "manuell", "kilde": "bestemt av Niels", "sjekket": "2026-10-27"
+  },
+  "ung-elektriker-matte": {
+    "maal": "Spørsmål og svar på ung.no: «Kan jeg bli elektriker selv om jeg er dårlig i matte?», svar fra rådgiver og karriereveileder vgs",
+    "side": "https://www.ung.no/oss/7YH9cM0aH0oWl1cbHsC2H9", "anker": null,
+    "tekst": { "start": "Det er mer strevsomt å gå elektro" },
+    "status": "funnet", "kilde": "ung.no-søket (sok/oss)", "sjekket": "2026-11-04"
   }
 }
 </script>
@@ -188,8 +194,8 @@
     <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
     <div class="brikker-ramme">
       <ul class="brikker">
-        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(14)</span></button></li>
-        <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(15)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="bli" aria-pressed="false">Utdanning <span data-antall="bli">(4)</span></button></li>
         <li><button type="button" class="brikke" data-velg="lonn" aria-pressed="false">Lønn <span data-antall="lonn">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="jobben" aria-pressed="false">Arbeidsoppgaver <span data-antall="jobben">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="hvem" aria-pressed="false">Arbeidsmarked <span data-antall="hvem">(2)</span></button></li>
@@ -216,11 +222,12 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
         </h2>
         <ul class="legende">
-          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
-          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
-          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
-          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
-          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+          <li data-type="yrke" style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li data-type="utdanning" style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li data-type="artikkel" style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li data-type="verktoy" style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li data-type="intervju" style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+          <li data-type="ung" class="legende-ung" style="background:#ebe5da;border-color:#dcd3c3"><span>Fra ung.no</span><img src="../bilder/ung-no-ikon.svg" alt="" width="18" height="18"></li>
         </ul>
       </div>
 
@@ -240,7 +247,7 @@
 
       <div class="treff">
         <h2 class="etikett">Søkeresultat</h2>
-        <p class="meta"><span data-antall-ingress>14</span> resultater om elektriker.<span data-tolkning hidden></span></p>
+        <p class="meta"><span data-antall-ingress>15</span> resultater om elektriker.<span data-tolkning hidden></span></p>
       </div>
 
       <!-- 1. Hvordan blir du elektriker? -->
@@ -283,10 +290,20 @@
               <div><dt class="meta">Fører til</dt><dd class="faktaverdi">Fagbrev</dd></div>
             </dl>
           </li>
+          <li class="kort kort--ung" data-kort="ung-elektriker-matte">
+            <div class="ung-topp"><span class="typelinje">Spørsmål og svar</span><img class="ung-logo" src="../bilder/ung-no-logo.png" alt="ung.no" width="41" height="30"></div>
+            <div class="ung-boble">
+              <h3 class="korttittel"><a data-lenke="ung-elektriker-matte">Kan jeg bli elektriker selv om jeg er dårlig i matte?</a></h3>
+              <p class="meta ung-spurt">Gutt, 14</p>
+            </div>
+            <p class="brodtekst ung-sitat">«Det er mer strevsomt å gå elektro om man sliter med matte. Har du lyst og er motivert for å gå elektro så får du nok til matten på elektro.»</p>
+            <p class="meta ung-svarer">Svar fra rådgiver og karriereveileder vgs, 6.8.2024</p>
+            <a class="pill" data-lenke="ung-elektriker-matte">Les hele svaret på ung.no</a>
+          </li>
           <li class="intervju" data-kort="intervju-kristian-utdanning">
             <a data-lenke="intervju-kristian-utdanning">
               <span class="intervju-topp">
-                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/artikkelbilde_medium/public/Elektriker_Christina_S%C3%A6tre_Lea_1.jpg?VersionId=3&amp;h=7fe98ef3&amp;itok=25jhjetD" alt="Kristian Grønnestad i arbeidsjakke, fotografert foran en murvegg" width="600" height="387" loading="lazy" referrerpolicy="no-referrer">
+                <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/artikkelbilde_medium/public/Elektriker_Christina_S%C3%A6tre_Lea_1.jpg?VersionId=3&amp;h=7fe98ef3&amp;itok=25jhjetD" alt="Kristian Grønnestad i arbeidsjakke, fotografert foran en murvegg" width="600" height="387" loading="lazy" referrerpolicy="no-referrer">
                 <span>
                   <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
                   <span class="intervju-navn">Kristian Grønnestad (26)</span>
@@ -327,7 +344,7 @@
         <h2 id="g-jobben" class="seksjon">Hva er arbeidsoppgavene?</h2>
         <ul class="kortliste">
           <li class="kort kort--yrke kort--bilde" data-kort="yrke-elektriker">
-            <a data-lenke="yrke-elektriker" aria-hidden="true" tabindex="-1"><img class="kortbilde" src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/elektriker.png?VersionId=1&amp;h=ab502919&amp;itok=w2O36mns" alt="Elektriker med gul hjelm og arbeidshanske som stripser fast oransje kabler i taket" width="738" height="484" loading="lazy" referrerpolicy="no-referrer"></a>
+            <a data-lenke="yrke-elektriker" aria-hidden="true" tabindex="-1"><img class="kortbilde" src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/full_width_mobil/public/yrker/elektriker.png?VersionId=1&amp;h=ab502919&amp;itok=w2O36mns" alt="Elektriker med gul hjelm og arbeidshanske som stripser fast oransje kabler i taket" width="738" height="484" loading="lazy" referrerpolicy="no-referrer"></a>
             <div>
             <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg><span>Yrke</span></p>
             <h3 class="korttittel"><a data-lenke="yrke-elektriker">Elektriker</a></h3>
@@ -429,7 +446,7 @@
           <li class="intervju" data-kort="intervju-lars">
             <a data-lenke="intervju-lars">
               <span class="intervju-topp">
-                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_personinfo/public/DSC01323.jpg?VersionId=3&amp;itok=kfURY355" alt="Lars Bjerknes i svart t-skjorte fra Alfred Nesset" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
+                <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/intervju_personinfo/public/DSC01323.jpg?VersionId=3&amp;itok=kfURY355" alt="Lars Bjerknes i svart t-skjorte fra Alfred Nesset" width="308" height="205" loading="lazy" referrerpolicy="no-referrer">
                 <span>
                   <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
                   <span class="intervju-navn">Lars Bjerknes (27)</span>
@@ -487,22 +504,22 @@
         <h2 id="g-lignende" class="seksjon">Hvilke yrker ligner?</h2>
         <ul class="lignende-liste">
           <li data-yrke="automatiker"><a data-lenke="ki-sok-automatiker">
-            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/automatiker_0.jpg?VersionId=1&amp;h=1389ae57&amp;itok=P_u-ZmE6" alt="Automatiker i oransje kjeledress og hjelm som arbeider med kabler i et industrianlegg" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/full_width_mobil/public/yrker/automatiker_0.jpg?VersionId=1&amp;h=1389ae57&amp;itok=P_u-ZmE6" alt="Automatiker i oransje kjeledress og hjelm som arbeider med kabler i et industrianlegg" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Automatiker</span></span>
             <span class="lignende-linje">Monterer og vedlikeholder systemer som styrer automatiserte anlegg, ofte i industrien.</span>
           </a></li>
           <li data-yrke="energimontor"><a data-lenke="ki-sok-energimontor">
-            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/yrker/energimontor.png?VersionId=1&amp;h=ab502919&amp;itok=gMGvKk1L" alt="Energimontør med rød vernehjelm som arbeider med isolatorer i et koblingsanlegg" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/full_width_mobil/public/yrker/energimontor.png?VersionId=1&amp;h=ab502919&amp;itok=gMGvKk1L" alt="Energimontør med rød vernehjelm som arbeider med isolatorer i et koblingsanlegg" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Energimontør</span></span>
             <span class="lignende-linje">Bygger og vedlikeholder strømnettet, ofte ute og i store høyder.</span>
           </a></li>
           <li data-yrke="heismontor"><a data-lenke="ki-sok-heismontor">
-            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/full_width_mobil/public/Heismont%C3%B8r_0402_fullsize.jpg?VersionId=1&amp;h=c0e34660&amp;itok=ZChJvkeW" alt="To heismontører som arbeider i en åpen heis" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
+            <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/full_width_mobil/public/Heismont%C3%B8r_0402_fullsize.jpg?VersionId=1&amp;h=c0e34660&amp;itok=ZChJvkeW" alt="To heismontører som arbeider i en åpen heis" width="738" height="484" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Heismontør</span></span>
             <span class="lignende-linje">Monterer og reparerer heiser og rulletrapper, med både elektriske og mekaniske deler.</span>
           </a></li>
           <li data-yrke="elektroingenior"><a data-lenke="ki-sok-elektroingenior">
-            <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/magasin/public/yrker/thinkstockphotos-453304897.jpg?VersionId=1&amp;h=0d92b08a&amp;itok=t-A3h8wo" alt="Person i arbeidsklær med refleks og hansker som kobler ledninger i taket" width="280" height="180" loading="lazy" referrerpolicy="no-referrer">
+            <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/magasin/public/yrker/thinkstockphotos-453304897.jpg?VersionId=1&amp;h=0d92b08a&amp;itok=t-A3h8wo" alt="Person i arbeidsklær med refleks og hansker som kobler ledninger i taket" width="280" height="180" loading="lazy" referrerpolicy="no-referrer">
             <span class="lignende-navn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span>Elektroingeniør via y-veien</span></span>
             <span class="lignende-linje">Planlegger og tegner anlegg, og du kan søke med fagbrev.</span>
           </a></li>
@@ -512,7 +529,7 @@
       <!-- Veilederbanner: hele banneret er lenken -->
       <section class="veileder" aria-labelledby="g-veileder" data-kort="veileder">
         <a data-lenke="chat-veileder">
-          <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+          <img src="https://s3.hkdir-production.openstack.itpartner.no/utdanning-no-production/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
           <span class="veileder-tekst" style="display:block">
             <h2 id="g-veileder">Snakk med en veileder</h2>
             <p class="brodtekst">Gratis og anonymt på chat og telefon, eller sett opp et møte på et karrieresenter.</p>

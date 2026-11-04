@@ -8,15 +8,21 @@
 // En lenke er OK når målsiden svarer 200 etter omdirigering, havner på et tillatt domene,
 // har id-en i «anker» (hvis satt) og inneholder teksten i «tekst.start» (hvis satt).
 // Søkesidene og sammenligningsverktøyet rendres i nettleseren, så der sjekkes bare svar og domene.
+// Bilder med relativ sti (for eksempel ../bilder/ung-no-logo.png) er filer i prototypen. Der sjekkes bare at filen finnes.
 // Avslutter med kode 1 hvis noe feiler.
 
 import { readFile, readdir, access } from 'node:fs/promises';
 
-const TILLATTE_DOMENER = ['utdanning.no', 'karriereveiledning.no'];
-const TILLATTE_BILDEVERTER = ['utdanning.no', 'i.vimeocdn.com'];
+const TILLATTE_DOMENER = ['utdanning.no', 'karriereveiledning.no', 'ung.no'];
+// Bildene til utdanning.no ligger på s3.hkdir-production.openstack.itpartner.no (flyttet fra s3.utdanning.no i 2026).
+const TILLATTE_BILDEVERTER = ['utdanning.no', 's3.hkdir-production.openstack.itpartner.no', 'i.vimeocdn.com'];
 
 const sokMappe = new URL('../sok/', import.meta.url);
-const alleYrker = (await readdir(sokMappe, { withFileTypes: true })).filter((d) => d.isDirectory()).map((d) => d.name).sort();
+// Bare mapper med en resultatside. sok/bilder/ har bildene i prototypen og ingen index.html.
+const alleYrker = [];
+for (const navn of (await readdir(sokMappe, { withFileTypes: true })).filter((d) => d.isDirectory()).map((d) => d.name).sort()) {
+  try { await access(new URL(`${navn}/index.html`, sokMappe)); alleYrker.push(navn); } catch { /* ikke en resultatside */ }
+}
 const yrker = process.argv[2] ? [process.argv[2]] : alleYrker;
 const forside = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 
@@ -50,11 +56,12 @@ async function hent(url) {
 let feil = 0;
 const mangler = [];
 const linje = (...k) => console.log(k.join('\t'));
-let alleSider = '';
+// Sidene med mappen de ligger i, så lokale bildestier løses opp fra riktig sted (forsiden ligger i roten, resultatsidene i sok/<side>/).
+const bildeKilder = [{ html: forside, mappe: new URL('../', import.meta.url) }];
 
 for (const yrke of yrker) {
   const html = await readFile(new URL(`${yrke}/index.html`, sokMappe), 'utf8');
-  alleSider += html;
+  bildeKilder.push({ html, mappe: new URL(`${yrke}/`, sokMappe) });
   const json = html.match(/<script type="application\/json" id="lenker">([\s\S]*?)<\/script>/);
   if (!json) { console.error(`Fant ikke lenketabellen i sok/${yrke}/index.html`); process.exitCode = 1; continue; }
   const lenker = JSON.parse(json[1]);
@@ -97,15 +104,32 @@ for (const yrke of yrker) {
   console.log('');
 }
 
-const bilder = [...new Set([...(forside + alleSider).matchAll(/<img[^>]*\ssrc="([^"]+)"/g)].map((m) => m[1].replaceAll('&amp;', '&')))];
+// Hvert bilde én gang: bilder på nettet etter adressen, bilder i prototypen etter filen stien peker på.
+const bilder = new Map();
+for (const { html, mappe } of bildeKilder) {
+  for (const m of html.matchAll(/<img[^>]*\ssrc="([^"]+)"/g)) {
+    const src = m[1].replaceAll('&amp;', '&');
+    const nokkel = /^https?:/.test(src) ? src : new URL(src.split(/[?#]/)[0], mappe).href;
+    if (!bilder.has(nokkel)) bilder.set(nokkel, src);
+  }
+}
 
 console.log('BILDER');
-for (const src of bilder) {
+for (const [nokkel, src] of bilder) {
   const grunner = [];
+  if (!/^https?:/.test(src)) {
+    // Et bilde i prototypen (for eksempel ung.no-logoen og verktøyikonene i sok/bilder/). Det sjekkes bare at filen finnes.
+    let status = 'fil';
+    try { await access(new URL(nokkel)); }
+    catch { status = '-'; grunner.push('finnes ikke i prototypen'); }
+    if (grunner.length) feil++;
+    linje(src.slice(0, 90), status, grunner.length ? 'FEIL' : 'OK', grunner.join('; '));
+    continue;
+  }
   if (!erTillatt(src, TILLATTE_BILDEVERTER)) grunner.push('ikke tillatt bildevert');
   let status = '-';
   try {
-    const r = await fetch(src, { headers: { referer: 'https://nfsemb.github.io/' } });
+    const r = await fetch(src, { headers: { referer: 'https://nfsemb.github.io/' }, signal: AbortSignal.timeout(30000) });
     status = r.status;
     if (r.status !== 200) grunner.push('svarkode ' + r.status);
     if (!(r.headers.get('content-type') || '').startsWith('image/')) grunner.push('ikke et bilde');

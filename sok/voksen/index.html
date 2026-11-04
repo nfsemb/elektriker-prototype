@@ -115,6 +115,12 @@
     "maal": "Kontaktsiden til Karriereveiledning.no, der du velger chat, telefon eller e-post",
     "side": "https://karriereveiledning.no/kontakt-karriereveileder", "anker": null, "tekst": null,
     "status": "manuell", "kilde": "bestemt av Niels 2026-10-31", "sjekket": "2026-10-31"
+  },
+  "ung-voksen-vernepleier": {
+    "maal": "Spørsmål og svar på ung.no: «Fra vernepleier til jobb i ambulansetjenesten?», svar fra Karriereveiledning.no",
+    "side": "https://www.ung.no/oss/Jfsd79cPnhClJyOksNRcul", "anker": null,
+    "tekst": { "start": "Det finnes muligheter for å gå veien gradvis" },
+    "status": "funnet", "kilde": "ung.no-søket (sok/oss)", "sjekket": "2026-11-04"
   }
 }
 </script>
@@ -154,9 +160,9 @@
     <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
     <div class="brikker-ramme">
       <ul class="brikker">
-        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(15)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(16)</span></button></li>
         <li><button type="button" class="brikke" data-velg="vgs" aria-pressed="false">Videregående <span data-antall="vgs">(2)</span></button></li>
-        <li><button type="button" class="brikke" data-velg="ambulanse" aria-pressed="false">Ambulansearbeider <span data-antall="ambulanse">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="ambulanse" aria-pressed="false">Ambulansearbeider <span data-antall="ambulanse">(4)</span></button></li>
         <li><button type="button" class="brikke" data-velg="erfaring" aria-pressed="false">Erfaring <span data-antall="erfaring">(4)</span></button></li>
         <li><button type="button" class="brikke" data-velg="okonomi" aria-pressed="false">Økonomi <span data-antall="okonomi">(2)</span></button></li>
         <li><button type="button" class="brikke" data-velg="studere" aria-pressed="false">Studere <span data-antall="studere">(4)</span></button></li>
@@ -180,11 +186,12 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
         </h2>
         <ul class="legende">
-          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
-          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
-          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
-          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
-          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+          <li data-type="yrke" style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li data-type="utdanning" style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li data-type="artikkel" style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li data-type="verktoy" style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li data-type="intervju" style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+          <li data-type="ung" class="legende-ung" style="background:#ebe5da;border-color:#dcd3c3"><span>Fra ung.no</span><img src="../bilder/ung-no-ikon.svg" alt="" width="18" height="18"></li>
         </ul>
       </div>
 
@@ -218,7 +225,7 @@
 
       <!-- Situasjonen er personlig: hva som gjelder for deg (rettigheter, penger, godkjenning), avgjør fylkeskommunen, Lånekassen eller HK-dir. Derfor står veilederen øverst, rett etter ingressen, og siden later ikke som den vet det. Knappen går til kontaktsiden (aldri til chat-lenken, som starter en ekte chat). Telefon og åpningstider er lest av kontaktsiden og åpningstidssiden 2026-10-31. Setningen om karrieresentre står på utdanning.no-siden «Karrieresentre» (kontaktsiden på karriereveiledning.no nevner ikke alderen), derfor har den en egen lenke dit. -->
       <section class="veileder--topp" aria-labelledby="g-veileder" data-kort="veileder">
-        <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+        <img src="https://s3.hkdir-production.openstack.itpartner.no/utdanning-no-production/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
         <div class="veileder--topp-tekst">
           <h2 id="g-veileder">Snakk med en karriereveileder</h2>
           <p>Gratis veiledning, anonymt på chat eller telefon 23&nbsp;50&nbsp;61&nbsp;95 (mandag–torsdag 09:00–15:00, fredag 09:00–12:00), eller hos <a data-lenke="karrieresentre">karrieresentrene i fylkene</a> for alle over 19 år.</p>
@@ -265,6 +272,16 @@
             <h3 class="korttittel"><a data-lenke="voksen-ambulanse-trondelag">Ambulansearbeider – Trøndelag</a></h3>
             <p class="brodtekst">Svar på hvor mye erfaring du har, og se hvilken vei til fagbrev som passer deg.</p>
           </li>
+          <li class="kort kort--ung" data-kort="ung-voksen-vernepleier">
+            <div class="ung-topp"><span class="typelinje">Spørsmål og svar</span><img class="ung-logo" src="../bilder/ung-no-logo.png" alt="ung.no" width="41" height="30"></div>
+            <div class="ung-boble">
+              <h3 class="korttittel"><a data-lenke="ung-voksen-vernepleier">Fra vernepleier til jobb i ambulansetjenesten?</a></h3>
+              <p class="meta ung-spurt">Jente, 20</p>
+            </div>
+            <p class="brodtekst ung-sitat">«Det finnes muligheter for å gå veien gradvis via voksenopplæring og praksis. Mange starter som assistenter eller i støttefunksjoner i ambulansetjenesten for å få erfaring før de tar fagbrev.»</p>
+            <p class="meta ung-svarer">Svar fra Karriereveiledning.no, 18.8.2025</p>
+            <a class="pill" data-lenke="ung-voksen-vernepleier">Les hele svaret på ung.no</a>
+          </li>
         </ul>
       </section>
 
@@ -290,7 +307,7 @@
           <li class="intervju" data-kort="intervju-kim-andre">
             <a data-lenke="intervju-kim-andre">
               <span class="intervju-topp">
-                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/artikkelbilde_medium/public/Gjenvinningsoperat%C3%B8r_eline.nesje_.JPG?VersionId=1&amp;itok=R5YsGct2" alt="Kim André Henriksen i gul refleksuniform og caps flytter en brukt hvitevare foran en container full av hvitevarer" width="600" height="387" loading="lazy" referrerpolicy="no-referrer">
+                <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/artikkelbilde_medium/public/Gjenvinningsoperat%C3%B8r_eline.nesje_.JPG?VersionId=1&amp;itok=R5YsGct2" alt="Kim André Henriksen i gul refleksuniform og caps flytter en brukt hvitevare foran en container full av hvitevarer" width="600" height="387" loading="lazy" referrerpolicy="no-referrer">
                 <span>
                   <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
                   <span class="intervju-navn">Kim André Henriksen (34)</span>
@@ -340,11 +357,6 @@
               <a class="pill" data-lenke="paramedisin-poenggrenser">Se poenggrense</a>
             </div>
             <p class="meta kilde">Poenggrenser er hentet fra Samordnas forrige opptak sommeren 2026.</p>
-            <div class="forklaring" data-ekstra hidden>
-              <p class="brodtekst"><strong>Førstegang:</strong> Kvoten for deg som er 21 år eller yngre i opptaksåret og har vitnemål fra videregående. Har du forbedret karakterer etterpå, søker du i ordinær kvote.</p>
-              <p class="brodtekst"><strong>Ordinær:</strong> Her konkurrerer du med konkurransepoeng, det vil si karakterpoeng og tilleggspoeng.</p>
-            </div>
-            <button type="button" class="se-mer" aria-expanded="false" data-apen-tekst="Skjul forklaringen">Hva betyr førstegang og ordinær?</button>
           </li>
           <li class="kort kort--verktoy" data-kort="karakterkalkulatoren" data-vis-hvis="ambulanse*">
             <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg><span>Verktøy</span></p>

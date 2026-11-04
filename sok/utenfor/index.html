@@ -64,6 +64,12 @@
     "maal": "Kontaktsiden til Karriereveiledning.no, der du velger chat, telefon eller e-post",
     "side": "https://karriereveiledning.no/kontakt-karriereveileder", "anker": null, "tekst": null,
     "status": "manuell", "kilde": "bestemt av Niels 2026-10-31", "sjekket": "2026-10-31"
+  },
+  "ung-utenfor-ledige-jobber": {
+    "maal": "Artikkel på ung.no: «Slik finner du ledige jobber»",
+    "side": "https://www.ung.no/jobb/1679_Slik_finner_du_ledige_jobber.html", "anker": null,
+    "tekst": { "start": "På jakt etter jobb?" },
+    "status": "funnet", "kilde": "sitemap på ung.no", "sjekket": "2026-11-04"
   }
 }
 </script>
@@ -103,8 +109,8 @@
     <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
     <div class="brikker-ramme">
       <ul class="brikker">
-        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(7)</span></button></li>
-        <li><button type="button" class="brikke" data-velg="lete" aria-pressed="false">Lete selv <span data-antall="lete">(3)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(8)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="lete" aria-pressed="false">Lete selv <span data-antall="lete">(4)</span></button></li>
         <li><button type="button" class="brikke" data-velg="soke" aria-pressed="false">Søke <span data-antall="soke">(3)</span></button></li>
         <li><button type="button" class="brikke" data-velg="it" aria-pressed="false">IT-jobber <span data-antall="it">(1)</span></button></li>
         <li class="vis-flere-plass bare-desktop" hidden>
@@ -126,11 +132,12 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
         </h2>
         <ul class="legende">
-          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
-          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
-          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
-          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
-          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+          <li data-type="yrke" style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li data-type="utdanning" style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li data-type="artikkel" style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li data-type="verktoy" style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li data-type="intervju" style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+          <li data-type="ung" class="legende-ung" style="background:#ebe5da;border-color:#dcd3c3"><span>Fra ung.no</span><img src="../bilder/ung-no-ikon.svg" alt="" width="18" height="18"></li>
         </ul>
       </div>
 
@@ -159,7 +166,7 @@
 
       <!-- Veilederen står øverst, rett etter ingressen, fordi den er det nærmeste vi har til et svar. Lenken går til kontaktsiden (aldri til chat-lenken, som starter en ekte chat). Telefon og åpningstider er lest av kontaktsiden og åpningstidssiden 2026-10-31. -->
       <section class="veileder--topp" aria-labelledby="g-veileder" data-kort="veileder">
-        <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+        <img src="https://s3.hkdir-production.openstack.itpartner.no/utdanning-no-production/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
         <div class="veileder--topp-tekst">
           <h2 id="g-veileder">Snakk med en karriereveileder</h2>
           <p>Gratis og anonymt, på chat eller telefon 23&nbsp;50&nbsp;61&nbsp;95 (mandag–torsdag 09:00–15:00, fredag 09:00–12:00).</p>
@@ -190,6 +197,12 @@
             <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
             <h3 class="korttittel"><a data-lenke="under-18">Hvordan søke jobb når du er under 18 år</a></h3>
             <p class="brodtekst">Ser du etter deltidsjobb eller sommerjobb?</p>
+          </li>
+          <li class="kort kort--ung kort--ung-artikkel" data-kort="ung-utenfor-ledige-jobber">
+            <div class="ung-topp"><span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></span><img class="ung-logo" src="../bilder/ung-no-logo.png" alt="ung.no" width="41" height="30"></div>
+            <h3 class="korttittel"><a data-lenke="ung-utenfor-ledige-jobber">Slik finner du ledige jobber</a></h3>
+            <p class="brodtekst ung-ingress">På jakt etter jobb? Her er en oversikt over hvordan du kan finne ledige jobber.</p>
+            <p class="meta ung-svarer">Skrevet av Redaksjonen, ung.no. Sist oppdatert 20.7.2026.</p>
           </li>
         </ul>
       </section>

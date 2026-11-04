@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Prøveside for sjekk-sitater: ung.no-kort</title>
+<!-- Prøveside for scripts/sjekk-sitater.mjs. Kjør: node scripts/sjekk-sitater.mjs ung-proeve --rot test/sjekk-sitater
+     Ventet: ung-riktig OK, ung-feil-sitat FEIL (sitat ordrett), ung-feil-svarer FEIL (svarer), ung-artikkel OK,
+     «ung.no-kort: 4», «Feil: 2». -->
+<script type="application/json" id="lenker">
+{
+  "ung-riktig": {
+    "maal": "Spørsmål og svar på ung.no: «Hvilken linje må jeg gå på vgs for å bli psykolog?», svar fra Karriereveiledning.no",
+    "side": "https://www.ung.no/oss/4402eTMtL0dnRHW9GHQpav", "anker": null,
+    "tekst": { "start": "Kort fortalt: Du kan velge hvilken som helst linje" },
+    "status": "funnet", "kilde": "ung.no-søket (sok/oss)", "sjekket": "2026-11-04"
+  },
+  "ung-feil-sitat": {
+    "maal": "Samme svar, med et sitat som er endret med vilje",
+    "side": "https://www.ung.no/oss/4402eTMtL0dnRHW9GHQpav", "anker": null,
+    "tekst": { "start": "Kort fortalt: Du kan velge hvilken som helst linje" },
+    "status": "funnet", "kilde": "ung.no-søket (sok/oss)", "sjekket": "2026-11-04"
+  },
+  "ung-feil-svarer": {
+    "maal": "Samme svar, med feil svarer med vilje (UngInfo har ikke svart her)",
+    "side": "https://www.ung.no/oss/4402eTMtL0dnRHW9GHQpav", "anker": null,
+    "tekst": { "start": "Kort fortalt: Du kan velge hvilken som helst linje" },
+    "status": "funnet", "kilde": "ung.no-søket (sok/oss)", "sjekket": "2026-11-04"
+  },
+  "ung-artikkel": {
+    "maal": "Artikkel på ung.no: «Fikk ikke studieplassen jeg ønsket - hva gjør jeg?»",
+    "side": "https://www.ung.no/utdanning/houtd/2618_Fikk_ikke_studieplassen_jeg_%C3%B8nsket_-_hva_gj%C3%B8r_jeg.html", "anker": null,
+    "tekst": { "start": "Alt håp er heldigvis ikke ute" },
+    "status": "funnet", "kilde": "sitemap på ung.no", "sjekket": "2026-11-04"
+  }
+}
+</script>
+</head>
+<body>
+<section class="gruppe">
+  <h2 class="seksjon">Prøve</h2>
+  <ul class="kortliste">
+    <li class="kort kort--ung" data-kort="ung-riktig">
+      <div class="ung-topp"><span class="typelinje">Spørsmål og svar</span><img class="ung-logo" src="../bilder/ung-no-logo.png" alt="ung.no" width="41" height="30"></div>
+      <div class="ung-boble">
+        <h3 class="korttittel"><a data-lenke="ung-riktig">Hvilken linje må jeg gå på vgs for å bli psykolog?</a></h3>
+        <p class="meta ung-spurt">Jente, 14</p>
+      </div>
+      <p class="brodtekst ung-sitat">«Kort fortalt: Du kan velge hvilken som helst linje på videregående og fortsatt bli psykolog. Det viktigste er at du får generell studiekompetanse.»</p>
+      <p class="meta ung-svarer">Svar fra Karriereveiledning.no, 30.3.2026</p>
+      <a class="pill" data-lenke="ung-riktig">Les hele svaret på ung.no</a>
+    </li>
+    <li class="kort kort--ung" data-kort="ung-feil-sitat">
+      <div class="ung-topp"><span class="typelinje">Spørsmål og svar</span><img class="ung-logo" src="../bilder/ung-no-logo.png" alt="ung.no" width="41" height="30"></div>
+      <div class="ung-boble">
+        <h3 class="korttittel"><a data-lenke="ung-feil-sitat">Hvilken linje må jeg gå på vgs for å bli psykolog?</a></h3>
+        <p class="meta ung-spurt">Jente, 14</p>
+      </div>
+      <p class="brodtekst ung-sitat">«Kort fortalt: Du kan velge hvilken linje som helst på videregående og fortsatt bli psykolog.»</p>
+      <p class="meta ung-svarer">Svar fra Karriereveiledning.no, 30.3.2026</p>
+      <a class="pill" data-lenke="ung-feil-sitat">Les hele svaret på ung.no</a>
+    </li>
+    <li class="kort kort--ung" data-kort="ung-feil-svarer">
+      <div class="ung-topp"><span class="typelinje">Spørsmål og svar</span><img class="ung-logo" src="../bilder/ung-no-logo.png" alt="ung.no" width="41" height="30"></div>
+      <div class="ung-boble">
+        <h3 class="korttittel"><a data-lenke="ung-feil-svarer">Hvilken linje må jeg gå på vgs for å bli psykolog?</a></h3>
+        <p class="meta ung-spurt">Jente, 14</p>
+      </div>
+      <p class="brodtekst ung-sitat">«Kort fortalt: Du kan velge hvilken som helst linje på videregående og fortsatt bli psykolog. Det viktigste er at du får generell studiekompetanse.»</p>
+      <p class="meta ung-svarer">Svar fra UngInfo, 30.3.2026</p>
+      <a class="pill" data-lenke="ung-feil-svarer">Les hele svaret på ung.no</a>
+    </li>
+    <li class="kort kort--ung kort--ung-artikkel" data-kort="ung-artikkel">
+      <div class="ung-topp"><span class="typelinje"><span>Artikkel</span></span><img class="ung-logo" src="../bilder/ung-no-logo.png" alt="ung.no" width="41" height="30"></div>
+      <h3 class="korttittel"><a data-lenke="ung-artikkel">Fikk ikke studieplassen jeg ønsket - hva gjør jeg?</a></h3>
+      <p class="brodtekst ung-ingress">Alt håp er heldigvis ikke ute. Her kan du lese om hvilke muligheter du har.</p>
+      <p class="meta ung-svarer">Skrevet av Redaksjonen, ung.no i samarbeid med Karriereveiledning.no. Sist oppdatert 28.5.2025.</p>
+    </li>
+  </ul>
+</section>
+</body>
+</html>

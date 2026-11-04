@@ -13,7 +13,15 @@
 // Stillingen sammenlignes uten hensyn til store og små bokstaver («Sykepleierstudent» mot «sykepleierstudent»).
 // Sammenligningen normaliserer mellomrom, typografiske anførselstegn og mellomrom før tegnsetting.
 // Skriver side, gruppe, navn, stilling, arbeidsgiver og sitat for hvert kort, og OK eller FEIL.
-// Sider uten intervjukort hoppes over. Siste linje er «Feil: <antall>». Avslutter med kode 1 hvis noe feiler.
+//
+// ung.no-kortene (li.kort--ung med data-kort) sjekkes mot siden på ung.no på samme måte:
+//   spørsmål og svar: tittelen med kjønn og alder rett etter («Hvilken linje …? Jente, 14»), sitatet ordrett
+//   (uten «»), hvem som svarte (fra «Svar fra <svarer>, <dato>», mellom spørsmålet og «Besvart: <dato>» på siden,
+//   uten hensyn til store og små bokstaver) og tekst.start.
+//   artikkel (li.kort--ung-artikkel): tittelen, ingressen ordrett, «Skrevet av <forfatter>», «Sist oppdatert <dato>»
+//   og tekst.start.
+// Sider uten intervjukort og ung.no-kort hoppes over. Siste linjer er «Intervjuer: <antall>», «ung.no-kort: <antall>»
+// og «Feil: <antall>». Avslutter med kode 1 hvis noe feiler.
 // Mellomlagrer nedlastede intervjuer i <tempmappe>/sjekk-sitater i seks timer.
 // Slett mappen for å tvinge ny nedlasting.
 
@@ -139,8 +147,9 @@ function finnKort(html) {
     const innhold = () => tilLukketag(html, m.index + m[0].length, m[1].toLowerCase());
     if (m[1].toLowerCase() === 'h2') {
       if (klasser.includes('seksjon')) gruppe = rydd(innhold()).replace(/\s+/g, ' ');
-    } else if (klasser.includes('intervju') && attributt(m[0], 'data-kort') !== null) {
-      kort.push({ id: attributt(m[0], 'data-kort'), gruppe, html: innhold() });
+    } else if (attributt(m[0], 'data-kort') !== null && (klasser.includes('intervju') || klasser.includes('kort--ung'))) {
+      const type = klasser.includes('intervju') ? 'intervju' : klasser.includes('kort--ung-artikkel') ? 'ung-artikkel' : 'ung-svar';
+      kort.push({ id: attributt(m[0], 'data-kort'), type, gruppe, html: innhold() });
     }
   }
   return kort;
@@ -166,6 +175,67 @@ function avvik(sitat, tekst) {
   return `sitatet stemmer til og med «${lo > 40 ? '…' : ''}${foran}», men avviker fra «${sitat.slice(lo, lo + 40)}${lo + 40 < sitat.length ? '…' : ''}»`;
 }
 
+// Slår opp kortets data-lenke i lenketabellen og henter siden. Gir { lenke, tekst } eller { feil }.
+async function hentKilde(kort, tabell) {
+  const lenkeId = (kort.html.match(/data-lenke="([^"]+)"/) ?? [])[1];
+  if (!lenkeId) return { feil: 'kortet har ingen data-lenke' };
+  if (tabell.feil) return { feil: tabell.feil };
+  const lenke = tabell.lenker[lenkeId];
+  if (!lenke) return { feil: `lenke-id «${lenkeId}» finnes ikke i lenketabellen` };
+  if (!/^https?:\/\//.test(lenke.side ?? '')) return { feil: `«${lenkeId}» har ingen nettadresse i «side»` };
+  const svar = await hentTekst(lenke.side);
+  if (svar.feil) return { feil: `kunne ikke hente ${lenke.side}: ${svar.feil}` };
+  return { lenke, tekst: svar.tekst };
+}
+
+// Sjekker ett ung.no-kort. Gir { sitat, felt, status, merknad } som sjekkKort. felt har tittel og svarer (eller forfatter).
+async function sjekkUngKort(kort, tabell) {
+  const avsnitt = (klasse) => rydd((kort.html.match(new RegExp(`<p class="[^"]*\\b${klasse}\\b[^"]*"[^>]*>([\\s\\S]*?)</p>`, 'i')) ?? [])[1] ?? '');
+  const artikkel = kort.type === 'ung-artikkel';
+  const tittel = rydd((kort.html.match(/<h3[^>]*>([\s\S]*?)<\/h3>/i) ?? [])[1] ?? '');
+  const sitat = avsnitt(artikkel ? 'ung-ingress' : 'ung-sitat').replace(/^«/, '').replace(/»$/, '');
+  const linje = avsnitt('ung-svarer');
+  const hvem = artikkel
+    ? linje.match(/^Skrevet av (.+)\. Sist oppdatert (\d{1,2}\.\d{1,2}\.\d{4})\.$/)
+    : linje.match(/^Svar fra (.+), (\d{1,2}\.\d{1,2}\.\d{4})$/);
+  const felt = { tittel, [artikkel ? 'forfatter' : 'svarer']: hvem ? hvem[1] : null };
+  const resultat = { sitat, felt, merknad: null };
+  const feil = (tekst) => ({ ...resultat, status: 'FEIL: ' + tekst });
+  if (!hvem) return feil(artikkel ? '«Skrevet av …. Sist oppdatert <dato>.» mangler eller har feil form' : '«Svar fra …, <dato>» mangler eller har feil form');
+  const [, person, dato] = hvem;
+
+  const kilde = await hentKilde(kort, tabell);
+  if (kilde.feil) return feil(kilde.feil);
+  const { lenke, tekst: t } = kilde;
+  const finnes = (tekst) => tekst.trim() !== '' && t.includes(norm(tekst));
+  const ordrett = artikkel ? 'ingress ordrett' : 'sitat ordrett';
+
+  let sjekk;
+  if (artikkel) {
+    sjekk = {
+      'tittel': finnes(tittel),
+      'ingress ordrett': finnes(sitat),
+      'forfatter': finnes('Skrevet av ' + person),
+      'dato': finnes('Sist oppdatert ' + dato)
+    };
+  } else {
+    // Hvem som svarte skal stå i svaret, mellom spørsmålet og «Besvart: <dato>», ikke et annet sted på siden.
+    const spurt = avsnitt('ung-spurt');
+    const fra = t.indexOf(norm(`${tittel} ${spurt}`));
+    const til = t.indexOf(norm('Besvart: ' + dato));
+    sjekk = {
+      'tittel med kjønn og alder': spurt !== '' && fra !== -1,
+      'sitat ordrett': finnes(sitat),
+      'dato': til !== -1,
+      'svarer': fra !== -1 && til > fra && t.slice(fra, til).toLowerCase().includes(norm(person).toLowerCase())
+    };
+  }
+  sjekk['tekst.start'] = !lenke.tekst?.start || t.includes(norm(lenke.tekst.start));
+  const feilede = Object.keys(sjekk).filter((k) => !sjekk[k]);
+  if (!sjekk[ordrett] && sitat) resultat.merknad = avvik(norm(sitat), t);
+  return { ...resultat, status: feilede.length ? 'FEIL: ' + feilede.join(', ') : 'OK' };
+}
+
 // Sjekker ett kort. Gir { sitat, felt, status, merknad } der status er 'OK' eller en tekst som begynner med 'FEIL'.
 async function sjekkKort(kort, tabell) {
   const felt = {};
@@ -177,16 +247,9 @@ async function sjekkKort(kort, tabell) {
   const resultat = { sitat, felt, merknad: null };
   const feil = (tekst) => ({ ...resultat, status: 'FEIL: ' + tekst });
 
-  const lenkeId = (kort.html.match(/data-lenke="([^"]+)"/) ?? [])[1];
-  if (!lenkeId) return feil('kortet har ingen data-lenke');
-  if (tabell.feil) return feil(tabell.feil);
-  const lenke = tabell.lenker[lenkeId];
-  if (!lenke) return feil(`lenke-id «${lenkeId}» finnes ikke i lenketabellen`);
-  if (!/^https?:\/\//.test(lenke.side ?? '')) return feil(`«${lenkeId}» har ingen nettadresse i «side»`);
-
-  const svar = await hentTekst(lenke.side);
-  if (svar.feil) return feil(`kunne ikke hente ${lenke.side}: ${svar.feil}`);
-  const t = svar.tekst;
+  const kilde = await hentKilde(kort, tabell);
+  if (kilde.feil) return feil(kilde.feil);
+  const { lenke, tekst: t } = kilde;
 
   // Et felt som mangler eller er tomt, skal feile (en tom tekst finnes alltid i en annen tekst).
   const finnes = (tekst) => tekst.trim() !== '' && t.includes(norm(tekst));
@@ -218,6 +281,7 @@ if (side) {
 }
 
 let antall = 0;
+let antallUng = 0;
 let antallFeil = 0;
 for (const yrke of yrker) {
   let html;
@@ -228,13 +292,17 @@ for (const yrke of yrker) {
     continue; // en mappe uten resultatside
   }
   const kort = finnKort(html);
-  if (!kort.length) { console.log(`${yrke}: ingen intervjukort, hoppet over\n`); continue; }
+  if (!kort.length) { console.log(`${yrke}: ingen intervjukort eller ung.no-kort, hoppet over\n`); continue; }
   const tabell = lesLenketabell(html);
   for (const k of kort) {
-    const r = await sjekkKort(k, tabell);
-    antall++;
+    const ung = k.type !== 'intervju';
+    const r = ung ? await sjekkUngKort(k, tabell) : await sjekkKort(k, tabell);
+    if (ung) antallUng++; else antall++;
     if (r.status !== 'OK') antallFeil++;
-    console.log(`${yrke.padEnd(11)} | ${k.gruppe} | ${r.felt.navn ?? '[mangler]'} | ${r.felt.stilling ?? '[mangler]'} | ${r.felt.arbeidsgiver ?? '[mangler]'}\n            «${r.sitat}»\n            ${r.status}`);
+    const beskrivelse = ung
+      ? `ung.no ${k.type === 'ung-artikkel' ? 'artikkel' : 'svar'} | ${r.felt.tittel || '[mangler]'} | ${r.felt.svarer ?? r.felt.forfatter ?? '[mangler]'}`
+      : `${r.felt.navn ?? '[mangler]'} | ${r.felt.stilling ?? '[mangler]'} | ${r.felt.arbeidsgiver ?? '[mangler]'}`;
+    console.log(`${yrke.padEnd(11)} | ${k.gruppe ?? "(ingen gruppe)"} | ${beskrivelse}\n            «${r.sitat}»\n            ${r.status}`);
     if (r.merknad) console.log(`            ${r.merknad}`);
     console.log('');
   }
@@ -242,5 +310,6 @@ for (const yrke of yrker) {
 
 if (ukjenteEntiteter.size) console.error(`ADVARSEL: ukjente HTML-entiteter i intervjuene, ikke dekodet: ${[...ukjenteEntiteter].join(' ')}`);
 console.log(`Intervjuer: ${antall}`);
+console.log(`ung.no-kort: ${antallUng}`);
 console.log(`Feil: ${antallFeil}`);
 process.exitCode = antallFeil ? 1 : 0;

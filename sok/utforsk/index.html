@@ -99,6 +99,18 @@
     "maal": "Kontaktsiden til Karriereveiledning.no, der du velger chat, telefon eller e-post",
     "side": "https://karriereveiledning.no/kontakt-karriereveileder", "anker": null, "tekst": null,
     "status": "manuell", "kilde": "bestemt av Niels 2026-10-31", "sjekket": "2026-10-31"
+  },
+  "ung-utforsk-stressa": {
+    "maal": "Spørsmål og svar på ung.no: «Stressa elev: går vg2 og vet ikke hva jeg vil bli», svar fra Karriereveiledning.no",
+    "side": "https://www.ung.no/oss/SVeT7tdfknnBKivgJOPLog", "anker": null,
+    "tekst": { "start": "Det er kanskje lettere sagt enn gjort" },
+    "status": "funnet", "kilde": "ung.no-søket (sok/oss)", "sjekket": "2026-11-04"
+  },
+  "ung-utforsk-hva-bli": {
+    "maal": "Artikkel på ung.no: «Hva skal jeg bli?»",
+    "side": "https://www.ung.no/utdanning/2699_Jeg_vet_jo_ikke_hva_jeg_vil_bli.html", "anker": null,
+    "tekst": { "start": "Skal du starte på VGS" },
+    "status": "funnet", "kilde": "sitemap på ung.no", "sjekket": "2026-11-04"
   }
 }
 </script>
@@ -138,8 +150,8 @@
     <h2 class="etikett" style="margin-bottom:8px">Velg tema</h2>
     <div class="brikker-ramme">
       <ul class="brikker">
-        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(12)</span></button></li>
-        <li><button type="button" class="brikke" data-velg="begynne" aria-pressed="false">Komme i gang <span data-antall="begynne">(2)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="alle" aria-pressed="true">Alle <span data-antall="alle">(14)</span></button></li>
+        <li><button type="button" class="brikke" data-velg="begynne" aria-pressed="false">Komme i gang <span data-antall="begynne">(4)</span></button></li>
         <li><button type="button" class="brikke" data-velg="passe" aria-pressed="false">Passer for meg <span data-antall="passe">(3)</span></button></li>
         <li><button type="button" class="brikke" data-velg="finne-ut" aria-pressed="false">Finne ut mer <span data-antall="finne-ut">(3)</span></button></li>
         <li><button type="button" class="brikke" data-velg="andre" aria-pressed="false">Andres vei <span data-antall="andre">(4)</span></button></li>
@@ -162,11 +174,12 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
         </h2>
         <ul class="legende">
-          <li style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
-          <li style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
-          <li style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
-          <li style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
-          <li style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+          <li data-type="yrke" style="background:#fce5d0;border-color:#f6d5b5"><span>Yrke og yrkesvideo</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V6h6v2"/></svg></li>
+          <li data-type="utdanning" style="background:#d6f1ea;border-color:#bde5da"><span>Utdanning</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 8l10-4 10 4-10 4zM6 11v5c0 1 3 2 6 2s6-1 6-2v-5"/></svg></li>
+          <li data-type="artikkel" style="background:#dfedf0;border-color:#c9e0e5"><span>Artikler</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg></li>
+          <li data-type="verktoy" style="background:#e4daf6;border-color:#cfc0ea"><span>Verktøy</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15 9l-1.5 4.5L9 15l1.5-4.5z"/></svg></li>
+          <li data-type="intervju" style="background:#ffffff;border-color:#adadad"><span>Intervju</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg></li>
+          <li data-type="ung" class="legende-ung" style="background:#ebe5da;border-color:#dcd3c3"><span>Fra ung.no</span><img src="../bilder/ung-no-ikon.svg" alt="" width="18" height="18"></li>
         </ul>
       </div>
 
@@ -187,7 +200,7 @@
       <!-- Ingressen sier hvordan søket er forstått, og bare det: at deltakeren lurer på hva som passer. Søket står i anførselstegn (data-sok-tekst). Står «aner ikke», «vet ikke» eller «usikker» i søket, kommer en setning om at det er vanlig å ikke vite, foran «Her er måter å finne ut av det på.» Andre søk som rutes hit («interessetest», «hvordan velger man …») får bare den siste. Hvilken gruppe siden starter med, står i data-tolkning, som felles.js fyller («Vi starter med …», og «som du spurte om» bare når søket traff gruppen med minst to poeng). Tallet regnes ut av felles.js. Under ingressen kommer to valg som tilpasser siden: videregående eller studier. Begge går til en samleside på karriereveiledning.no, og lenketeksten sier det. -->
       <div class="treff">
         <h2 class="etikett">Søkeresultat</h2>
-        <p class="avvisning avvisning--med-valg"><span data-antall-ingress>12</span> resultater. Du skrev «<span data-sok-tekst>Jeg aner ikke hva jeg vil bli</span>», og vi forstår det som at du lurer på hva som passer for deg. <span data-vis-hvis="aner ikke|vet ikke|usikker*">Det er helt vanlig å ikke vite.</span> Her er måter å finne ut av det på.<span data-tolkning hidden></span></p>
+        <p class="avvisning avvisning--med-valg"><span data-antall-ingress>14</span> resultater. Du skrev «<span data-sok-tekst>Jeg aner ikke hva jeg vil bli</span>», og vi forstår det som at du lurer på hva som passer for deg. <span data-vis-hvis="aner ikke|vet ikke|usikker*">Det er helt vanlig å ikke vite.</span> Her er måter å finne ut av det på.<span data-tolkning hidden></span></p>
         <ul class="sporsmal-brikker valg-ingress">
           <li data-kort="valg-videregaende"><a data-lenke="samle-vgs">Skal du velge videregående? Se tips på karriereveiledning.no</a></li>
           <li data-kort="valg-studier"><a data-lenke="samle-studier">Skal du velge studier? Se tips på karriereveiledning.no</a></li>
@@ -196,7 +209,7 @@
 
       <!-- Veilederen står øverst, rett under ingressen: den som ikke vet hva hun vil, trenger et menneske mer enn et nytt treff. Knappen går til kontaktsiden (aldri til chat-lenken, som starter en ekte chat). Teksten sier bare det kontaktsiden sier: valg av utdanning og jobb, gratis og anonymt, chat og telefon. Telefon og åpningstider er lest av kontaktsiden og åpningstidssiden 2026-10-31. Overskriften er fra skissen. Bildet er det samme som på de andre sidene (skissens veilederbilde er ikke brukt). Ingen lenke til karrieresentrene her: de gjelder voksne over 19 år, og siden er også for ungdomsskoleelever. -->
       <section class="veileder--topp" aria-labelledby="g-veileder-topp" data-kort="veileder-topp">
-        <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+        <img src="https://s3.hkdir-production.openstack.itpartner.no/utdanning-no-production/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
         <div class="veileder--topp-tekst">
           <h2 id="g-veileder-topp">Usikker på hvor du skal begynne?</h2>
           <p>Snakk med en karriereveileder om valg av utdanning og jobb, gratis og anonymt, på chat eller telefon 23&nbsp;50&nbsp;61&nbsp;95 (mandag–torsdag 09:00–15:00, fredag 09:00–12:00).</p>
@@ -217,6 +230,22 @@
             <p class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></p>
             <h3 class="korttittel"><a data-lenke="vanskelig-a-velge">Derfor kan det være vanskelig å velge utdanning</a></h3>
             <p class="brodtekst">Hjernen er ikke laget for så kompliserte avgjørelser, og magefølelsen gir dårlige råd.</p>
+          </li>
+          <li class="kort kort--ung" data-kort="ung-utforsk-stressa">
+            <div class="ung-topp"><span class="typelinje">Spørsmål og svar</span><img class="ung-logo" src="../bilder/ung-no-logo.png" alt="ung.no" width="41" height="30"></div>
+            <div class="ung-boble">
+              <h3 class="korttittel"><a data-lenke="ung-utforsk-stressa">Stressa elev: går vg2 og vet ikke hva jeg vil bli</a></h3>
+              <p class="meta ung-spurt">Gutt, 17</p>
+            </div>
+            <p class="brodtekst ung-sitat">«Det er kanskje lettere sagt enn gjort, men du trenger ikke å vite nå hva du vil bli eller jobbe med resten av livet.»</p>
+            <p class="meta ung-svarer">Svar fra Karriereveiledning.no, 30.8.2024</p>
+            <a class="pill" data-lenke="ung-utforsk-stressa">Les hele svaret på ung.no</a>
+          </li>
+          <li class="kort kort--ung kort--ung-artikkel" data-kort="ung-utforsk-hva-bli">
+            <div class="ung-topp"><span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></svg><span>Artikkel</span></span><img class="ung-logo" src="../bilder/ung-no-logo.png" alt="ung.no" width="41" height="30"></div>
+            <h3 class="korttittel"><a data-lenke="ung-utforsk-hva-bli">Hva skal jeg bli?</a></h3>
+            <p class="brodtekst ung-ingress">Skal du starte på VGS og lurer på hvilken linje du skal velge? Eller er du ferdig på VGS og lurer på hva du skal gjøre videre?</p>
+            <p class="meta ung-svarer">Skrevet av Redaksjonen, i samarbeid med Direktoratet for høyere utdanning og kompetanse. Sist oppdatert 29.8.2026.</p>
           </li>
         </ul>
       </section>
@@ -279,7 +308,7 @@
           <li class="intervju" data-kort="intervju-julianne">
             <a data-lenke="intervju-julianne">
               <span class="intervju-topp">
-                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_header/public/laborant_elin_marie_jensen.jpeg?VersionId=5&amp;itok=qQmI5GLV" alt="Julianne Steira Jensen med lyst hår, vernebriller og hvit frakk" width="280" height="280" loading="lazy" referrerpolicy="no-referrer">
+                <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/intervju_header/public/laborant_elin_marie_jensen.jpeg?VersionId=5&amp;itok=qQmI5GLV" alt="Julianne Steira Jensen med lyst hår, vernebriller og hvit frakk" width="280" height="280" loading="lazy" referrerpolicy="no-referrer">
                 <span>
                   <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
                   <span class="intervju-navn">Julianne Steira Jensen (21)</span>
@@ -294,7 +323,7 @@
           <li class="intervju" data-kort="intervju-erling">
             <a data-lenke="intervju-erling">
               <span class="intervju-topp">
-                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_header/public/DSC00636.jpg?VersionId=3&amp;h=1d3f1420&amp;itok=cd7fGcfT" alt="Erling Berge Monsen i hvit frakk smiler til kamera, foran et hvitt sylinderformet apparat" width="280" height="280" loading="lazy" referrerpolicy="no-referrer">
+                <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/intervju_header/public/DSC00636.jpg?VersionId=3&amp;h=1d3f1420&amp;itok=cd7fGcfT" alt="Erling Berge Monsen i hvit frakk smiler til kamera, foran et hvitt sylinderformet apparat" width="280" height="280" loading="lazy" referrerpolicy="no-referrer">
                 <span>
                   <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
                   <span class="intervju-navn">Erling Berge Monsen (35)</span>
@@ -309,7 +338,7 @@
           <li class="intervju" data-kort="intervju-alexandra">
             <a data-lenke="intervju-alexandra">
               <span class="intervju-topp">
-                <img src="https://s3.utdanning.no/hkdir-data-utdanning-no-prod/s3fs-public/styles/intervju_header/public/keramiker%202mb.JPG?VersionId=5&amp;itok=a1SiXziB" alt="Alexandra Visnes med lyst oppsatt hår og hvit heklet topp smiler, med keramikk i bakgrunnen" width="280" height="280" loading="lazy" referrerpolicy="no-referrer">
+                <img src="https://s3.hkdir-production.openstack.itpartner.no/data-utdanning-no-production/s3fs-public/styles/intervju_header/public/keramiker%202mb.JPG?VersionId=5&amp;itok=a1SiXziB" alt="Alexandra Visnes med lyst oppsatt hår og hvit heklet topp smiler, med keramikk i bakgrunnen" width="280" height="280" loading="lazy" referrerpolicy="no-referrer">
                 <span>
                   <span class="typelinje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Intervju</span></span>
                   <span class="intervju-navn">Alexandra Visnes (46)</span>
@@ -339,7 +368,7 @@
       <!-- Veilederbanner nederst: hele banneret er lenken. Går til kontaktsiden, ikke til forsiden (som de andre sidene), så teksten kan nevne chat, telefon og e-post slik kontaktsiden gjør. Knappen sier «Kontakt en veileder», fordi siden lar deg velge mellom chat, telefon og e-post. -->
       <section class="veileder" aria-labelledby="g-veileder" data-kort="veileder">
         <a data-lenke="kontakt-veileder">
-          <img src="https://s3.utdanning.no/hkdir-utdanning-no-prod/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
+          <img src="https://s3.hkdir-production.openstack.itpartner.no/utdanning-no-production/s3fs-public/styles/posterbilde_hoyt_bredt_desktop/public/2024-05/Grid.jpg?itok=FoD4jIWo" alt="Smilende karriereveileder som ser på en dataskjerm" width="384" height="566" loading="lazy" referrerpolicy="no-referrer">
           <span class="veileder-tekst" style="display:block">
             <h2 id="g-veileder">Snakk med en veileder</h2>
             <p class="brodtekst">Fikk du ikke svar på det du lurte på? Karriereveilederne svarer på chat, telefon og e-post.</p>

@@ -50,7 +50,8 @@ Den sjekker svarkode, domene, at ankeret finnes og at teksten i tekstfragmentet 
 
 ```bash
 node --test scripts/test-ruting.mjs        # rutingen: hvilken side får hvert søk
-node scripts/sjekk-sitater.mjs             # intervjukortene mot intervjuene på utdanning.no
+node scripts/sjekk-sitater.mjs             # intervjukortene mot utdanning.no, og kortene fra ung.no mot ung.no
+node scripts/sjekk-sitater.mjs ung-proeve --rot test/sjekk-sitater   # prøveside: skal gi «Feil: 2»
 node scripts/sjekk-lenker.mjs              # lenker og bilder
 ```
 
